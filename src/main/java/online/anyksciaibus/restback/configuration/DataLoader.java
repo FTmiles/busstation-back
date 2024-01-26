@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.configuration;
 
 import online.anyksciaibus.restback.entities.*;
 import online.anyksciaibus.restback.repositories.*;
+import online.anyksciaibus.restback.repositories.maybeDontNeed.TimePointRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -469,6 +470,7 @@ public class DataLoader implements CommandLineRunner {
     //</editor-fold>
 //=======================================================
 
+    //<editor-fold desc="LINE 3">
     public void createBusStops3(){
         BusStop  bs1 = new BusStop("A.Vienuolio prog.", "");
         BusStop  bs2 = new BusStop("Stadijonas", "");
@@ -851,4 +853,5 @@ public class DataLoader implements CommandLineRunner {
 
         scheduleRepo.save(schedule);
     }
+    //</editor-fold>
 }

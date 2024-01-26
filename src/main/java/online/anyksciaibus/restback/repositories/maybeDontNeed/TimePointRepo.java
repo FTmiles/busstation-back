@@ -1,4 +1,4 @@
-package online.anyksciaibus.restback.repositories;
+package online.anyksciaibus.restback.repositories.maybeDontNeed;
 
 import online.anyksciaibus.restback.entities.TimePoint;
 import org.springframework.data.jpa.repository.JpaRepository;

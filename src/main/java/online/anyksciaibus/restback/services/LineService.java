@@ -1,25 +1,46 @@
 package online.anyksciaibus.restback.services;
 
-import online.anyksciaibus.restback.repositories.*;
+import online.anyksciaibus.restback.entities.Line;
+
+
+import online.anyksciaibus.restback.repositories.LineRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LineService {
 
-    BusStopRepo busStopRepo;
     LineRepo lineRepo;
-    RouteRepo routeRepo;
-    ScheduleRepo scheduleRepo;
-    TimePointRepo timePointRepo;
 
-    public LineService(BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, TimePointRepo timePointRepo){
-        this.busStopRepo = busStopRepo;
+    public LineService(LineRepo lineRepo) {
         this.lineRepo = lineRepo;
-        this.routeRepo = routeRepo;
-        this.scheduleRepo = scheduleRepo;
-        this.timePointRepo = timePointRepo;
     }
 
 
+    public List<Line> getAll() {
+        return lineRepo.findAll();
+    }
+
+    public Optional<Line> get1LineById(Long id) {
+        return lineRepo.findById(id);
+    }
+
+    public List<Line> saveAll(List<Line> lineList) {
+        return lineRepo.saveAll(lineList);
+    }
+
+    public Line save1(Line line) {
+        return lineRepo.save(line);
+    }
+
+    public void delete1byId(Long id) {
+        lineRepo.deleteById(id);
+    }
+
+    public void deleteMultiple(List<Long> ids) {
+        lineRepo.deleteAllById(ids);
+    }
 
 }
