@@ -2,7 +2,6 @@ package online.anyksciaibus.restback.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -16,7 +15,7 @@ public class Schedule {
     String timeConstraintsDescription;
 
     @Enumerated(EnumType.ORDINAL)
-    RouteDescr routeDescr;  //used for filtering routes
+    BoundFor boundFor;  //used for filtering routes
 
     //main var. Scheduled times @bus stops
     //arba nauja entity kurtis kuri tures ID ir LocalTime[], arba taip veiks
@@ -35,21 +34,21 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, RouteDescr routeDescr, List<TimePoint> timeArr, Route route) {
+    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, BoundFor boundFor, List<TimePoint> timeArr, Route route) {
         this.isRouteDirReversed = isRouteDirReversed;
         this.isWorkInProgress = isWorkInProgress;
         this.timeConstraintsDescription = timeConstraintsDescription;
-        this.routeDescr = routeDescr;
+        this.boundFor = boundFor;
         this.timeArr = timeArr;
         this.route = route;
     }
 
-    public RouteDescr getRouteDescr() {
-        return routeDescr;
+    public BoundFor getRouteDescr() {
+        return boundFor;
     }
 
-    public void setRouteDescr(RouteDescr routeDescr) {
-        this.routeDescr = routeDescr;
+    public void setRouteDescr(BoundFor boundFor) {
+        this.boundFor = boundFor;
     }
 
     public Long getId() {
