@@ -2,20 +2,23 @@ package online.anyksciaibus.restback.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Enumerated(EnumType.ORDINAL)
-    RouteDescr routeDescr;  //used for filtering routes
+
 
     @ManyToMany
-    @JoinTable(name = "route_busstops",
+    @JoinTable(
+            name = "route_busstops",
             joinColumns = @JoinColumn(name = "route_id"),
             inverseJoinColumns = @JoinColumn(name = "stop_id"))
-    BusStop[] stopsArr;
+    @OrderColumn(name = "stops_arr_order")
+    List<BusStop> stopsArr;
 
     @ManyToOne
     @JoinColumn(name = "line_id")
@@ -30,8 +33,7 @@ public class Route {
     public Route() {
     }
 
-    public Route(RouteDescr routeDescr, BusStop[] stopsArr, Line line) {
-        this.routeDescr = routeDescr;
+    public Route(List<BusStop> stopsArr, Line line) {
         this.stopsArr = stopsArr;
         this.line = line;
     }
@@ -44,19 +46,11 @@ public class Route {
         this.id = id;
     }
 
-    public RouteDescr getRouteDescr() {
-        return routeDescr;
-    }
-
-    public void setRouteDescr(RouteDescr routeDescr) {
-        this.routeDescr = routeDescr;
-    }
-
-    public BusStop[] getStopsArr() {
+    public List<BusStop> getStopsArr() {
         return stopsArr;
     }
 
-    public void setStopsArr(BusStop[] stopsArr) {
+    public void setStopsArr(List<BusStop> stopsArr) {
         this.stopsArr = stopsArr;
     }
 

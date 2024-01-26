@@ -15,6 +15,9 @@ public class Schedule {
     Boolean isWorkInProgress;
     String timeConstraintsDescription;
 
+    @Enumerated(EnumType.ORDINAL)
+    RouteDescr routeDescr;  //used for filtering routes
+
     //main var. Scheduled times @bus stops
     //arba nauja entity kurtis kuri tures ID ir LocalTime[], arba taip veiks
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -32,12 +35,21 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, List<TimePoint> timeArr, Route route) {
+    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, RouteDescr routeDescr, List<TimePoint> timeArr, Route route) {
         this.isRouteDirReversed = isRouteDirReversed;
         this.isWorkInProgress = isWorkInProgress;
         this.timeConstraintsDescription = timeConstraintsDescription;
+        this.routeDescr = routeDescr;
         this.timeArr = timeArr;
         this.route = route;
+    }
+
+    public RouteDescr getRouteDescr() {
+        return routeDescr;
+    }
+
+    public void setRouteDescr(RouteDescr routeDescr) {
+        this.routeDescr = routeDescr;
     }
 
     public Long getId() {

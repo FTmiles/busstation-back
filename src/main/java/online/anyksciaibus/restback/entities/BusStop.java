@@ -24,6 +24,10 @@ public class BusStop {
     public BusStop() {
     }
 
+    public BusStop(Long id) {
+        this.id = id;
+    }
+
     public BusStop(String name, String coords) {
         this.name = name;
         this.coords = coords;
