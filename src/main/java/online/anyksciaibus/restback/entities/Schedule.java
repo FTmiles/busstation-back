@@ -26,4 +26,65 @@ public class Schedule {
     Route route;
 
 
+
+
+    //============================================
+    public Schedule() {
+    }
+
+    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, List<TimePoint> timeArr, Route route) {
+        this.isRouteDirReversed = isRouteDirReversed;
+        this.isWorkInProgress = isWorkInProgress;
+        this.timeConstraintsDescription = timeConstraintsDescription;
+        this.timeArr = timeArr;
+        this.route = route;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getRouteDirReversed() {
+        return isRouteDirReversed;
+    }
+
+    public void setRouteDirReversed(Boolean routeDirReversed) {
+        isRouteDirReversed = routeDirReversed;
+    }
+
+    public Boolean getWorkInProgress() {
+        return isWorkInProgress;
+    }
+
+    public void setWorkInProgress(Boolean workInProgress) {
+        isWorkInProgress = workInProgress;
+    }
+
+    public String getTimeConstraintsDescription() {
+        return timeConstraintsDescription;
+    }
+
+    public void setTimeConstraintsDescription(String timeConstraintsDescription) {
+        this.timeConstraintsDescription = timeConstraintsDescription;
+    }
+
+    public List<TimePoint> getTimeArr() {
+        return timeArr;
+    }
+
+    public void setTimeArr(List<TimePoint> timeArr) {
+        this.timeArr = timeArr;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
 }
