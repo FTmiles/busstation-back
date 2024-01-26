@@ -36,11 +36,16 @@ public class DataLoader implements CommandLineRunner {
 //        createLine();
 //        createRoutes();
 //        createSchedule();
-
+//
 //        createBusStops2();
-//          createLine2();
-//            createRoutes2();
-        createSchedule2();
+//        createLine2();
+//        createRoutes2();
+//        createSchedule2();
+//
+//        createBusStops3();
+//        createLine3();
+//        createRoutes3();
+//        createSchedule3();
     }
 
 
@@ -88,7 +93,19 @@ public class DataLoader implements CommandLineRunner {
         Line line = new Line();
         line.setId(1L);
 
-        Route route1 = new Route(stopsArr, line);
+        List<DistancePoint> distArr = new ArrayList<>();
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(2400));
+        distArr.add(new DistancePoint(1400));
+        distArr.add(new DistancePoint(2000));
+        distArr.add(new DistancePoint(2500));
+        distArr.add(new DistancePoint(1600));
+        distArr.add(new DistancePoint(3000));
+        distArr.add(new DistancePoint(2300));
+        distArr.add(new DistancePoint(2400));
+
+        Route route1 = new Route(stopsArr, distArr, line, "");
 
         routeRepo.save(route1);
     }
@@ -101,7 +118,7 @@ public class DataLoader implements CommandLineRunner {
     }
         public void schedule1(){
             Route route1 = new Route();
-            route1.setId(4L);
+            route1.setId(1L);
             List<TimePoint> timeArr = new ArrayList<>();
 
             timeArr.add(new TimePoint(LocalTime.of(8,55)));
@@ -124,7 +141,7 @@ public class DataLoader implements CommandLineRunner {
 
     public void schedule2(){
         Route route1 = new Route();
-        route1.setId(4L);
+        route1.setId(1L);
         List<TimePoint> timeArr = new ArrayList<>();
 
         timeArr.add(new TimePoint(LocalTime.of(9,25)));
@@ -146,7 +163,7 @@ public class DataLoader implements CommandLineRunner {
     }
     public void schedule3(){
         Route route1 = new Route();
-        route1.setId(4L);
+        route1.setId(1L);
         List<TimePoint> timeArr = new ArrayList<>();
 
         timeArr.add(new TimePoint(LocalTime.of(13,30)));
@@ -169,7 +186,7 @@ public class DataLoader implements CommandLineRunner {
 
     public void schedule4(){
         Route route1 = new Route();
-        route1.setId(4L);
+        route1.setId(1L);
         List<TimePoint> timeArr = new ArrayList<>();
 
         timeArr.add(new TimePoint(LocalTime.of(13,55)));
@@ -192,7 +209,8 @@ public class DataLoader implements CommandLineRunner {
     //</editor-fold>
 //=====================================================
 
-        public void createBusStops2(){
+    //<editor-fold desc="LINE 2">
+    public void createBusStops2(){
             BusStop bs1 = new BusStop("Technologijos m.", "");
             BusStop bs2 = new BusStop("Šeimyniškiai", "");
             BusStop bs3 = new BusStop("Ažuožeriai", "");
@@ -289,14 +307,59 @@ public class DataLoader implements CommandLineRunner {
             Line line = new Line();
             line.setId(2L);
 
-            Route route1 = new Route(stopsArr, line);
+            List<DistancePoint> distArr = new ArrayList<>();
+            distArr.add(new DistancePoint(1500));
+            distArr.add(new DistancePoint(2400));
+            distArr.add(new DistancePoint(2100));
+            distArr.add(new DistancePoint(3000));
+            distArr.add(new DistancePoint(2000));
+            distArr.add(new DistancePoint(3000));
+            distArr.add(new DistancePoint(2000));
+            distArr.add(new DistancePoint(2300));
+            distArr.add(new DistancePoint(500));
+            distArr.add(new DistancePoint(1100));
+            distArr.add(new DistancePoint(2200));
+            distArr.add(new DistancePoint(3000));
+            distArr.add(new DistancePoint(1200));
+            distArr.add(new DistancePoint(800));
+            distArr.add(new DistancePoint(1000));
+            distArr.add(new DistancePoint(2400));
+            distArr.add(new DistancePoint(900));
+            distArr.add(new DistancePoint(2200));
+            distArr.add(new DistancePoint(2700));
+            distArr.add(new DistancePoint(1500));
+            distArr.add(new DistancePoint(2700));
+            distArr.add(new DistancePoint(2500));
+            distArr.add(new DistancePoint(1000));
+            distArr.add(new DistancePoint(1000));
+            distArr.add(new DistancePoint(2500));
+            distArr.add(new DistancePoint(2700));
+            distArr.add(new DistancePoint(1600));
+            distArr.add(new DistancePoint(2600));
+            distArr.add(new DistancePoint(3500));
+            distArr.add(new DistancePoint(1900));
+            distArr.add(new DistancePoint(2900));
+            distArr.add(new DistancePoint(4600));
+            distArr.add(new DistancePoint(1500));
+            distArr.add(new DistancePoint(1500));
+            distArr.add(new DistancePoint(2600));
+            distArr.add(new DistancePoint(2300));
+            distArr.add(new DistancePoint(1300));
+            distArr.add(new DistancePoint(2700));
+            distArr.add(new DistancePoint(1400));
+            distArr.add(new DistancePoint(1200));
+            distArr.add(new DistancePoint(800));
+            distArr.add(new DistancePoint(3000));
+
+
+            Route route1 = new Route(stopsArr, distArr, line, "");
 
             routeRepo.save(route1);
         }
 
         private void createSchedule2() {
             Route route1 = new Route();
-            route1.setId(5L);
+            route1.setId(2L);
             List<TimePoint> timeArr = new ArrayList<>();
 
             timeArr.add(new TimePoint(LocalTime.of(7,20)));
@@ -347,6 +410,445 @@ public class DataLoader implements CommandLineRunner {
             Schedule schedule = new Schedule(false, false, "Autobusas važiuoja trečiadieniais", BoundFor.CIRCLE, timeArr, route1);
 
             scheduleRepo.save(schedule);
-        }
 
+            //============================================= second schedule, afternoon
+
+            Route route2 = new Route();
+            route2.setId(2L);
+            List<TimePoint> timeArr2 = new ArrayList<>();
+
+            timeArr2.add(new TimePoint(LocalTime.of(13,30)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,32)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,35)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,38)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,41)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,49)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,52)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,56)));
+            timeArr2.add(new TimePoint(LocalTime.of(13,59)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,2)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,5)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,10)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,15)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,20)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,30)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,32)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,35)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,38)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,40)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,45)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,47)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,49)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,51)));
+            timeArr2.add(new TimePoint(LocalTime.of(14,55)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,0)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,1)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,2)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,3)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,5)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,7)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,8)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,10)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,12)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,13)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,14)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,15)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,18)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,22)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,25)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,27)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,30)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,32)));
+            timeArr2.add(new TimePoint(LocalTime.of(15,35)));
+
+
+            Schedule schedule2 = new Schedule(true, false, "Autobusas važiuoja trečiadieniais", BoundFor.CIRCLE, timeArr2, route2);
+
+            scheduleRepo.save(schedule2);
+        }
+    //</editor-fold>
+//=======================================================
+
+    public void createBusStops3(){
+        BusStop  bs1 = new BusStop("A.Vienuolio prog.", "");
+        BusStop  bs2 = new BusStop("Stadijonas", "");
+        BusStop  bs3 = new BusStop("SB ,,Voruta“", "");
+        BusStop  bs4 = new BusStop("Elmininkai", "");
+        BusStop  bs5 = new BusStop("Bikūnai", "");
+        BusStop  bs6 = new BusStop("S.Elmininkai", "");
+        BusStop  bs7 = new BusStop("Vosgėliai", "");
+        BusStop  bs8 = new BusStop("Čekonys I", "");
+        BusStop  bs9 = new BusStop("Čekonys II", "");
+        BusStop bs10 = new BusStop("Kalveliai", "");
+        BusStop bs11 = new BusStop("Meldučiai", "");
+        BusStop bs12 = new BusStop("Debeikiai", "");
+        BusStop bs13 = new BusStop("Jurzdikas", "");
+        BusStop bs14 = new BusStop("Aknystų kr.", "");
+        BusStop bs15 = new BusStop("Aknystos", "");
+
+        BusStop bs16 = new BusStop("Šližiai", "");
+        BusStop bs17 = new BusStop("Varkujai", "");
+
+
+
+        List<BusStop> bsList = List.of(bs1, bs2, bs3, bs4, bs5, bs6, bs7, bs8, bs9, bs10, bs11, bs12, bs13, bs14, bs15, bs16, bs17);
+
+        busStopRepo.saveAll(bsList);
+    }
+
+    private void createLine3() {
+        Line line1 = new Line("M22", "ANYKŠČIAI", "VARKUJAI ", "DEBEIKIUS, AKNYSTAS", "Transporto Centras", "3", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
+        lineRepo.save(line1);
+    }
+
+    private void createRoutes3() {
+        newRoute3_1();
+        newRoute3_2();
+        newRoute3_3();
+    }
+
+    public void newRoute3_1(){
+        List<BusStop> stopsArr = new ArrayList<>();
+        stopsArr.add(new BusStop(65L));
+        stopsArr.add(new BusStop(64L));
+        stopsArr.add(new BusStop(62L));
+        stopsArr.add(new BusStop(63L));
+        stopsArr.add(new BusStop(62L));
+        stopsArr.add(new BusStop(61L));
+        stopsArr.add(new BusStop(60L));
+        stopsArr.add(new BusStop(59L));
+        stopsArr.add(new BusStop(58L));
+        stopsArr.add(new BusStop(57L));
+        stopsArr.add(new BusStop(56L));
+        stopsArr.add(new BusStop(55L));
+        stopsArr.add(new BusStop(54L));
+        stopsArr.add(new BusStop(53L));
+        stopsArr.add(new BusStop(52L));
+        stopsArr.add(new BusStop(51L));
+        stopsArr.add(new BusStop(50L));
+        stopsArr.add(new BusStop(49L));
+        stopsArr.add(new BusStop(2L));
+        stopsArr.add(new BusStop(1L));
+
+
+        Line line = new Line();
+        line.setId(3L);
+
+        List<DistancePoint> distArr = new ArrayList<>();
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(900));
+        distArr.add(new DistancePoint(900));
+        distArr.add(new DistancePoint(1100));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1600));
+        distArr.add(new DistancePoint(2500));
+        distArr.add(new DistancePoint(1100));
+        distArr.add(new DistancePoint(2600));
+        distArr.add(new DistancePoint(1700));
+        distArr.add(new DistancePoint(3000));
+        distArr.add(new DistancePoint(1300));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(500));
+
+
+        Route route1 = new Route(stopsArr, distArr, line, "");
+
+        routeRepo.save(route1);
+    }
+    public void newRoute3_2(){
+        List<BusStop> stopsArr = new ArrayList<>();
+        stopsArr.add(new BusStop(1L));
+        stopsArr.add(new BusStop(2L));
+        stopsArr.add(new BusStop(49L));
+        stopsArr.add(new BusStop(50L));
+        stopsArr.add(new BusStop(51L));
+        stopsArr.add(new BusStop(52L));
+        stopsArr.add(new BusStop(53L));
+        //no S.Elmininkai
+        stopsArr.add(new BusStop(55L));
+        stopsArr.add(new BusStop(56L));
+        stopsArr.add(new BusStop(57L));
+        stopsArr.add(new BusStop(58L));
+        stopsArr.add(new BusStop(59L));
+        stopsArr.add(new BusStop(60L));
+        stopsArr.add(new BusStop(61L));
+        stopsArr.add(new BusStop(62L));
+        stopsArr.add(new BusStop(63L));
+        stopsArr.add(new BusStop(62L));
+        stopsArr.add(new BusStop(64L));
+        stopsArr.add(new BusStop(65L));
+
+
+        Line line = new Line();
+        line.setId(3L);
+
+        List<DistancePoint> distArr = new ArrayList<>();
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(1300));
+        //no S.Elmininkai
+        distArr.add(new DistancePoint(1700));
+        distArr.add(new DistancePoint(2600));
+        distArr.add(new DistancePoint(1100));
+        distArr.add(new DistancePoint(2500));
+        distArr.add(new DistancePoint(1600));
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1100));
+        distArr.add(new DistancePoint(900));
+        distArr.add(new DistancePoint(900));
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1500));
+
+
+
+        Route route1 = new Route(stopsArr, distArr, line, "be S.Elmininku");
+
+        routeRepo.save(route1);
+    }
+    public void newRoute3_3(){
+        List<BusStop> stopsArr = new ArrayList<>();
+        stopsArr.add(new BusStop(1L));
+        stopsArr.add(new BusStop(2L));
+        stopsArr.add(new BusStop(49L));
+        stopsArr.add(new BusStop(50L));
+        stopsArr.add(new BusStop(51L));
+        stopsArr.add(new BusStop(52L));
+        stopsArr.add(new BusStop(53L));
+        //no S.Elmininkai
+        stopsArr.add(new BusStop(55L));
+        stopsArr.add(new BusStop(56L));
+        stopsArr.add(new BusStop(57L));
+        stopsArr.add(new BusStop(58L));
+        stopsArr.add(new BusStop(59L));
+        stopsArr.add(new BusStop(60L));
+        stopsArr.add(new BusStop(61L));
+        stopsArr.add(new BusStop(62L));
+        //no Aknystos
+        //no Aknystu kr.
+        stopsArr.add(new BusStop(64L));
+        stopsArr.add(new BusStop(65L));
+
+
+        Line line = new Line();
+        line.setId(3L);
+
+        List<DistancePoint> distArr = new ArrayList<>();
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(500));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1000));
+        distArr.add(new DistancePoint(1300));
+        //no S.Elmininkai
+        distArr.add(new DistancePoint(1700));
+        distArr.add(new DistancePoint(2600));
+        distArr.add(new DistancePoint(1100));
+        distArr.add(new DistancePoint(2500));
+        distArr.add(new DistancePoint(1600));
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1900));
+        distArr.add(new DistancePoint(1100));
+        //no Aknystos
+        //no Aknystu kr.
+        distArr.add(new DistancePoint(1500));
+        distArr.add(new DistancePoint(1500));
+
+
+
+        Route route1 = new Route(stopsArr, distArr, line, "be S. Elmininku, Aknystos, Aknystu kr.");
+
+        routeRepo.save(route1);
+    }
+
+    private void createSchedule3() {
+        newSchedule3_1();
+        newSchedule3_2();
+        newSchedule3_3();
+        newSchedule3_4();
+        newSchedule3_5();
+        newSchedule3_6();
+
+    }
+    private void newSchedule3_1(){
+        Route route1 = new Route();
+        route1.setId(5L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(6,30)));
+        timeArr.add(new TimePoint(LocalTime.of(6,31)));
+        timeArr.add(new TimePoint(LocalTime.of(6,32)));
+        timeArr.add(new TimePoint(LocalTime.of(6,34)));
+        timeArr.add(new TimePoint(LocalTime.of(6,35)));
+        timeArr.add(new TimePoint(LocalTime.of(6,36)));
+        timeArr.add(new TimePoint(LocalTime.of(6,39)));
+        timeArr.add(new TimePoint(LocalTime.of(6,40)));
+        timeArr.add(new TimePoint(LocalTime.of(6,41)));
+        timeArr.add(new TimePoint(LocalTime.of(6,42)));
+        timeArr.add(new TimePoint(LocalTime.of(6,44)));
+        timeArr.add(new TimePoint(LocalTime.of(6,45)));
+        timeArr.add(new TimePoint(LocalTime.of(6,48)));
+        timeArr.add(new TimePoint(LocalTime.of(6,50)));
+        timeArr.add(new TimePoint(LocalTime.of(6,51)));
+        timeArr.add(new TimePoint(LocalTime.of(6,53)));
+        timeArr.add(new TimePoint(LocalTime.of(6,55)));
+
+
+        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.OUT_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
+    private void newSchedule3_2(){
+        Route route1 = new Route();
+        route1.setId(5L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(6,55)));
+        timeArr.add(new TimePoint(LocalTime.of(6,58)));
+        timeArr.add(new TimePoint(LocalTime.of(7,2)));
+        timeArr.add(new TimePoint(LocalTime.of(7,8)));
+        timeArr.add(new TimePoint(LocalTime.of(7,10)));
+        timeArr.add(new TimePoint(LocalTime.of(7,12)));
+        timeArr.add(new TimePoint(LocalTime.of(7,18)));
+        timeArr.add(new TimePoint(LocalTime.of(7,20)));
+        timeArr.add(new TimePoint(LocalTime.of(7,22)));
+        timeArr.add(new TimePoint(LocalTime.of(7,24)));
+        timeArr.add(new TimePoint(LocalTime.of(7,26)));
+        timeArr.add(new TimePoint(LocalTime.of(7,30)));
+        timeArr.add(new TimePoint(LocalTime.of(7,35)));
+        timeArr.add(new TimePoint(LocalTime.of(7,38)));
+        timeArr.add(new TimePoint(LocalTime.of(7,40)));
+        timeArr.add(new TimePoint(LocalTime.of(7,42)));
+        timeArr.add(new TimePoint(LocalTime.of(7,44)));
+        timeArr.add(new TimePoint(LocalTime.of(7,45)));
+        timeArr.add(new TimePoint(LocalTime.of(7,48)));
+        timeArr.add(new TimePoint(LocalTime.of(7,50)));
+
+        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.CITY_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
+    private void newSchedule3_3(){
+        Route route1 = new Route();
+        route1.setId(5L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(13,50)));
+        timeArr.add(new TimePoint(LocalTime.of(13,52)));
+        timeArr.add(new TimePoint(LocalTime.of(13,55)));
+        timeArr.add(new TimePoint(LocalTime.of(13,58)));
+        timeArr.add(new TimePoint(LocalTime.of(14,0)));
+        timeArr.add(new TimePoint(LocalTime.of(14,2)));
+        timeArr.add(new TimePoint(LocalTime.of(14,5)));
+        timeArr.add(new TimePoint(LocalTime.of(14,7)));
+        timeArr.add(new TimePoint(LocalTime.of(14,9)));
+        timeArr.add(new TimePoint(LocalTime.of(14,10)));
+        timeArr.add(new TimePoint(LocalTime.of(14,12)));
+        timeArr.add(new TimePoint(LocalTime.of(14,14)));
+        timeArr.add(new TimePoint(LocalTime.of(14,16)));
+        timeArr.add(new TimePoint(LocalTime.of(14,18)));
+        timeArr.add(new TimePoint(LocalTime.of(14,20)));
+        timeArr.add(new TimePoint(LocalTime.of(14,26)));
+        timeArr.add(new TimePoint(LocalTime.of(14,28)));
+
+
+        Schedule schedule = new Schedule(false, false, "važiuoja mokslo metu", BoundFor.OUT_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
+    private void newSchedule3_4(){
+        Route route1 = new Route();
+        route1.setId(4L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(14,30)));
+        timeArr.add(new TimePoint(LocalTime.of(14,32)));
+        timeArr.add(new TimePoint(LocalTime.of(14,34)));
+        timeArr.add(new TimePoint(LocalTime.of(14,36)));
+        timeArr.add(new TimePoint(LocalTime.of(14,38)));
+        timeArr.add(new TimePoint(LocalTime.of(14,40)));
+        timeArr.add(new TimePoint(LocalTime.of(14,42)));
+        timeArr.add(new TimePoint(LocalTime.of(14,44)));
+        timeArr.add(new TimePoint(LocalTime.of(14,46)));
+        timeArr.add(new TimePoint(LocalTime.of(14,48)));
+        timeArr.add(new TimePoint(LocalTime.of(14,50)));
+        timeArr.add(new TimePoint(LocalTime.of(14,52)));
+        timeArr.add(new TimePoint(LocalTime.of(14,54)));
+        timeArr.add(new TimePoint(LocalTime.of(14,56)));
+        timeArr.add(new TimePoint(LocalTime.of(14,58)));
+        timeArr.add(new TimePoint(LocalTime.of(15,0)));
+        timeArr.add(new TimePoint(LocalTime.of(15,3)));
+        timeArr.add(new TimePoint(LocalTime.of(15,6)));
+        timeArr.add(new TimePoint(LocalTime.of(15,8)));
+
+        Schedule schedule = new Schedule(true, false, "važiuoja mokslo metu", BoundFor.CITY_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
+    private void newSchedule3_5(){
+        Route route1 = new Route();
+        route1.setId(4L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(16,0)));
+        timeArr.add(new TimePoint(LocalTime.of(16,2)));
+        timeArr.add(new TimePoint(LocalTime.of(16,3)));
+        timeArr.add(new TimePoint(LocalTime.of(16,5)));
+        timeArr.add(new TimePoint(LocalTime.of(16,7)));
+        timeArr.add(new TimePoint(LocalTime.of(16,9)));
+        timeArr.add(new TimePoint(LocalTime.of(16,11)));
+        timeArr.add(new TimePoint(LocalTime.of(16,13)));
+        timeArr.add(new TimePoint(LocalTime.of(16,19)));
+        timeArr.add(new TimePoint(LocalTime.of(16,20)));
+        timeArr.add(new TimePoint(LocalTime.of(16,24)));
+        timeArr.add(new TimePoint(LocalTime.of(16,25)));
+        timeArr.add(new TimePoint(LocalTime.of(16,27)));
+        timeArr.add(new TimePoint(LocalTime.of(16,29)));
+        timeArr.add(new TimePoint(LocalTime.of(16,30)));
+        timeArr.add(new TimePoint(LocalTime.of(16,31)));
+        timeArr.add(new TimePoint(LocalTime.of(16,32)));
+        timeArr.add(new TimePoint(LocalTime.of(16,33)));
+        timeArr.add(new TimePoint(LocalTime.of(16,35)));
+
+
+        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.OUT_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
+    private void newSchedule3_6(){
+        Route route1 = new Route();
+        route1.setId(5L);
+        List<TimePoint> timeArr = new ArrayList<>();
+
+        timeArr.add(new TimePoint(LocalTime.of(16,35)));
+        timeArr.add(new TimePoint(LocalTime.of(16,37)));
+        timeArr.add(new TimePoint(LocalTime.of(16,40)));
+        timeArr.add(new TimePoint(LocalTime.of(16,41)));
+        timeArr.add(new TimePoint(LocalTime.of(16,44)));
+        timeArr.add(new TimePoint(LocalTime.of(16,46)));
+        timeArr.add(new TimePoint(LocalTime.of(16,50)));
+        timeArr.add(new TimePoint(LocalTime.of(16,53)));
+        timeArr.add(new TimePoint(LocalTime.of(16,55)));
+        timeArr.add(new TimePoint(LocalTime.of(17,0)));
+        timeArr.add(new TimePoint(LocalTime.of(17,2)));
+        timeArr.add(new TimePoint(LocalTime.of(17,5)));
+        timeArr.add(new TimePoint(LocalTime.of(17,6)));
+        timeArr.add(new TimePoint(LocalTime.of(17,7)));
+        timeArr.add(new TimePoint(LocalTime.of(17,8)));
+        timeArr.add(new TimePoint(LocalTime.of(17,9)));
+        timeArr.add(new TimePoint(LocalTime.of(17,10)));
+
+
+        Schedule schedule = new Schedule(true, false, "važiuoja darbo dienomis", BoundFor.CITY_BOUND, timeArr, route1);
+
+        scheduleRepo.save(schedule);
+    }
 }

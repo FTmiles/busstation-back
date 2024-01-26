@@ -21,6 +21,7 @@ public class Schedule {
     //arba nauja entity kurtis kuri tures ID ir LocalTime[], arba taip veiks
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "schedule_id")
+    @OrderColumn(name = "timeArrOrder")
     private List<TimePoint> timeArr;
 
     @ManyToOne
