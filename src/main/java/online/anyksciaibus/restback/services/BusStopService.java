@@ -36,6 +36,6 @@ public class BusStopService {
     }
     public void deleteMultiple(List<Long> ids){
         busStopRepo.deleteAllById(ids);
-    }
+   }
 
 }

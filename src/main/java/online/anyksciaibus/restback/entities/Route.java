@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,8 +12,7 @@ public class Route {
     Long id;
 
 
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "route_busstops",
             joinColumns = @JoinColumn(name = "route_id"),
@@ -21,7 +21,9 @@ public class Route {
     List<BusStop> stopsArr;
 
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "route_id")
     @OrderColumn(name = "distanceMetersArrOrder")
     List<DistancePoint> distanceMetersArr;

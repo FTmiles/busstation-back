@@ -18,8 +18,7 @@ public class Schedule {
     BoundFor boundFor;  //used for filtering routes
 
     //main var. Scheduled times @bus stops
-    //arba nauja entity kurtis kuri tures ID ir LocalTime[], arba taip veiks
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_id")
     @OrderColumn(name = "timeArrOrder")
     private List<TimePoint> timeArr;
@@ -44,11 +43,11 @@ public class Schedule {
         this.route = route;
     }
 
-    public BoundFor getRouteDescr() {
+    public BoundFor getBoundFor() {
         return boundFor;
     }
 
-    public void setRouteDescr(BoundFor boundFor) {
+    public void setBoundFor(BoundFor boundFor) {
         this.boundFor = boundFor;
     }
 

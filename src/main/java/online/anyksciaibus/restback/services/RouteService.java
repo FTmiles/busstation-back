@@ -1,9 +1,13 @@
 package online.anyksciaibus.restback.services;
 
+import online.anyksciaibus.restback.dto.RouteDto;
+import online.anyksciaibus.restback.entities.BusStop;
+import online.anyksciaibus.restback.entities.DistancePoint;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.repositories.RouteRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +42,28 @@ public class RouteService {
 
     public void deleteMultiple(List<Long> ids) {
         routeRepo.deleteAllById(ids);
+    }
+
+
+
+    //==========================
+
+    public List<RouteDto> getRoutesByLineId(Long lineId) {
+        List<Route> routes = routeRepo.findByLineId(lineId);
+        List<RouteDto> routeDtos = new ArrayList<>();
+
+        for (Route route : routes) {
+            RouteDto routeDto = new RouteDto();
+            routeDto.setId(route.getId());
+            routeDto.setRouteNotes(route.getRouteNotes());
+            routeDto.setLineId(lineId);
+            routeDto.setStopsArr(route.getStopsArr());
+            routeDto.setDistanceMetersArr(route.getDistanceMetersArr());
+
+            routeDtos.add(routeDto);
+        }
+
+        return routeDtos;
     }
 
 }

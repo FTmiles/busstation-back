@@ -1,5 +1,8 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,7 +25,12 @@ public class Line {
     @Enumerated(EnumType.ORDINAL)
     RouteType routeType;
 
+    //fetch = FetchType.EAGER
+    @JsonIgnore
     @OneToMany(mappedBy = "line")
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     List<Route> route;
 
 

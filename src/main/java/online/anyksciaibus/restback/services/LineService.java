@@ -20,6 +20,7 @@ public class LineService {
 
 
     public List<Line> getAll() {
+        System.out.println(lineRepo.findAll());
         return lineRepo.findAll();
     }
 
