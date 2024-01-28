@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.controllers;
 
 
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
+import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.entities.Schedule;
 import online.anyksciaibus.restback.services.ScheduleService;
 
@@ -75,6 +76,11 @@ public class ScheduleController {
     @GetMapping("/home")
     public List<SchedItemHomeDto> getScheduleItemsForHome(){
         return service.getScheduleItemsHome();
+    }
+
+    @GetMapping("/singleTrip/{id}")
+    public SingleTrip getSingleTripApi(@PathVariable Long id){
+        return service.getSingleTrip(id);
     }
 
 }
