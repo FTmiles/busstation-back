@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import online.anyksciaibus.restback.dto.BusStopsDto;
 
 @Entity
 public class BusStop {
@@ -13,7 +14,7 @@ public class BusStop {
 
     String name;
     String coords;
-
+    boolean defaultOption;
 
 
 
@@ -26,6 +27,12 @@ public class BusStop {
 
     public BusStop(Long id) {
         this.id = id;
+    }
+
+    public BusStop(String name, String coords, boolean defaultOption){
+        this.name = name;
+        this.coords = coords;
+        this.defaultOption = defaultOption;
     }
 
     public BusStop(String name, String coords) {
@@ -55,5 +62,20 @@ public class BusStop {
 
     public void setCoords(String coords) {
         this.coords = coords;
+    }
+
+    public boolean isDefaultOption() {
+        return defaultOption;
+    }
+
+    public void setDefaultOption(boolean defaultOption) {
+        this.defaultOption = defaultOption;
+    }
+
+    public BusStopsDto mapToDto(){
+        BusStopsDto dto = new BusStopsDto();
+        dto.setLabel(this.name);
+        dto.setValue(this.id);
+        return dto;
     }
 }

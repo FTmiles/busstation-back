@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.controllers;
 
+import online.anyksciaibus.restback.dto.BusStopsDto;
 import online.anyksciaibus.restback.entities.BusStop;
 import online.anyksciaibus.restback.services.BusStopService;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/busStop")
+@RequestMapping("/busstop")
 @CrossOrigin
 public class BusStopController {
     BusStopService service;
@@ -23,6 +24,12 @@ public class BusStopController {
     public List<BusStop> getAll() {
         return service.getAll();
     }
+
+    @GetMapping("/search")
+    public List<BusStopsDto> getinit(@RequestParam String str) {
+        return service.getSearchOptions(str);
+    }
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<BusStop> getOne(@PathVariable Long id) {

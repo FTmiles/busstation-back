@@ -73,6 +73,7 @@ public class ScheduleService {
                     tp.get(i).getId(), tp.get(i).getTime().toString(), bs.get(i).getName())
             );
         }
+
             return new SingleTrip(
                     line.getName(),
                     line.getRouteStart(),
