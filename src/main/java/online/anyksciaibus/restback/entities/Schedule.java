@@ -1,7 +1,9 @@
 package online.anyksciaibus.restback.entities;
 
 import jakarta.persistence.*;
+import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 @Entity
@@ -27,8 +29,16 @@ public class Schedule {
     @JoinColumn(name = "route_id")
     Route route;
 
+    //availability time constraints
+    @ElementCollection
+    @CollectionTable(name = "runsOnWeekly") // Specify the name of the collection table
+    @Enumerated(EnumType.STRING)
+    List<DayOfWeek> runsOnWeekly;   //which days of the week
 
+    @ManyToOne
+    RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
 
+    boolean runsOnPublicHolidays; //true = runs on public holidays
 
     //============================================
     public Schedule() {
@@ -41,6 +51,30 @@ public class Schedule {
         this.boundFor = boundFor;
         this.timeArr = timeArr;
         this.route = route;
+    }
+
+    public List<DayOfWeek> getRunsOnWeekly() {
+        return runsOnWeekly;
+    }
+
+    public void setRunsOnWeekly(List<DayOfWeek> runsOnWeekly) {
+        this.runsOnWeekly = runsOnWeekly;
+    }
+
+    public RunsOnYearly getRunsOnYearly() {
+        return runsOnYearly;
+    }
+
+    public void setRunsOnYearly(RunsOnYearly runsOnYearly) {
+        this.runsOnYearly = runsOnYearly;
+    }
+
+    public boolean isRunsOnPublicHolidays() {
+        return runsOnPublicHolidays;
+    }
+
+    public void setRunsOnPublicHolidays(boolean runsOnPublicHolidays) {
+        this.runsOnPublicHolidays = runsOnPublicHolidays;
     }
 
     public BoundFor getBoundFor() {

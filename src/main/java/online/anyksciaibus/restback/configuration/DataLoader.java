@@ -1,13 +1,19 @@
 package online.anyksciaibus.restback.configuration;
 
 import online.anyksciaibus.restback.entities.*;
+import online.anyksciaibus.restback.entities.timeconstraints.PublicHoliday;
+import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
+import online.anyksciaibus.restback.entities.timeconstraints.TimePeriod;
 import online.anyksciaibus.restback.repositories.*;
 import online.anyksciaibus.restback.repositories.maybeDontNeed.TimePointRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -19,13 +25,15 @@ public class DataLoader implements CommandLineRunner {
     RouteRepo routeRepo;
     ScheduleRepo scheduleRepo;
     TimePointRepo timePointRepo;
+    PublicHolidayRepo holidayRepo;
 
-    public DataLoader(BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, TimePointRepo timePointRepo){
+    public DataLoader(PublicHolidayRepo holidayRepo, BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, TimePointRepo timePointRepo){
         this.busStopRepo = busStopRepo;
         this.lineRepo = lineRepo;
         this.routeRepo = routeRepo;
         this.scheduleRepo = scheduleRepo;
         this.timePointRepo = timePointRepo;
+        this.holidayRepo = holidayRepo;
     }
 
     @Override
@@ -47,11 +55,107 @@ public class DataLoader implements CommandLineRunner {
 //        createLine3();
 //        createRoutes3();
 //        createSchedule3();
+//
+//
+//        setTimeConstraints();
+//        setPublicHolidays();
+//        setRunsOnYearly();
 
+
+//        LocalDate today = LocalDate.now();
+//        System.out.println(today);
+//        DayOfWeek day = today.getDayOfWeek();
+
+    }
+
+    public void setRunsOnYearly(){
+
+//        RunsOnYearly y = new RunsOnYearly("All year round - no restrictions");
+    }
+
+    public void setPublicHolidays(){
+        PublicHoliday h1 = new PublicHoliday("Naujieji metai", 1, 1);
+        PublicHoliday h2 = new PublicHoliday("Lietuvos valstybės atkūrimo diena", 2, 16);
+        PublicHoliday h3 = new PublicHoliday("Lietuvos nepriklausomybės atkūrimo diena", 3, 11);
+        PublicHoliday h4 = new PublicHoliday("Tarptautinė darbo diena", 5, 1);
+        PublicHoliday h5 = new PublicHoliday("Rasos ir Joninių diena", 6, 24);
+        PublicHoliday h6 = new PublicHoliday("Lietuvos karaliaus Mindaugo karūnavimo diena", 7, 6);
+        PublicHoliday h7 = new PublicHoliday("Žolinė", 8, 15);
+        PublicHoliday h8 = new PublicHoliday("Visų Šventųjų diena", 11, 1);
+        PublicHoliday h9 = new PublicHoliday("Mirusiųjų atminimo (Vėlinių) diena", 11, 2);
+        PublicHoliday h10 = new PublicHoliday("Kūčios", 12, 24);
+        PublicHoliday h11 = new PublicHoliday("Kalėdos 1d", 12, 25);
+        PublicHoliday h12 = new PublicHoliday("Kalėdos 2d", 12, 26);
+
+        holidayRepo.saveAll(List.of(h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12));
 
 
     }
 
+    public void setTimeConstraints(){
+        Schedule s1 = scheduleRepo.findById(1l).get();
+        s1.setRunsOnWeekly(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
+
+
+        s1.setRunsOnPublicHolidays(false);
+
+        Schedule s2 = scheduleRepo.findById(2l).get();
+        s2.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+//        s2.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        s2.setRunsOnPublicHolidays(false);
+
+        Schedule s3 = scheduleRepo.findById(3l).get();
+        s3.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+//        s3.setRunsOnYearly(RunsOnYearly.SCHOOLDAYS);
+        s3.setRunsOnPublicHolidays(false);
+
+        Schedule s4 = scheduleRepo.findById(4l).get();
+        s4.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+//        s4.setRunsOnYearly(RunsOnYearly.STUDENT_SUMMER_HOLIDAYS);
+        s4.setRunsOnPublicHolidays(false);
+
+        Schedule s5 = scheduleRepo.findById(5l).get();
+        s5.setRunsOnWeekly(List.of(DayOfWeek.WEDNESDAY));
+//        s5.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        s5.setRunsOnPublicHolidays(false);
+
+        Schedule s6 = scheduleRepo.findById(6l).get();
+        s6.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+//        s6.setRunsOnYearly(RunsOnYearly.WEEK_1_3_OF_THE_MONTH);
+        s6.setRunsOnPublicHolidays(false);
+
+        Schedule s7 = scheduleRepo.findById(7l).get();
+        s7.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY));
+//        s7.setRunsOnYearly(RunsOnYearly.WEEK_1_3_OF_THE_MONTH);
+        s7.setRunsOnPublicHolidays(false);
+
+        Schedule s8 = scheduleRepo.findById(8l).get();
+        s8.setRunsOnWeekly(List.of( DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY));
+//        s8.setRunsOnYearly(RunsOnYearly.FROM_0415_TO_1103);
+        s8.setRunsOnPublicHolidays(true);
+
+        Schedule s9 = scheduleRepo.findById(9l).get();
+        s9.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SATURDAY));
+//        s9.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        s9.setRunsOnPublicHolidays(true);
+
+        Schedule s10 = scheduleRepo.findById(10l).get();
+        s10.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY));
+//        s10.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        s10.setRunsOnPublicHolidays(true);
+
+        Schedule s11 = scheduleRepo.findById(11l).get();
+        s11.setRunsOnWeekly(List.of( DayOfWeek.THURSDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
+//        s11.setRunsOnYearly(RunsOnYearly.SCHOOLDAYS);
+        s11.setRunsOnPublicHolidays(true);
+
+        Schedule s12 = scheduleRepo.findById(12l).get();
+        s12.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
+//        s12.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        s12.setRunsOnPublicHolidays(false);
+
+        scheduleRepo.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12));
+    }
 
 
     //<editor-fold desc="LINE 1">

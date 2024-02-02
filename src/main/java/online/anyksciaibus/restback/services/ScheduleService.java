@@ -3,28 +3,29 @@ package online.anyksciaibus.restback.services;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.dto.SingleStop;
-import online.anyksciaibus.restback.entities.BusStop;
-import online.anyksciaibus.restback.entities.Line;
-import online.anyksciaibus.restback.entities.Schedule;
+import online.anyksciaibus.restback.entities.*;
 
-import online.anyksciaibus.restback.entities.TimePoint;
 import online.anyksciaibus.restback.repositories.ScheduleRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ScheduleService {
+
+
+
 
     ScheduleRepo scheduleRepo;
 
     public ScheduleService(ScheduleRepo scheduleRepo){
         this.scheduleRepo = scheduleRepo;
     }
+
+
+
 
     public List<Schedule> getAll() {
         return scheduleRepo.findAll();
