@@ -78,4 +78,15 @@ public class BusStop {
         dto.setValue(this.id);
         return dto;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BusStop{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", coords='").append(coords).append('\'');
+        sb.append(", defaultOption=").append(defaultOption);
+        sb.append('}');
+        return sb.toString();
+    }
 }

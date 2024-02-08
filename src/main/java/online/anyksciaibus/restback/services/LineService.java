@@ -1,11 +1,13 @@
 package online.anyksciaibus.restback.services;
 
+import online.anyksciaibus.restback.dto.LinePreviewDto;
 import online.anyksciaibus.restback.entities.Line;
 
 
 import online.anyksciaibus.restback.repositories.LineRepo;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,6 @@ public class LineService {
 
 
     public List<Line> getAll() {
-        System.out.println(lineRepo.findAll());
         return lineRepo.findAll();
     }
 
@@ -44,4 +45,18 @@ public class LineService {
         lineRepo.deleteAllById(ids);
     }
 
+    //================
+
+    public LinePreviewDto getLinePreviewDto(Long id) {
+        Optional<Line> optionalLine = lineRepo.findById(id);
+        if (optionalLine.isEmpty())
+            return new LinePreviewDto();
+
+        Line line = optionalLine.get();
+        return LinePreviewDto.convertToLinePreviewDto(line);
+    }
+
+    public Optional<Line> myLineById(Long id) {
+        return lineRepo.findById(id);
+    }
 }

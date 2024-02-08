@@ -1,5 +1,10 @@
 package online.anyksciaibus.restback.controllers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import online.anyksciaibus.restback.dto.LineEagerDto;
+import online.anyksciaibus.restback.dto.LinePreviewDto;
 import online.anyksciaibus.restback.entities.Line;
 
 import online.anyksciaibus.restback.services.LineService;
@@ -68,6 +73,37 @@ public class LineController {
         service.save1(updatedLine);
         return ResponseEntity.noContent().build();
     }
+
+    //========================
+
+    @GetMapping("/single")
+    public LinePreviewDto getSingleDto(@RequestParam Long id){
+        return service.getLinePreviewDto(id);
+    }
+    @GetMapping("/preview")
+    public List<LinePreviewDto> getListLinePreviewDto(){
+        List<Line> allLines = service.getAll();
+
+        return allLines.stream().map(LinePreviewDto::convertToLinePreviewDto)
+                .toList();
+    }
+
+    //Transactional annotation ensures everything in this method will be executed
+    //within the transactional context. To get lazy Lists, need to access them .size() or sth
+    @Transactional
+    @GetMapping("/line-eager")
+    public ResponseEntity<LineEagerDto> getLineEager(@RequestParam Long id){
+        Optional<Line> data = service.get1LineById(id);
+        if (data.isEmpty()) return ResponseEntity.notFound().build();
+
+        var myData = data.get();
+        //accessing to fetch lazy data
+        myData.getRoutes().forEach(x->x.getDistanceMetersArr().size());
+
+
+        return ResponseEntity.ok(LineEagerDto.lineToDto(myData));
+
+}
 
 
 }

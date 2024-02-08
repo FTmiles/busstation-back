@@ -62,4 +62,14 @@ public class Pattern1Params {
     public void setNthOccurenceEachMonth(int nthOccurenceEachMonth) {
         this.nthOccurenceEachMonth = nthOccurenceEachMonth;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Pattern1Params{");
+        sb.append("id=").append(id);
+        sb.append(", desiredXday=").append(desiredXday);
+        sb.append(", nthOccurenceEachMonth=").append(nthOccurenceEachMonth);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -17,29 +17,33 @@ public class RunsOnYearly {
     TypeOfYearlyRule typeOfYearlyRule;
 
     //FIXED_TIME_PERIOD
-    @OneToMany//(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "runs_on_yearly_id")
     List<TimePeriod> timePeriods;
 
     //DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH
-    @OneToMany//(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "runs_on_yearly_id")
     List<Pattern1Params> pattern1Params;
 
 
 
     //pattern 1 - Every Nth Xday Each Month (e.g. every second Thursday each month)
     public boolean testPattern1(LocalDate date) {
+
         if (this.pattern1Params.isEmpty()) return false;
 
-        for (Pattern1Params param : this.pattern1Params) {
-
+        for (Pattern1Params paramPair : this.pattern1Params) {
+            System.out.println("should be 4 times");
+            System.out.println(paramPair);
             //Xday = Monday, Tuesday, ...
-            if (date.getDayOfWeek() != param.desiredXday) {
+            if (date.getDayOfWeek() != paramPair.desiredXday) {
                 continue;
             }
 
             //Find date, which is the first Xday in the month
             LocalDate firstXdayInMonth = date.withDayOfMonth(1);
-            while (firstXdayInMonth.getDayOfWeek().ordinal() != param.desiredXday.ordinal()) {
+            while (firstXdayInMonth.getDayOfWeek().ordinal() != paramPair.desiredXday.ordinal()) {
                 firstXdayInMonth = firstXdayInMonth.plusDays(1);
             }
 
@@ -49,8 +53,12 @@ public class RunsOnYearly {
             //          == 1  -> second
             //          == 2  -> third
             //          == 3  -> fourth
-            if (occurence + 1 == (float) param.nthOccurenceEachMonth )
+            System.out.println("difference: "+difference);
+            System.out.println("test result: --> " + (occurence + 1F) + "and there::::" +(float) paramPair.nthOccurenceEachMonth);
+            if (occurence + 1F == (float) paramPair.nthOccurenceEachMonth ) {
+                System.out.println("returns as TRUE!");
                 return true;
+            }
         }
 
 
@@ -60,6 +68,10 @@ public class RunsOnYearly {
 
     //=============================================
 
+
+    public RunsOnYearly(Long id) {
+        this.id = id;
+    }
 
     public RunsOnYearly() {
     }

@@ -1,11 +1,12 @@
 package online.anyksciaibus.restback.controllers;
 
-import online.anyksciaibus.restback.repositories.PublicHolidayRepo;
-import online.anyksciaibus.restback.services.PublicHolidayService;
+import online.anyksciaibus.restback.entities.timeconstraints.PublicHoliday;
+import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/holidays")
@@ -34,6 +35,18 @@ public class PublicHolidayController {
 
     }
 
+    @GetMapping("/all")
+    public List<PublicHoliday> getAllHolidays(){
+        return service.getAll();
+    }
 
+    @PostMapping("/save1")
+    public PublicHoliday saveOneHoliday(@RequestBody PublicHoliday holiday){
+        return service.save1(holiday);
+    }
+    @DeleteMapping("/del1")
+    public void deleteOneHoliday(@RequestParam Long id){
+        service.delete1byId(id);
+    }
 
 }

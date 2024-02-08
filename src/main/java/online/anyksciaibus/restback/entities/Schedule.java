@@ -35,7 +35,7 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     List<DayOfWeek> runsOnWeekly;   //which days of the week
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
 
     boolean runsOnPublicHolidays; //true = runs on public holidays

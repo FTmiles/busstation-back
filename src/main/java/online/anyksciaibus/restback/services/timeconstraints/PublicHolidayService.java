@@ -1,4 +1,4 @@
-package online.anyksciaibus.restback.services;
+package online.anyksciaibus.restback.services.timeconstraints;
 
 import online.anyksciaibus.restback.entities.timeconstraints.PublicHoliday;
 import online.anyksciaibus.restback.repositories.PublicHolidayRepo;
@@ -34,12 +34,12 @@ public class PublicHolidayService {
         return repo.findById(id);
     }
 
-    public List<PublicHoliday> saveAll(List<PublicHoliday> lineList) {
-        return repo.saveAll(lineList);
+    public List<PublicHoliday> saveAll(List<PublicHoliday> holidayList) {
+        return repo.saveAll(holidayList);
     }
 
-    public PublicHoliday save1(PublicHoliday line) {
-        return repo.save(line);
+    public PublicHoliday save1(PublicHoliday holiday) {
+        return repo.save(holiday);
     }
 
     public void delete1byId(Long id) {

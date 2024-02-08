@@ -52,4 +52,8 @@ public class BusStopService {
         return busStopRepo.findTop10ByNameContainingIgnoreCase(str)
                 .stream().map(BusStop::mapToDto).toList();
     }
+
+    public List<BusStop> getBySearchName(String searchQuery){
+        return busStopRepo.findByNameContaining(searchQuery);
+    }
 }

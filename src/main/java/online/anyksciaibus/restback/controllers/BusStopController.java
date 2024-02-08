@@ -47,6 +47,7 @@ public class BusStopController {
 
     @PostMapping("/save/one")
     public BusStop saveOne(@RequestBody BusStop busStop) {
+        System.out.println(busStop);
         return service.save1(busStop);
     }
 
@@ -93,6 +94,11 @@ public class BusStopController {
         }
 
         return ResponseEntity.noContent().build(); // Return 204 No Content for successful update
+    }
+
+    @GetMapping("/searchresults")
+    public List<BusStop> getSearchByName(@RequestParam String query){
+        return service.getBySearchName(query);
     }
 
 }

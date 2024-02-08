@@ -1,7 +1,10 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -22,13 +25,15 @@ public class Route {
 
 
 
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @Fetch (FetchMode.JOIN)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//, fetch = FetchType.EAGER)
     @JoinColumn(name = "route_id")
     @OrderColumn(name = "distanceMetersArrOrder")
     List<DistancePoint> distanceMetersArr;
 
+    @JsonIgnore
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "line_id")
     Line line; //1 line has many routes (variations)
 
@@ -87,6 +92,17 @@ public class Route {
 
     public void setLine(Line line) {
         this.line = line;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Route{");
+        sb.append("id=").append(id);
+        sb.append(", stopsArr=").append(stopsArr.size());
+//        sb.append(", distanceMetersArr=").append(distanceMetersArr.size());
+        sb.append(", line=").append(line);
+        sb.append('}');
+        return sb.toString();
     }
 }
 

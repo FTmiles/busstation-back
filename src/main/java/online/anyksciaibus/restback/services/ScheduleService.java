@@ -1,13 +1,20 @@
 package online.anyksciaibus.restback.services;
 
+import online.anyksciaibus.restback.controllers.PublicHolidayController;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.dto.SingleStop;
 import online.anyksciaibus.restback.entities.*;
 
+import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
+import online.anyksciaibus.restback.repositories.RunsOnYearlyRepo;
 import online.anyksciaibus.restback.repositories.ScheduleRepo;
+import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
+import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -88,14 +95,19 @@ public class ScheduleService {
                     stopsList
             );
     }
+@Autowired
+PublicHolidayService publicHolidayService;
+    @Autowired
+    RunsOnYearlyService runsOnYearlyService;
 
-
-
-
-    public List<SchedItemHomeDto> getScheduleItemsHome(){
+    public List<SchedItemHomeDto> getScheduleItemsHome(LocalDate date){
         LocalTime now = LocalTime.now();
 
-        List<Schedule> allSchedules = scheduleRepo.findAll();
+        boolean isPublicHoliday = publicHolidayService.isTheDayPublicHoliday(date);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        List<RunsOnYearly> runsOnYearlyList = runsOnYearlyService.passingYearlyRulesByDate(date);
+
+        List<Schedule> allSchedules = scheduleRepo.findSchedulesByDayOfWeekAndPublicHolidayAndRunsOnYearly(dayOfWeek, isPublicHoliday, runsOnYearlyList);
         return allSchedules.stream().map(entity->{
             SchedItemHomeDto dto = new SchedItemHomeDto();
             dto.setId(entity.getId());
@@ -107,8 +119,9 @@ public class ScheduleService {
             return dto;
 
         }).toList();
-
-
     }
+    //=================
+
+
 
 }

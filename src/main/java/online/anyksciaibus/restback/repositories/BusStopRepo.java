@@ -20,4 +20,6 @@ public interface BusStopRepo extends JpaRepository<BusStop, Long> {
     @Query("SELECT b FROM BusStop b WHERE (LOWER(b.name) LIKE LOWER(concat(?1, '%')) OR LOWER(b.name) LIKE LOWER(concat('% ', ?1, '%'))) ORDER BY CASE WHEN LOWER(b.name) LIKE LOWER(concat(?1, '%')) THEN 0 ELSE 1 END, b.name")
     List<BusStop> findTop10ByNameStartingWithIgnoreCase(String searchTerm);
 
+    List<BusStop> findByNameContaining(String searchQuery);
+
 }

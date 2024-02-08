@@ -40,4 +40,13 @@ public class DistancePoint {
     public void setDistanceMeters(int distanceMeters) {
         this.distanceMeters = distanceMeters;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("DistancePoint{");
+        sb.append("id=").append(id);
+        sb.append(", distanceMeters=").append(distanceMeters);
+        sb.append('}');
+        return sb.toString();
+    }
 }

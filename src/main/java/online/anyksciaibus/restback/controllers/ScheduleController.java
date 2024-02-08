@@ -9,6 +9,8 @@ import online.anyksciaibus.restback.services.ScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,9 +75,15 @@ public class ScheduleController {
     }
 
     //===================================
-    @GetMapping("/home")
-    public List<SchedItemHomeDto> getScheduleItemsForHome(){
-        return service.getScheduleItemsHome();
+    @GetMapping("/home/{dateStr}")
+    public List<SchedItemHomeDto> getScheduleItemsForHome(@PathVariable String dateStr){
+        LocalDate date;
+        try{
+            date = LocalDate.parse(dateStr);
+        }catch (DateTimeParseException e){
+            return null;
+        }
+        return service.getScheduleItemsHome(date);
     }
 
     @GetMapping("/singleTrip/{id}")

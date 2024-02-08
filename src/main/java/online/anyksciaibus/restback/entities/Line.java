@@ -26,12 +26,12 @@ public class Line {
     RouteType routeType;
 
     //fetch = FetchType.EAGER
-    @JsonIgnore
-    @OneToMany(mappedBy = "line")
-    @JsonIdentityInfo(
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
-    List<Route> route;
+//    @JsonIgnore
+    @OneToMany(mappedBy = "line", fetch = FetchType.EAGER)
+//    @JsonIdentityInfo(
+//            generator = ObjectIdGenerators.PropertyGenerator.class,
+//            property = "id")
+    List<Route> routes;
 
 
 
@@ -50,7 +50,7 @@ public class Line {
         this.anykStationPlatform = anykStationPlatform;
         this.price = price;
         this.routeType = routeType;
-        this.route = route;
+        this.routes = route;
     }
 
     public Long getId() {
@@ -125,11 +125,11 @@ public class Line {
         this.routeType = routeType;
     }
 
-    public List<Route> getRoute() {
-        return route;
+    public List<Route> getRoutes() {
+        return routes;
     }
 
-    public void setRoute(List<Route> route) {
-        this.route = route;
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 }

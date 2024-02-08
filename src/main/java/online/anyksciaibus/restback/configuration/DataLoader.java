@@ -1,9 +1,11 @@
 package online.anyksciaibus.restback.configuration;
 
+import jakarta.persistence.EntityGraph;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.entities.*;
-import online.anyksciaibus.restback.entities.timeconstraints.PublicHoliday;
-import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
-import online.anyksciaibus.restback.entities.timeconstraints.TimePeriod;
+import online.anyksciaibus.restback.entities.timeconstraints.*;
 import online.anyksciaibus.restback.repositories.*;
 import online.anyksciaibus.restback.repositories.maybeDontNeed.TimePointRepo;
 import org.springframework.boot.CommandLineRunner;
@@ -12,9 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -26,14 +26,15 @@ public class DataLoader implements CommandLineRunner {
     ScheduleRepo scheduleRepo;
     TimePointRepo timePointRepo;
     PublicHolidayRepo holidayRepo;
-
-    public DataLoader(PublicHolidayRepo holidayRepo, BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, TimePointRepo timePointRepo){
+    RunsOnYearlyRepo royRepo;
+    public DataLoader(PublicHolidayRepo holidayRepo, BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, TimePointRepo timePointRepo, RunsOnYearlyRepo royRepo){
         this.busStopRepo = busStopRepo;
         this.lineRepo = lineRepo;
         this.routeRepo = routeRepo;
         this.scheduleRepo = scheduleRepo;
         this.timePointRepo = timePointRepo;
         this.holidayRepo = holidayRepo;
+        this.royRepo = royRepo;
     }
 
     @Override
@@ -58,20 +59,17 @@ public class DataLoader implements CommandLineRunner {
 //
 //
 //        setTimeConstraints();
+//        setTimeConstraints2();
 //        setPublicHolidays();
-//        setRunsOnYearly();
 
 
-//        LocalDate today = LocalDate.now();
-//        System.out.println(today);
-//        DayOfWeek day = today.getDayOfWeek();
+//        System.out.println("----data loader-------");
+
+
+
 
     }
 
-    public void setRunsOnYearly(){
-
-//        RunsOnYearly y = new RunsOnYearly("All year round - no restrictions");
-    }
 
     public void setPublicHolidays(){
         PublicHoliday h1 = new PublicHoliday("Naujieji metai", 1, 1);
@@ -93,83 +91,155 @@ public class DataLoader implements CommandLineRunner {
     }
 
     public void setTimeConstraints(){
+        Schedule s2 = scheduleRepo.findById(2l).get();
+        s2.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+
+        RunsOnYearly yearlyRules2 = new RunsOnYearly();
+        yearlyRules2.setPeriodName("All year round");
+        yearlyRules2.setTypeOfYearlyRule(TypeOfYearlyRule.FIXED_TIME_PERIOD);
+        yearlyRules2.setTimePeriods(List.of(new TimePeriod(1,1,12,31)));
+        s2.setRunsOnYearly(yearlyRules2);
+
+        s2.setRunsOnPublicHolidays(false);
+
+        //---------
+
         Schedule s1 = scheduleRepo.findById(1l).get();
         s1.setRunsOnWeekly(List.of(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
 
+        RunsOnYearly yearlyRules1 = new RunsOnYearly();
+        yearlyRules1.setPeriodName("Student summer holiday");
+        yearlyRules1.setTypeOfYearlyRule(TypeOfYearlyRule.FIXED_TIME_PERIOD);
+        yearlyRules1.setTimePeriods(List.of(new TimePeriod(6,15,8,31)));
+        s1.setRunsOnYearly(yearlyRules1);
 
         s1.setRunsOnPublicHolidays(false);
 
-        Schedule s2 = scheduleRepo.findById(2l).get();
-        s2.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-//        s2.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
-        s2.setRunsOnPublicHolidays(false);
+        //---------
 
         Schedule s3 = scheduleRepo.findById(3l).get();
-        s3.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-//        s3.setRunsOnYearly(RunsOnYearly.SCHOOLDAYS);
+        s3.setRunsOnWeekly(List.of(DayOfWeek.THURSDAY));
+
+        RunsOnYearly yearlyRules3 = new RunsOnYearly();
+        yearlyRules3.setPeriodName("2nd and 4th Thursday of the month");
+        yearlyRules3.setTypeOfYearlyRule(TypeOfYearlyRule.DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH);
+        yearlyRules3.setPattern1Params(List.of(
+                new Pattern1Params(DayOfWeek.THURSDAY, 2),
+                new Pattern1Params(DayOfWeek.THURSDAY, 4)
+        ));
+        s3.setRunsOnYearly(yearlyRules3);
+
         s3.setRunsOnPublicHolidays(false);
+
+        //-------
 
         Schedule s4 = scheduleRepo.findById(4l).get();
         s4.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-//        s4.setRunsOnYearly(RunsOnYearly.STUDENT_SUMMER_HOLIDAYS);
-        s4.setRunsOnPublicHolidays(false);
+
+        RunsOnYearly yearlyRules4 = new RunsOnYearly();
+        yearlyRules4.setPeriodName("summer season 04-01 to 11-15");
+        yearlyRules4.setTypeOfYearlyRule(TypeOfYearlyRule.FIXED_TIME_PERIOD);
+        yearlyRules4.setTimePeriods(List.of(new TimePeriod(4,1,11,15)));
+        s4.setRunsOnYearly(yearlyRules4);
+
+        s4.setRunsOnPublicHolidays(true);
+
+        //--------
 
         Schedule s5 = scheduleRepo.findById(5l).get();
         s5.setRunsOnWeekly(List.of(DayOfWeek.WEDNESDAY));
-//        s5.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
-        s5.setRunsOnPublicHolidays(false);
+
+        RunsOnYearly yearlyRules5 = new RunsOnYearly();
+        yearlyRules5.setPeriodName("1st and 3rd Wednesday of the month");
+        yearlyRules5.setTypeOfYearlyRule(TypeOfYearlyRule.DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH);
+        yearlyRules5.setPattern1Params(List.of(
+                new Pattern1Params(DayOfWeek.WEDNESDAY, 1),
+                new Pattern1Params(DayOfWeek.WEDNESDAY, 3)
+        ));
+        s5.setRunsOnYearly(yearlyRules5);
+
+        s5.setRunsOnPublicHolidays(true);
+
+        //----------
 
         Schedule s6 = scheduleRepo.findById(6l).get();
-        s6.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-//        s6.setRunsOnYearly(RunsOnYearly.WEEK_1_3_OF_THE_MONTH);
+        s6.setRunsOnWeekly(List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+
+        RunsOnYearly yearlyRules6 = new RunsOnYearly();
+        yearlyRules6.setPeriodName("Schooldays");
+        yearlyRules6.setTypeOfYearlyRule(TypeOfYearlyRule.FIXED_TIME_PERIOD);
+        yearlyRules6.setTimePeriods(List.of(
+                new TimePeriod(1,15,3,29),
+                new TimePeriod(4,12,6,17),
+                new TimePeriod(9,1,11,1),
+                new TimePeriod(11,7,12,23)
+        ));
+        s6.setRunsOnYearly(yearlyRules6);
+
         s6.setRunsOnPublicHolidays(false);
+
+        //-----==============================================
+
+
+        scheduleRepo.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
+    }
+
+    public void setTimeConstraints2(){
 
         Schedule s7 = scheduleRepo.findById(7l).get();
         s7.setRunsOnWeekly(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY));
-//        s7.setRunsOnYearly(RunsOnYearly.WEEK_1_3_OF_THE_MONTH);
+        RunsOnYearly roy7 = royRepo.findById(6L).get();
+        s7.setRunsOnYearly(roy7);
         s7.setRunsOnPublicHolidays(false);
+
+        //----
 
         Schedule s8 = scheduleRepo.findById(8l).get();
         s8.setRunsOnWeekly(List.of( DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY));
-//        s8.setRunsOnYearly(RunsOnYearly.FROM_0415_TO_1103);
+        RunsOnYearly roy8 = royRepo.findById(2L).get();
+        s8.setRunsOnYearly(roy8);
         s8.setRunsOnPublicHolidays(true);
 
         Schedule s9 = scheduleRepo.findById(9l).get();
         s9.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SATURDAY));
-//        s9.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        RunsOnYearly roy9 = royRepo.findById(1L).get();
+        s9.setRunsOnYearly(roy9);
         s9.setRunsOnPublicHolidays(true);
 
         Schedule s10 = scheduleRepo.findById(10l).get();
         s10.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY));
-//        s10.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        RunsOnYearly roy10 = royRepo.findById(3L).get();
+        s10.setRunsOnYearly(roy10);
         s10.setRunsOnPublicHolidays(true);
 
         Schedule s11 = scheduleRepo.findById(11l).get();
         s11.setRunsOnWeekly(List.of( DayOfWeek.THURSDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
-//        s11.setRunsOnYearly(RunsOnYearly.SCHOOLDAYS);
-        s11.setRunsOnPublicHolidays(true);
+        RunsOnYearly roy11 = royRepo.findById(4L).get();
+        s11.setRunsOnYearly(roy11);
+        s11.setRunsOnPublicHolidays(false);
 
         Schedule s12 = scheduleRepo.findById(12l).get();
         s12.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
-//        s12.setRunsOnYearly(RunsOnYearly.ALL_YEAR_ROUND_NO_RESTRICTION);
+        RunsOnYearly roy12 = royRepo.findById(3L).get();
+        s12.setRunsOnYearly(roy12);
         s12.setRunsOnPublicHolidays(false);
 
-        scheduleRepo.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12));
-    }
+        scheduleRepo.saveAll(Arrays.asList(s7, s8, s9, s10, s11, s12));
 
+    }
 
     //<editor-fold desc="LINE 1">
     public void createBusStops(){
-        BusStop bs1 = new BusStop("Anykščių AS", "");
+        BusStop bs1 = new BusStop("Anykščių AS", "", true);
         BusStop bs2 = new BusStop("A. Baranausko a.", "");
         BusStop bs3 = new BusStop("Poliklinika", "");
         BusStop bs4 = new BusStop("Anykščių MSV", "");
         BusStop bs5 = new BusStop("Šlavėnai", "");
-        BusStop bs6 = new BusStop("Puntukas", "");
+        BusStop bs6 = new BusStop("Puntukas", "", true);
         BusStop bs7 = new BusStop("Gražumynas", "");
         BusStop bs8 = new BusStop("Šližiai", "");
         BusStop bs9 = new BusStop("Pavirinčiai", "");
-        BusStop bs10 = new BusStop("Kurkliai", "");
+        BusStop bs10 = new BusStop("Kurkliai", "", true);
         BusStop bs11 = new BusStop("Moliakalnis", "");
         BusStop bs12 = new BusStop("Staškūniškis", "");
 
@@ -325,7 +395,7 @@ public class DataLoader implements CommandLineRunner {
             BusStop bs4 = new BusStop("Vaivadiškiai", "");
             BusStop bs5 = new BusStop("Zavesiškis", "");
             BusStop bs6 = new BusStop("Bebrūnai", "");
-            BusStop bs7 = new BusStop("Kavarskas", "");
+            BusStop bs7 = new BusStop("Kavarskas", "", true);
             BusStop bs8 = new BusStop("Janušava", "");
             BusStop bs9 = new BusStop("Gintaras", "");
             BusStop bs10 = new BusStop("Girninkija", "");
@@ -339,7 +409,7 @@ public class DataLoader implements CommandLineRunner {
             BusStop bs18 = new BusStop("Traupis", "");
             BusStop bs19 = new BusStop("Janapolis", "");
             BusStop bs20 = new BusStop("Levaniškis", "");
-            BusStop bs21 = new BusStop("Vežiškiai", "");
+            BusStop bs21 = new BusStop("Vežiškiai", "", true);
             BusStop bs22 = new BusStop("Raguvos kr.", "");
             BusStop bs23 = new BusStop("Raguva", "");
             BusStop bs24 = new BusStop("Girelė", "");
@@ -349,7 +419,7 @@ public class DataLoader implements CommandLineRunner {
             BusStop bs28 = new BusStop("Aukštakalnis", "");
             BusStop bs29 = new BusStop("Smėlynė I", "");
             BusStop bs30 = new BusStop("Smėlynė II", "");
-            BusStop bs31 = new BusStop("Kryžkelė", "");
+            BusStop bs31 = new BusStop("Kryžkelė", "", true);
             BusStop bs32 = new BusStop("Naujonys", "");
             BusStop bs33 = new BusStop("Piktagalys", "");
             BusStop bs34 = new BusStop("Kuniškiai", "");

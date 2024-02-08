@@ -13,8 +13,11 @@ public class TimePeriod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    LocalDate startDate;
-    LocalDate endDate;
+    int startMonth;
+    int startDay;
+
+    int endMonth;
+    int endDay;
 
 
     //===================
@@ -23,9 +26,11 @@ public class TimePeriod {
     public TimePeriod() {
     }
 
-    public TimePeriod(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public TimePeriod(int startMonth, int startDay, int endMonth, int endDay) {
+        this.startMonth = startMonth;
+        this.startDay = startDay;
+        this.endMonth = endMonth;
+        this.endDay = endDay;
     }
 
     public Long getId() {
@@ -36,20 +41,36 @@ public class TimePeriod {
         this.id = id;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public int getStartMonth() {
+        return startMonth;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartMonth(int startMonth) {
+        this.startMonth = startMonth;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public int getStartDay() {
+        return startDay;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setStartDay(int startDay) {
+        this.startDay = startDay;
+    }
+
+    public int getEndMonth() {
+        return endMonth;
+    }
+
+    public void setEndMonth(int endMonth) {
+        this.endMonth = endMonth;
+    }
+
+    public int getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(int endDay) {
+        this.endDay = endDay;
     }
 }
 
