@@ -2,7 +2,6 @@ package online.anyksciaibus.restback.services;
 
 import online.anyksciaibus.restback.dto.RouteDto;
 import online.anyksciaibus.restback.entities.BusStop;
-import online.anyksciaibus.restback.entities.DistancePoint;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.repositories.RouteRepo;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class RouteService {
             routeDto.setRouteNotes(route.getRouteNotes());
             routeDto.setLineId(lineId);
             routeDto.setStopsArr(route.getStopsArr());
-            routeDto.setDistanceMetersArr(route.getDistanceMetersArr());
+            routeDto.setDistanceMetersArr(route.getDistanceMetersList());
 
             routeDtos.add(routeDto);
         }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
 
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -20,10 +21,14 @@ public class Schedule {
     BoundFor boundFor;  //used for filtering routes
 
     //main var. Scheduled times @bus stops
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "schedule_id")
-    @OrderColumn(name = "timeArrOrder")
-    private List<TimePoint> timeArr;
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "schedule_id")
+//    @OrderColumn(name = "timeArrOrder")
+//    private List<TimePoint> timeArr;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @OrderColumn(name = "timeListOrder")
+    List<LocalTime> timeList;
 
     @ManyToOne
     @JoinColumn(name = "route_id")
@@ -44,12 +49,12 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, BoundFor boundFor, List<TimePoint> timeArr, Route route) {
+    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, BoundFor boundFor, List<LocalTime> timeList, Route route) {
         this.isRouteDirReversed = isRouteDirReversed;
         this.isWorkInProgress = isWorkInProgress;
         this.timeConstraintsDescription = timeConstraintsDescription;
         this.boundFor = boundFor;
-        this.timeArr = timeArr;
+        this.timeList = timeList;
         this.route = route;
     }
 
@@ -117,12 +122,12 @@ public class Schedule {
         this.timeConstraintsDescription = timeConstraintsDescription;
     }
 
-    public List<TimePoint> getTimeArr() {
-        return timeArr;
+    public List<LocalTime> getTimeList() {
+        return timeList;
     }
 
-    public void setTimeArr(List<TimePoint> timeArr) {
-        this.timeArr = timeArr;
+    public void setTimeList(List<LocalTime> timeList) {
+        this.timeList = timeList;
     }
 
     public Route getRoute() {

@@ -1,7 +1,9 @@
 package online.anyksciaibus.restback.dto;
 
 public class BusStopsDto {
+    //actually it's ID
     Long value;
+
     String label;
 
 

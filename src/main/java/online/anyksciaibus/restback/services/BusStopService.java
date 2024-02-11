@@ -56,4 +56,8 @@ public class BusStopService {
     public List<BusStop> getBySearchName(String searchQuery){
         return busStopRepo.findByNameContaining(searchQuery);
     }
+
+    public List<BusStopsDto> getAllDto(){
+        return busStopRepo.findAllBusStops();
+    }
 }

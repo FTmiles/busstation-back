@@ -98,7 +98,7 @@ public class LineController {
 
         var myData = data.get();
         //accessing to fetch lazy data
-        myData.getRoutes().forEach(x->x.getDistanceMetersArr().size());
+        myData.getRoutes().forEach(x->x.getDistanceMetersList().size());
 
 
         return ResponseEntity.ok(LineEagerDto.lineToDto(myData));

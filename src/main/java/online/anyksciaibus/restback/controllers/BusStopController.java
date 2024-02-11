@@ -25,10 +25,6 @@ public class BusStopController {
         return service.getAll();
     }
 
-    @GetMapping("/search")
-    public List<BusStopsDto> getinit(@RequestParam String str) {
-        return service.getSearchOptions(str);
-    }
 
 
     @GetMapping("/get/{id}")
@@ -101,4 +97,15 @@ public class BusStopController {
         return service.getBySearchName(query);
     }
 
+
+//============?
+    @GetMapping("/search")
+    public List<BusStopsDto> getinit(@RequestParam String str) {
+        return service.getSearchOptions(str);
+    }
+
+    @GetMapping("/alldto")
+    public List<BusStopsDto> getAllDto(){
+        return service.getAllDto();
+    }
 }

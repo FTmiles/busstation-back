@@ -1,7 +1,6 @@
 package online.anyksciaibus.restback.dto;
 
 import online.anyksciaibus.restback.entities.BusStop;
-import online.anyksciaibus.restback.entities.DistancePoint;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ public class RouteDto {
     private Long id;
     String routeNotes;
     List<BusStop> stopsArr;
-    List<DistancePoint> distanceMetersArr;
+    List<Integer> distanceMetersArr;
     Long lineId;
 
     // =====================================
@@ -19,7 +18,7 @@ public class RouteDto {
     public RouteDto() {
     }
 
-    public RouteDto(Long id, String routeNotes, List<BusStop> stopsArr, List<DistancePoint> distanceMetersArr, Long lineId) {
+    public RouteDto(Long id, String routeNotes, List<BusStop> stopsArr, List<Integer> distanceMetersArr, Long lineId) {
         this.id = id;
         this.routeNotes = routeNotes;
         this.stopsArr = stopsArr;
@@ -52,11 +51,11 @@ public class RouteDto {
         this.stopsArr = stopsArr;
     }
 
-    public List<DistancePoint> getDistanceMetersArr() {
+    public List<Integer> getDistanceMetersArr() {
         return distanceMetersArr;
     }
 
-    public void setDistanceMetersArr(List<DistancePoint> distanceMetersArr) {
+    public void setDistanceMetersArr(List<Integer> distanceMetersArr) {
         this.distanceMetersArr = distanceMetersArr;
     }
 

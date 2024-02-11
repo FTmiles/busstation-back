@@ -64,12 +64,12 @@ public class ScheduleService {
         LocalTime now = LocalTime.now();
         Optional<Schedule> singleEntityOptional = scheduleRepo.findById(id);
 
-        if (singleEntityOptional.isEmpty()) return null;
+        if (singleEntityOptional.isEmpty()) return new SingleTrip();
 
         Schedule schedule = singleEntityOptional.get();
         Line line = schedule.getRoute().getLine();
 
-        List<TimePoint> tp = schedule.getTimeArr();
+        List<LocalTime> tp = schedule.getTimeList();
         List<BusStop> bs = schedule.getRoute().getStopsArr();
 
         if (schedule.getRouteDirReversed())
@@ -78,7 +78,7 @@ public class ScheduleService {
         List<SingleStop> stopsList = new ArrayList<>();
         for (int i = 0; i < schedule.getRoute().getStopsArr().size(); i++) {
             stopsList.add(new SingleStop(
-                    tp.get(i).getId(), tp.get(i).getTime().toString(), bs.get(i).getName())
+                    bs.get(i).getId(), tp.get(i).toString(), bs.get(i).getName())
             );
         }
 
@@ -112,10 +112,10 @@ PublicHolidayService publicHolidayService;
             SchedItemHomeDto dto = new SchedItemHomeDto();
             dto.setId(entity.getId());
             dto.setDestination(entity.getRoute().getLine().getRouteEnd());
-            dto.setTimeDepart(entity.getTimeArr().getFirst().getTime().toString());
+            dto.setTimeDepart(entity.getTimeList().getFirst().toString());
             dto.setLineName(entity.getRoute().getLine().getName());
 
-            dto.setTooLate(  now.isAfter(entity.getTimeArr().getFirst().getTime())  );
+            dto.setTooLate(  now.isAfter(entity.getTimeList().getFirst())  );
             return dto;
 
         }).toList();

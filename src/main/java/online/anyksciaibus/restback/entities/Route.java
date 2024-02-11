@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 @Entity
@@ -24,12 +25,10 @@ public class Route {
     List<BusStop> stopsArr;
 
 
+    @ElementCollection
+    @OrderColumn(name = "distanceMetersListOrder")
+    List<Integer> distanceMetersList;
 
-//    @Fetch (FetchMode.JOIN)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//, fetch = FetchType.EAGER)
-    @JoinColumn(name = "route_id")
-    @OrderColumn(name = "distanceMetersArrOrder")
-    List<DistancePoint> distanceMetersArr;
 
     @JsonIgnore
     @ManyToOne
@@ -39,17 +38,17 @@ public class Route {
 
     String routeNotes;
 
-
-
     //===================================================
+
+
 
 
     public Route() {
     }
 
-    public Route(List<BusStop> stopsArr, List<DistancePoint> distanceMetersArr, Line line, String routeNotes) {
+    public Route(List<BusStop> stopsArr, List<Integer> distanceMetersList, Line line, String routeNotes) {
         this.stopsArr = stopsArr;
-        this.distanceMetersArr = distanceMetersArr;
+        this.distanceMetersList = distanceMetersList;
         this.line = line;
         this.routeNotes = routeNotes;
     }
@@ -62,12 +61,12 @@ public class Route {
         this.routeNotes = routeNotes;
     }
 
-    public List<DistancePoint> getDistanceMetersArr() {
-        return distanceMetersArr;
+    public List<Integer> getDistanceMetersList() {
+        return distanceMetersList;
     }
 
-    public void setDistanceMetersArr(List<DistancePoint> distanceMetersArr) {
-        this.distanceMetersArr = distanceMetersArr;
+    public void setDistanceMetersList(List<Integer> distanceMetersList) {
+        this.distanceMetersList = distanceMetersList;
     }
 
     public Long getId() {
@@ -93,6 +92,8 @@ public class Route {
     public void setLine(Line line) {
         this.line = line;
     }
+
+
 
     @Override
     public String toString() {

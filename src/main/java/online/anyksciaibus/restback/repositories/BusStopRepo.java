@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.repositories;
 
+import online.anyksciaibus.restback.dto.BusStopsDto;
 import online.anyksciaibus.restback.entities.BusStop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,7 @@ public interface BusStopRepo extends JpaRepository<BusStop, Long> {
 
     List<BusStop> findByNameContaining(String searchQuery);
 
+    //get all stops, only need id and name, id rename to value, name rename to label
+    @Query("SELECT new online.anyksciaibus.restback.dto.BusStopsDto(bs.id AS value, bs.name AS label) FROM BusStop bs")
+    List<BusStopsDto> findAllBusStops();
 }
