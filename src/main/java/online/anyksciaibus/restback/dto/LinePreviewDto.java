@@ -21,7 +21,7 @@ public class LinePreviewDto {
     public LinePreviewDto() {
     }
 
-    public LinePreviewDto(Long id, String name, String routeStart, String routeEnd, String via, List<String> mainStops, List<String> busStopsExtra) {
+    public LinePreviewDto(Long id, String name, String routeStart, String routeEnd, String via, List<String> mainStops, List<String> extraStops) {
         this.id = id;
         this.name = name;
         this.routeStart = routeStart;
