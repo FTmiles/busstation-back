@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.controllers;
 
 import online.anyksciaibus.restback.entities.timeconstraints.PublicHoliday;
 import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -10,8 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/holidays")
-@CrossOrigin
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class PublicHolidayController {
 
     PublicHolidayService service;
@@ -34,7 +34,6 @@ public class PublicHolidayController {
 
 
     }
-
     @GetMapping("/all")
     public List<PublicHoliday> getAllHolidays(){
         return service.getAll();
@@ -44,6 +43,7 @@ public class PublicHolidayController {
     public PublicHoliday saveOneHoliday(@RequestBody PublicHoliday holiday){
         return service.save1(holiday);
     }
+
     @DeleteMapping("/del1")
     public void deleteOneHoliday(@RequestParam Long id){
         service.delete1byId(id);

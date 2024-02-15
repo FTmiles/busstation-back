@@ -73,7 +73,7 @@ public class RouteController {
 
     //==============================================
 
-    @GetMapping("/byline/{lineId}")
+    @GetMapping("public/byline/{lineId}")
     public ResponseEntity<List<RouteDto>> getRoutesByLineId(@PathVariable Long lineId) {
         List<RouteDto> routeDTOs = service.getRoutesByLineId(lineId);
         return new ResponseEntity<>(routeDTOs, HttpStatus.OK);
