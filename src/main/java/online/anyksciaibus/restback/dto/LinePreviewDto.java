@@ -99,6 +99,8 @@ public class LinePreviewDto {
 
         //set main stops
         List<Route> allRoutes = line.getRoutes();
+        if (allRoutes == null || allRoutes.isEmpty()) return dto;
+
         List<BusStop> mainStops = line.getRoutes().getFirst().getStopsArr();
 
         dto.setMainStops(mainStops

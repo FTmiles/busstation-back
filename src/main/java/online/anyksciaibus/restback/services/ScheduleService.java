@@ -23,15 +23,11 @@ import java.util.*;
 public class ScheduleService {
 
 
-
-
     ScheduleRepo scheduleRepo;
 
-    public ScheduleService(ScheduleRepo scheduleRepo){
+    public ScheduleService(ScheduleRepo scheduleRepo) {
         this.scheduleRepo = scheduleRepo;
     }
-
-
 
 
     public List<Schedule> getAll() {
@@ -60,7 +56,7 @@ public class ScheduleService {
 
 
     //===============================================================
-    public SingleTrip  getSingleTrip(Long id) {
+    public SingleTrip getSingleTrip(Long id) {
         LocalTime now = LocalTime.now();
         Optional<Schedule> singleEntityOptional = scheduleRepo.findById(id);
 
@@ -82,25 +78,26 @@ public class ScheduleService {
             );
         }
 
-            return new SingleTrip(
-                    line.getName(),
-                    line.getRouteStart(),
-                    line.getRouteEnd(),
-                    line.getVia(),
-                    line.getOperator(),
-                    line.getAnykStationPlatform(),
-                    line.getPrice(),
-                    line.getRouteType().toString(),
-                    schedule.getTimeConstraintsDescription(),
-                    stopsList
-            );
+        return new SingleTrip(
+                line.getName(),
+                line.getRouteStart(),
+                line.getRouteEnd(),
+                line.getVia(),
+                line.getOperator(),
+                line.getAnykStationPlatform(),
+                line.getPrice(),
+                line.getRouteType().toString(),
+                schedule.getTimeConstraintsDescription(),
+                stopsList
+        );
     }
-@Autowired
-PublicHolidayService publicHolidayService;
+
+    @Autowired
+    PublicHolidayService publicHolidayService;
     @Autowired
     RunsOnYearlyService runsOnYearlyService;
 
-    public List<SchedItemHomeDto> getScheduleItemsHome(LocalDate date){
+    public List<SchedItemHomeDto> getScheduleItemsHome(LocalDate date) {
         LocalTime now = LocalTime.now();
 
         boolean isPublicHoliday = publicHolidayService.isTheDayPublicHoliday(date);
@@ -108,20 +105,19 @@ PublicHolidayService publicHolidayService;
         List<RunsOnYearly> runsOnYearlyList = runsOnYearlyService.passingYearlyRulesByDate(date);
 
         List<Schedule> allSchedules = scheduleRepo.findSchedulesByDayOfWeekAndPublicHolidayAndRunsOnYearly(dayOfWeek, isPublicHoliday, runsOnYearlyList);
-        return allSchedules.stream().map(entity->{
+        return allSchedules.stream().map(entity -> {
             SchedItemHomeDto dto = new SchedItemHomeDto();
             dto.setId(entity.getId());
             dto.setDestination(entity.getRoute().getLine().getRouteEnd());
             dto.setTimeDepart(entity.getTimeList().getFirst().toString());
             dto.setLineName(entity.getRoute().getLine().getName());
 
-            dto.setTooLate(  now.isAfter(entity.getTimeList().getFirst())  );
+            dto.setTooLate(now.isAfter(entity.getTimeList().getFirst()));
             return dto;
 
         }).toList();
     }
     //=================
-
 
 
 }

@@ -49,9 +49,9 @@ public class LineService {
 
     public LinePreviewDto getLinePreviewDto(Long id) {
         Optional<Line> optionalLine = lineRepo.findById(id);
-        if (optionalLine.isEmpty())
+        if (optionalLine.isEmpty()) {
             return new LinePreviewDto();
-
+    }
         Line line = optionalLine.get();
         return LinePreviewDto.convertToLinePreviewDto(line);
     }

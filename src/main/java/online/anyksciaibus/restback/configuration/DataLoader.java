@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.entities.*;
 import online.anyksciaibus.restback.entities.timeconstraints.*;
 import online.anyksciaibus.restback.repositories.*;
+import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,10 @@ public class DataLoader implements CommandLineRunner {
     ScheduleRepo scheduleRepo;
     PublicHolidayRepo holidayRepo;
     RunsOnYearlyRepo royRepo;
+
+    @Autowired
+    PublicHolidayService phs;
+
     public DataLoader(PublicHolidayRepo holidayRepo, BusStopRepo busStopRepo, LineRepo lineRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo,  RunsOnYearlyRepo royRepo){
         this.busStopRepo = busStopRepo;
         this.lineRepo = lineRepo;
@@ -62,7 +68,9 @@ public class DataLoader implements CommandLineRunner {
 
 //        System.out.println("----data loader-------");
 
-
+        LocalDate date = LocalDate.parse("2024-02-16");
+        System.out.println("is it or is it inot??????????????");
+        System.out.println(phs.isTheDayPublicHoliday(date));
 
 
     }
