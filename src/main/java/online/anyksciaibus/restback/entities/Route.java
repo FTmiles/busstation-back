@@ -16,7 +16,7 @@ public class Route {
     Long id;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "route_busstops",
             joinColumns = @JoinColumn(name = "route_id"),

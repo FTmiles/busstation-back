@@ -3,10 +3,13 @@ package online.anyksciaibus.restback.controllers;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import online.anyksciaibus.restback.dto.KeyValueDto;
 import online.anyksciaibus.restback.dto.LineEagerDto;
 import online.anyksciaibus.restback.dto.LinePreviewDto;
 import online.anyksciaibus.restback.entities.Line;
 
+import online.anyksciaibus.restback.entities.Route;
+import online.anyksciaibus.restback.entities.RouteType;
 import online.anyksciaibus.restback.services.LineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -100,10 +103,17 @@ public class LineController {
         //accessing to fetch lazy data
         myData.getRoutes().forEach(x->x.getDistanceMetersList().size());
 
-
-        return ResponseEntity.ok(LineEagerDto.lineToDto(myData));
+       return ResponseEntity.ok(LineEagerDto.lineToDto(myData));
 
 }
+
+    @PostMapping("post-line-eager-dto")
+    public void postLineEagerDto(@RequestBody LineEagerDto dto){
+        Line line = LineEagerDto.dtoToLine(dto);
+        System.out.println("hello");
+        System.out.println(line);
+        service.save1(line);
+    }
 
 
 }

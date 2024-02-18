@@ -1,6 +1,7 @@
 package online.anyksciaibus.restback.configuration;
 
 import online.anyksciaibus.restback.dto.LinePreviewDto;
+import online.anyksciaibus.restback.entities.RouteType;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,9 +17,8 @@ public class testinSandBox {
     public static void main(String[] args) {
 
 
-
-            LinePreviewDto xx = new LinePreviewDto();
-        System.out.println(xx);
+        RouteType myType = RouteType.getByDescription("Regional Bus");
+        System.out.println(myType);
 
     }
 }
