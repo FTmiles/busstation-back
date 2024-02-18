@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.dto.KeyValueDto;
-import online.anyksciaibus.restback.dto.LineEagerDto;
+import online.anyksciaibus.restback.dto.LineFullDto;
 import online.anyksciaibus.restback.dto.LinePreviewDto;
 import online.anyksciaibus.restback.entities.Line;
 
@@ -91,11 +91,27 @@ public class LineController {
                 .toList();
     }
 
+//    @PostMapping("post-line-eager-dto")
+//    public void postLineEagerDto(@RequestBody LineEagerDto dto){
+//        Line line = LineEagerDto.dtoToLine(dto);
+//        System.out.println("hello");
+//        System.out.println(line);
+//        service.save1(line);
+//    }
+
+    @PostMapping("post-line-full-dto")
+    public void postLineFullDto(@RequestBody LineFullDto dto){
+        Line line = LineFullDto.dtoToLine(dto);
+        System.out.println("hello");
+        System.out.println(line);
+        service.save1(line);
+    }
+
     //Transactional annotation ensures everything in this method will be executed
     //within the transactional context. To get lazy Lists, need to access them .size() or sth
     @Transactional
-    @GetMapping("/line-eager")
-    public ResponseEntity<LineEagerDto> getLineEager(@RequestParam Long id){
+    @GetMapping("/get-line-full")
+    public ResponseEntity<LineFullDto> getLineFull(@RequestParam Long id) {
         Optional<Line> data = service.get1LineById(id);
         if (data.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -103,17 +119,8 @@ public class LineController {
         //accessing to fetch lazy data
         myData.getRoutes().forEach(x->x.getDistanceMetersList().size());
 
-       return ResponseEntity.ok(LineEagerDto.lineToDto(myData));
+        return ResponseEntity.ok(LineFullDto.lineToDto(myData));
 
-}
-
-    @PostMapping("post-line-eager-dto")
-    public void postLineEagerDto(@RequestBody LineEagerDto dto){
-        Line line = LineEagerDto.dtoToLine(dto);
-        System.out.println("hello");
-        System.out.println(line);
-        service.save1(line);
     }
-
 
 }

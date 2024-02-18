@@ -1,5 +1,8 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum RouteType {
     CITY_BUS("City Bus"),
     REGIONAL_BUS("Regional Bus"),
@@ -11,11 +14,12 @@ public enum RouteType {
         this.description = description;
     }
 
+    @JsonValue
     public String getDescription(){
         return description;
     }
 
-
+//    @JsonCreator     //for deserializing, not really needed now
     // Static method to retrieve enum constant by description
     public static RouteType getByDescription(String description) {
         for (RouteType type : values()) {
