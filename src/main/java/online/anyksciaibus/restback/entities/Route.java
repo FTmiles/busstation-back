@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -16,7 +17,7 @@ public class Route {
     Long id;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)//, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "route_busstops",
             joinColumns = @JoinColumn(name = "route_id"),
@@ -27,6 +28,7 @@ public class Route {
 
     @ElementCollection
     @OrderColumn(name = "distanceMetersListOrder")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     List<Integer> distanceMetersList;
 
 

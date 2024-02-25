@@ -98,13 +98,14 @@ public class LineController {
 //        System.out.println(line);
 //        service.save1(line);
 //    }
-
+    @Transactional
     @PostMapping("post-line-full-dto")
-    public void postLineFullDto(@RequestBody LineFullDto dto){
+    public long postLineFullDto(@RequestBody LineFullDto dto){
         Line line = LineFullDto.dtoToLine(dto);
         System.out.println("hello");
         System.out.println(line);
-        service.save1(line);
+        Line returned = service.save1(line);
+        return returned.getId();
     }
 
     //Transactional annotation ensures everything in this method will be executed
@@ -121,6 +122,11 @@ public class LineController {
 
         return ResponseEntity.ok(LineFullDto.lineToDto(myData));
 
+    }
+
+    @GetMapping("get-empty")
+    public LineFullDto getEmpty() {
+        return LineFullDto.lineToDto(new Line());
     }
 
 }

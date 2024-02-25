@@ -35,15 +35,16 @@ public class Schedule {
     Route route;
 
     //availability time constraints
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "runsOnWeekly") // Specify the name of the collection table
     @Enumerated(EnumType.STRING)
     List<DayOfWeek> runsOnWeekly;   //which days of the week
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne  //(cascade = CascadeType.ALL)
     RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
 
     boolean runsOnPublicHolidays; //true = runs on public holidays
+
 
     //============================================
     public Schedule() {

@@ -5,12 +5,13 @@ import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.RouteType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LineFullDto {
     LineInfo info;
     List<Route> routes;
-
+    List<RouteType> routeTypeOptions;
     //------------------------------------
     public static LineFullDto lineToDto (Line line){
         LineInfo info = new LineInfo();
@@ -24,7 +25,9 @@ public class LineFullDto {
         info.setRouteEnd(line.getRouteEnd());
         info.setVia(line.getVia());
 
-        return new LineFullDto(info, line.getRoutes());
+        List<Route> routes = line.getRoutes() != null ? line.getRoutes() : Collections.emptyList();
+
+        return new LineFullDto(info, routes, List.of(RouteType.values()));
     }
 
 
@@ -57,9 +60,10 @@ public class LineFullDto {
     public LineFullDto() {
     }
 
-    public LineFullDto(LineInfo info, List<Route> routes) {
+    public LineFullDto(LineInfo info, List<Route> routes, List<RouteType> routeTypeOptions) {
         this.info = info;
         this.routes = routes;
+        this.routeTypeOptions = routeTypeOptions;
     }
 
     public LineInfo getInfo() {
@@ -76,5 +80,13 @@ public class LineFullDto {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public List<RouteType> getRouteTypeOptions() {
+        return routeTypeOptions;
+    }
+
+    public void setRouteTypeOptions(List<RouteType> routeTypeOptions) {
+        this.routeTypeOptions = routeTypeOptions;
     }
 }

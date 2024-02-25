@@ -73,8 +73,8 @@ public class WebSecurityConfig {
 
                                 .requestMatchers("/swagger-ui/**").permitAll()
 
-                                .anyRequest().hasRole("ADMIN") //               //.authenticated()
-//                                .anyRequest().permitAll() //               //.authenticated()
+//                                .anyRequest().hasRole("ADMIN") //               //.authenticated()
+                                .anyRequest().permitAll()
                                 //.requestMatchers("/*/public/**").permitAll()  //.hasRole("ADMIN")     //.permitAll()   //.hasRole("ADMIN")
 
 

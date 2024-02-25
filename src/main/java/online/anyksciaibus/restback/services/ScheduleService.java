@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.services;
 
+import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.controllers.PublicHolidayController;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
@@ -13,6 +14,8 @@ import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayServic
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -119,5 +122,13 @@ public class ScheduleService {
     }
     //=================
 
+@Transactional
+    public List<Schedule> getScheduleByLine (Long lineId){
+        List<Schedule> schedules = scheduleRepo.findByRoute_Line_Id(lineId);
 
+        //accessing to fetch lazy data
+//        schedules.forEach(x->x.getRoute().getDistanceMetersList().size());
+    schedules.forEach(x->x.getRoute().setDistanceMetersList(null));
+        return schedules;
+    }
 }

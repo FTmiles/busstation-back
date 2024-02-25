@@ -91,4 +91,11 @@ public class ScheduleController {
         return service.getSingleTrip(id);
     }
 
+
+    @GetMapping("/schedule-by-line")
+    public List<Schedule> getScheduleByLineId(@RequestParam Long lineId) {
+        return service.getScheduleByLine(lineId);
+    }
+
 }
+
