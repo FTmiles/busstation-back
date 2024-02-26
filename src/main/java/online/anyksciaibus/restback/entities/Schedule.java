@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
 
@@ -13,50 +14,65 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    Boolean isRouteDirReversed;
     Boolean isWorkInProgress;
     String timeConstraintsDescription;
 
-    @Enumerated(EnumType.ORDINAL)
-    BoundFor boundFor;  //used for filtering routes
 
-    //main var. Scheduled times @bus stops
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "schedule_id")
-//    @OrderColumn(name = "timeArrOrder")
-//    private List<TimePoint> timeArr;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @OrderColumn(name = "timeListOrder")
-    List<LocalTime> timeList;
-
-    @ManyToOne
-    @JoinColumn(name = "route_id")
-    Route route;
 
     //availability time constraints
+    //Rules by week
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "runsOnWeekly") // Specify the name of the collection table
     @Enumerated(EnumType.STRING)
     List<DayOfWeek> runsOnWeekly;   //which days of the week
 
-    @ManyToOne  //(cascade = CascadeType.ALL)
+    //Rules by year
+    @ManyToOne  (cascade = CascadeType.ALL) //TODO not final, maybe no cascade. OG ALL
     RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
 
     boolean runsOnPublicHolidays; //true = runs on public holidays
 
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<Trip1Way> trips;
 
+    @JsonIgnore
+    @ManyToOne
+    Line line;
     //============================================
     public Schedule() {
     }
 
-    public Schedule(Boolean isRouteDirReversed, Boolean isWorkInProgress, String timeConstraintsDescription, BoundFor boundFor, List<LocalTime> timeList, Route route) {
-        this.isRouteDirReversed = isRouteDirReversed;
+    public Schedule(Boolean isWorkInProgress, String timeConstraintsDescription,  List<Trip1Way> trips) {
         this.isWorkInProgress = isWorkInProgress;
         this.timeConstraintsDescription = timeConstraintsDescription;
-        this.boundFor = boundFor;
-        this.timeList = timeList;
-        this.route = route;
+//        this.runsOnWeekly = runsOnWeekly;
+//        this.runsOnYearly = runsOnYearly;
+//        this.runsOnPublicHolidays = runsOnPublicHolidays;
+        this.trips = trips;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getWorkInProgress() {
+        return isWorkInProgress;
+    }
+
+    public void setWorkInProgress(Boolean workInProgress) {
+        isWorkInProgress = workInProgress;
+    }
+
+    public String getTimeConstraintsDescription() {
+        return timeConstraintsDescription;
+    }
+
+    public void setTimeConstraintsDescription(String timeConstraintsDescription) {
+        this.timeConstraintsDescription = timeConstraintsDescription;
     }
 
     public List<DayOfWeek> getRunsOnWeekly() {
@@ -83,59 +99,19 @@ public class Schedule {
         this.runsOnPublicHolidays = runsOnPublicHolidays;
     }
 
-    public BoundFor getBoundFor() {
-        return boundFor;
+    public List<Trip1Way> getTrips() {
+        return trips;
     }
 
-    public void setBoundFor(BoundFor boundFor) {
-        this.boundFor = boundFor;
+    public void setTrips(List<Trip1Way> trips) {
+        this.trips = trips;
     }
 
-    public Long getId() {
-        return id;
+    public Line getLine() {
+        return line;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean getRouteDirReversed() {
-        return isRouteDirReversed;
-    }
-
-    public void setRouteDirReversed(Boolean routeDirReversed) {
-        isRouteDirReversed = routeDirReversed;
-    }
-
-    public Boolean getWorkInProgress() {
-        return isWorkInProgress;
-    }
-
-    public void setWorkInProgress(Boolean workInProgress) {
-        isWorkInProgress = workInProgress;
-    }
-
-    public String getTimeConstraintsDescription() {
-        return timeConstraintsDescription;
-    }
-
-    public void setTimeConstraintsDescription(String timeConstraintsDescription) {
-        this.timeConstraintsDescription = timeConstraintsDescription;
-    }
-
-    public List<LocalTime> getTimeList() {
-        return timeList;
-    }
-
-    public void setTimeList(List<LocalTime> timeList) {
-        this.timeList = timeList;
-    }
-
-    public Route getRoute() {
-        return route;
-    }
-
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setLine(Line line) {
+        this.line = line;
     }
 }

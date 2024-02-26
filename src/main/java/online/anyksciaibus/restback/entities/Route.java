@@ -26,7 +26,7 @@ public class Route {
     List<BusStop> stopsArr;
 
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn(name = "distanceMetersListOrder")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     List<Integer> distanceMetersList;

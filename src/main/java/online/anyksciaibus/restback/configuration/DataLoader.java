@@ -68,9 +68,7 @@ public class DataLoader implements CommandLineRunner {
 
 //        System.out.println("----data loader-------");
 
-        var ass = scheduleRepo.findByRoute_Line_Id(2L);
-        System.out.println(ass);
-        System.out.println("hi");
+
     }
 
 
@@ -203,31 +201,31 @@ public class DataLoader implements CommandLineRunner {
         s8.setRunsOnYearly(roy8);
         s8.setRunsOnPublicHolidays(true);
 
-        Schedule s9 = scheduleRepo.findById(9l).get();
-        s9.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SATURDAY));
-        RunsOnYearly roy9 = royRepo.findById(1L).get();
-        s9.setRunsOnYearly(roy9);
-        s9.setRunsOnPublicHolidays(true);
+//        Schedule s9 = scheduleRepo.findById(9l).get();
+//        s9.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.SATURDAY));
+//        RunsOnYearly roy9 = royRepo.findById(1L).get();
+//        s9.setRunsOnYearly(roy9);
+//        s9.setRunsOnPublicHolidays(true);
+//
+//        Schedule s10 = scheduleRepo.findById(10l).get();
+//        s10.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY));
+//        RunsOnYearly roy10 = royRepo.findById(3L).get();
+//        s10.setRunsOnYearly(roy10);
+//        s10.setRunsOnPublicHolidays(true);
+//
+//        Schedule s11 = scheduleRepo.findById(11l).get();
+//        s11.setRunsOnWeekly(List.of( DayOfWeek.THURSDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
+//        RunsOnYearly roy11 = royRepo.findById(4L).get();
+//        s11.setRunsOnYearly(roy11);
+//        s11.setRunsOnPublicHolidays(false);
+//
+//        Schedule s12 = scheduleRepo.findById(12l).get();
+//        s12.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
+//        RunsOnYearly roy12 = royRepo.findById(3L).get();
+//        s12.setRunsOnYearly(roy12);
+//        s12.setRunsOnPublicHolidays(false);
 
-        Schedule s10 = scheduleRepo.findById(10l).get();
-        s10.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY));
-        RunsOnYearly roy10 = royRepo.findById(3L).get();
-        s10.setRunsOnYearly(roy10);
-        s10.setRunsOnPublicHolidays(true);
-
-        Schedule s11 = scheduleRepo.findById(11l).get();
-        s11.setRunsOnWeekly(List.of( DayOfWeek.THURSDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
-        RunsOnYearly roy11 = royRepo.findById(4L).get();
-        s11.setRunsOnYearly(roy11);
-        s11.setRunsOnPublicHolidays(false);
-
-        Schedule s12 = scheduleRepo.findById(12l).get();
-        s12.setRunsOnWeekly(List.of( DayOfWeek.TUESDAY, DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.MONDAY));
-        RunsOnYearly roy12 = royRepo.findById(3L).get();
-        s12.setRunsOnYearly(roy12);
-        s12.setRunsOnPublicHolidays(false);
-
-        scheduleRepo.saveAll(Arrays.asList(s7, s8, s9, s10, s11, s12));
+        scheduleRepo.saveAll(Arrays.asList(s7, s8));
 
     }
 
@@ -286,6 +284,7 @@ public class DataLoader implements CommandLineRunner {
         distArr.add(2300);
         distArr.add(2400);
 
+
         Route route1 = new Route(stopsArr, distArr, line, "");
 
         routeRepo.save(route1);
@@ -293,10 +292,9 @@ public class DataLoader implements CommandLineRunner {
 
     public void createSchedule(){
         schedule1();
-        schedule2();
         schedule3();
-        schedule4();
     }
+
     public void schedule1(){
         Route route1 = new Route();
         route1.setId(1L);
@@ -314,77 +312,78 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(9,18));
         timeArr.add(LocalTime.of(9,20));
         timeArr.add(LocalTime.of(9,25));
+//(Boolean isRouteDirReversed, BoundFor boundFor, List<LocalTime> timeList, Route route) {
 
-        Schedule schedule = new Schedule(false, false, "važiuoja moksleivių atostogų metu", BoundFor.OUT_BOUND, timeArr, route1);
+Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
+
+        List<LocalTime> timeArr2 = new ArrayList<>();
+
+        timeArr2.add(LocalTime.of(9,25));
+        timeArr2.add(LocalTime.of(9,28));
+        timeArr2.add(LocalTime.of(9,30));
+        timeArr2.add(LocalTime.of(9,32));
+        timeArr2.add(LocalTime.of(9,34));
+        timeArr2.add(LocalTime.of(9,36));
+        timeArr2.add(LocalTime.of(9,38));
+        timeArr2.add(LocalTime.of(9,40));
+        timeArr2.add(LocalTime.of(9,42));
+        timeArr2.add(LocalTime.of(9,46));
+        timeArr2.add(LocalTime.of(9,48));
+        timeArr2.add(LocalTime.of(9,50));
+
+
+Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
+        Schedule schedule = new Schedule(false, "važiuoja moksleivių atostogų metu", List.of(trip1,trip2));
+        Line line = new Line();
+        line.setId(1L);
+        schedule.setLine(line);
 
         scheduleRepo.save(schedule);
     }
 
-    public void schedule2(){
-        Route route1 = new Route();
-        route1.setId(1L);
-        List<LocalTime> timeArr = new ArrayList<>();
 
-        timeArr.add(LocalTime.of(9,25));
-        timeArr.add(LocalTime.of(9,28));
-        timeArr.add(LocalTime.of(9,30));
-        timeArr.add(LocalTime.of(9,32));
-        timeArr.add(LocalTime.of(9,34));
-        timeArr.add(LocalTime.of(9,36));
-        timeArr.add(LocalTime.of(9,38));
-        timeArr.add(LocalTime.of(9,40));
-        timeArr.add(LocalTime.of(9,42));
-        timeArr.add(LocalTime.of(9,46));
-        timeArr.add(LocalTime.of(9,48));
-        timeArr.add(LocalTime.of(9,50));
-
-        Schedule schedule = new Schedule(true, false, "važiuoja moksleivių atostogų metu", BoundFor.CITY_BOUND, timeArr, route1);
-
-        scheduleRepo.save(schedule);
-    }
     public void schedule3(){
         Route route1 = new Route();
         route1.setId(1L);
-        List<LocalTime> timeArr = new ArrayList<>();
+        List<LocalTime> timeArr1 = new ArrayList<>();
 
-        timeArr.add(LocalTime.of(13,30));
-        timeArr.add(LocalTime.of(13,31));
-        timeArr.add(LocalTime.of(13,33));
-        timeArr.add(LocalTime.of(13,35));
-        timeArr.add(LocalTime.of(13,37));
-        timeArr.add(LocalTime.of(13,39));
-        timeArr.add(LocalTime.of(13,41));
-        timeArr.add(LocalTime.of(13,43));
-        timeArr.add(LocalTime.of(13,45));
-        timeArr.add(LocalTime.of(13,47));
-        timeArr.add(LocalTime.of(13,49));
-        timeArr.add(LocalTime.of(13,54));
+        timeArr1.add(LocalTime.of(13,30));
+        timeArr1.add(LocalTime.of(13,31));
+        timeArr1.add(LocalTime.of(13,33));
+        timeArr1.add(LocalTime.of(13,35));
+        timeArr1.add(LocalTime.of(13,37));
+        timeArr1.add(LocalTime.of(13,39));
+        timeArr1.add(LocalTime.of(13,41));
+        timeArr1.add(LocalTime.of(13,43));
+        timeArr1.add(LocalTime.of(13,45));
+        timeArr1.add(LocalTime.of(13,47));
+        timeArr1.add(LocalTime.of(13,49));
+        timeArr1.add(LocalTime.of(13,54));
 
-        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.OUT_BOUND, timeArr, route1);
+   Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr1, route1);
 
-        scheduleRepo.save(schedule);
-    }
 
-    public void schedule4(){
-        Route route1 = new Route();
-        route1.setId(1L);
-        List<LocalTime> timeArr = new ArrayList<>();
+        List<LocalTime> timeArr2 = new ArrayList<>();
 
-        timeArr.add(LocalTime.of(13,55));
-        timeArr.add(LocalTime.of(13,58));
-        timeArr.add(LocalTime.of(14,0));
-        timeArr.add(LocalTime.of(14,3));
-        timeArr.add(LocalTime.of(14,6));
-        timeArr.add(LocalTime.of(14,8));
-        timeArr.add(LocalTime.of(14,10));
-        timeArr.add(LocalTime.of(14,13));
-        timeArr.add(LocalTime.of(14,15));
-        timeArr.add(LocalTime.of(14,17));
-        timeArr.add(LocalTime.of(14,19));
-        timeArr.add(LocalTime.of(14,20));
+        timeArr2.add(LocalTime.of(13,55));
+        timeArr2.add(LocalTime.of(13,58));
+        timeArr2.add(LocalTime.of(14,0));
+        timeArr2.add(LocalTime.of(14,3));
+        timeArr2.add(LocalTime.of(14,6));
+        timeArr2.add(LocalTime.of(14,8));
+        timeArr2.add(LocalTime.of(14,10));
+        timeArr2.add(LocalTime.of(14,13));
+        timeArr2.add(LocalTime.of(14,15));
+        timeArr2.add(LocalTime.of(14,17));
+        timeArr2.add(LocalTime.of(14,19));
+        timeArr2.add(LocalTime.of(14,20));
 
-        Schedule schedule = new Schedule(true, false, "važiuoja darbo dienomis", BoundFor.CITY_BOUND, timeArr, route1);
+        Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
 
+        Schedule schedule = new Schedule(false, "važiuoja moksleivių atostogų metu", List.of(trip1,trip2));
+        Line line = new Line();
+        line.setId(1L);
+        schedule.setLine(line);
         scheduleRepo.save(schedule);
     }
     //</editor-fold>
@@ -587,8 +586,12 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(9,13));
         timeArr.add(LocalTime.of(9,20));
 
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.CIRCLE, timeArr, route1);
 
-        Schedule schedule = new Schedule(false, false, "Autobusas važiuoja trečiadieniais", BoundFor.CIRCLE, timeArr, route1);
+        Schedule schedule = new Schedule(false, "Autobusas važiuoja trečiadieniais", List.of(trip1));
+        Line line = new Line();
+        line.setId(2L);
+        schedule.setLine(line);
 
         scheduleRepo.save(schedule);
 
@@ -642,9 +645,12 @@ public class DataLoader implements CommandLineRunner {
         timeArr2.add(LocalTime.of(15,32));
         timeArr2.add(LocalTime.of(15,35));
 
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.CIRCLE, timeArr2, route2);
 
-        Schedule schedule2 = new Schedule(true, false, "Autobusas važiuoja trečiadieniais", BoundFor.CIRCLE, timeArr2, route2);
+        Schedule schedule2 = new Schedule(false, "Autobusas važiuoja trečiadieniais", List.of(trip2));
 
+
+        schedule2.setLine(line);
         scheduleRepo.save(schedule2);
     }
     //</editor-fold>
@@ -853,10 +859,8 @@ public class DataLoader implements CommandLineRunner {
 
     private void createSchedule3() {
         newSchedule3_1();
-        newSchedule3_2();
         newSchedule3_3();
         newSchedule3_4();
-        newSchedule3_5();
         newSchedule3_6();
 
     }
@@ -883,39 +887,39 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(6,53));
         timeArr.add(LocalTime.of(6,55));
 
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
 
-        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.OUT_BOUND, timeArr, route1);
 
-        scheduleRepo.save(schedule);
-    }
-    private void newSchedule3_2(){
-        Route route1 = new Route();
-        route1.setId(5L);
-        List<LocalTime> timeArr = new ArrayList<>();
+        List<LocalTime> timeArr2 = new ArrayList<>();
 
-        timeArr.add(LocalTime.of(6,55));
-        timeArr.add(LocalTime.of(6,58));
-        timeArr.add(LocalTime.of(7,2));
-        timeArr.add(LocalTime.of(7,8));
-        timeArr.add(LocalTime.of(7,10));
-        timeArr.add(LocalTime.of(7,12));
-        timeArr.add(LocalTime.of(7,18));
-        timeArr.add(LocalTime.of(7,20));
-        timeArr.add(LocalTime.of(7,22));
-        timeArr.add(LocalTime.of(7,24));
-        timeArr.add(LocalTime.of(7,26));
-        timeArr.add(LocalTime.of(7,30));
-        timeArr.add(LocalTime.of(7,35));
-        timeArr.add(LocalTime.of(7,38));
-        timeArr.add(LocalTime.of(7,40));
-        timeArr.add(LocalTime.of(7,42));
-        timeArr.add(LocalTime.of(7,44));
-        timeArr.add(LocalTime.of(7,45));
-        timeArr.add(LocalTime.of(7,48));
-        timeArr.add(LocalTime.of(7,50));
+        timeArr2.add(LocalTime.of(6,55));
+        timeArr2.add(LocalTime.of(6,58));
+        timeArr2.add(LocalTime.of(7,2));
+        timeArr2.add(LocalTime.of(7,8));
+        timeArr2.add(LocalTime.of(7,10));
+        timeArr2.add(LocalTime.of(7,12));
+        timeArr2.add(LocalTime.of(7,18));
+        timeArr2.add(LocalTime.of(7,20));
+        timeArr2.add(LocalTime.of(7,22));
+        timeArr2.add(LocalTime.of(7,24));
+        timeArr2.add(LocalTime.of(7,26));
+        timeArr2.add(LocalTime.of(7,30));
+        timeArr2.add(LocalTime.of(7,35));
+        timeArr2.add(LocalTime.of(7,38));
+        timeArr2.add(LocalTime.of(7,40));
+        timeArr2.add(LocalTime.of(7,42));
+        timeArr2.add(LocalTime.of(7,44));
+        timeArr2.add(LocalTime.of(7,45));
+        timeArr2.add(LocalTime.of(7,48));
+        timeArr2.add(LocalTime.of(7,50));
 
-        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.CITY_BOUND, timeArr, route1);
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.CITY_BOUND, timeArr2, route1);
 
+
+        Schedule schedule = new Schedule(false, "važiuoja darbo dienomis", List.of(trip1, trip2));
+        Line line = new Line();
+        line.setId(3L);
+        schedule.setLine(line);
         scheduleRepo.save(schedule);
     }
     private void newSchedule3_3(){
@@ -941,8 +945,12 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(14,26));
         timeArr.add(LocalTime.of(14,28));
 
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
+        Schedule schedule = new Schedule(false, "važiuoja mokslo metu", List.of(trip2));
+        Line line = new Line();
+        line.setId(3L);
+        schedule.setLine(line);
 
-        Schedule schedule = new Schedule(false, false, "važiuoja mokslo metu", BoundFor.OUT_BOUND, timeArr, route1);
 
         scheduleRepo.save(schedule);
     }
@@ -971,38 +979,38 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(15,6));
         timeArr.add(LocalTime.of(15,8));
 
-        Schedule schedule = new Schedule(true, false, "važiuoja mokslo metu", BoundFor.CITY_BOUND, timeArr, route1);
-
-        scheduleRepo.save(schedule);
-    }
-    private void newSchedule3_5(){
-        Route route1 = new Route();
-        route1.setId(4L);
-        List<LocalTime> timeArr = new ArrayList<>();
-
-        timeArr.add(LocalTime.of(16,0));
-        timeArr.add(LocalTime.of(16,2));
-        timeArr.add(LocalTime.of(16,3));
-        timeArr.add(LocalTime.of(16,5));
-        timeArr.add(LocalTime.of(16,7));
-        timeArr.add(LocalTime.of(16,9));
-        timeArr.add(LocalTime.of(16,11));
-        timeArr.add(LocalTime.of(16,13));
-        timeArr.add(LocalTime.of(16,19));
-        timeArr.add(LocalTime.of(16,20));
-        timeArr.add(LocalTime.of(16,24));
-        timeArr.add(LocalTime.of(16,25));
-        timeArr.add(LocalTime.of(16,27));
-        timeArr.add(LocalTime.of(16,29));
-        timeArr.add(LocalTime.of(16,30));
-        timeArr.add(LocalTime.of(16,31));
-        timeArr.add(LocalTime.of(16,32));
-        timeArr.add(LocalTime.of(16,33));
-        timeArr.add(LocalTime.of(16,35));
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.CITY_BOUND, timeArr, route1);
 
 
-        Schedule schedule = new Schedule(false, false, "važiuoja darbo dienomis", BoundFor.OUT_BOUND, timeArr, route1);
+//==============
 
+        List<LocalTime> timeArr2 = new ArrayList<>();
+
+        timeArr2.add(LocalTime.of(16,0));
+        timeArr2.add(LocalTime.of(16,2));
+        timeArr2.add(LocalTime.of(16,3));
+        timeArr2.add(LocalTime.of(16,5));
+        timeArr2.add(LocalTime.of(16,7));
+        timeArr2.add(LocalTime.of(16,9));
+        timeArr2.add(LocalTime.of(16,11));
+        timeArr2.add(LocalTime.of(16,13));
+        timeArr2.add(LocalTime.of(16,19));
+        timeArr2.add(LocalTime.of(16,20));
+        timeArr2.add(LocalTime.of(16,24));
+        timeArr2.add(LocalTime.of(16,25));
+        timeArr2.add(LocalTime.of(16,27));
+        timeArr2.add(LocalTime.of(16,29));
+        timeArr2.add(LocalTime.of(16,30));
+        timeArr2.add(LocalTime.of(16,31));
+        timeArr2.add(LocalTime.of(16,32));
+        timeArr2.add(LocalTime.of(16,33));
+        timeArr2.add(LocalTime.of(16,35));
+
+        Trip1Way trip2 = new Trip1Way(true, BoundFor.OUT_BOUND, timeArr, route1);
+        Schedule schedule = new Schedule(false, "važiuoja mokslo metu", List.of(trip1, trip2));
+        Line line = new Line();
+        line.setId(3L);
+        schedule.setLine(line);
         scheduleRepo.save(schedule);
     }
     private void newSchedule3_6(){
@@ -1029,7 +1037,11 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(17,10));
 
 
-        Schedule schedule = new Schedule(true, false, "važiuoja darbo dienomis", BoundFor.CITY_BOUND, timeArr, route1);
+        Trip1Way trip1 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr, route1);
+        Schedule schedule = new Schedule(false, "važiuoja darbo dienomis", List.of(trip1));
+        Line line = new Line();
+        line.setId(3L);
+        schedule.setLine(line);
 
         scheduleRepo.save(schedule);
     }

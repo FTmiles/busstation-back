@@ -26,9 +26,11 @@ public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
 //            "AND s.runsOnYearly IN :runsOnYearlyList")
 //    List<Schedule> findSchedulesByDayOfWeekAndPublicHolidayAndRunsOnYearlyList(DayOfWeek dayOfWeek, boolean isPublicHoliday, List<RunsOnYearly> runsOnYearlyList);
 
-    void deleteByRoute(Route route);
+    //TODO this not working anymore, and not needed
+//    void deleteByRoute(Route route);
 
-    List<Schedule> findByRoute_Line_Id(Long lineId);
+//    List<Schedule> findByRoute_Line_Id(Long lineId);
+    List<Schedule> findByLineId(Long lineId);
 
 
 }

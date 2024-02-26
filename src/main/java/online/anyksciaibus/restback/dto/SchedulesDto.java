@@ -31,26 +31,26 @@ public class SchedulesDto {
 
     //==================
 
-    public static SchedulesDto scheduleToDto(Schedule schedule){
-        SchedulesDto dto = new SchedulesDto();
-        dto.setBoundFor(schedule.getBoundFor());
-        dto.setId(schedule.getId());
-
-        dto.setRoute(schedule.getRoute());
-        dto.getRoute().setDistanceMetersList(null);
-
-        dto.setRouteDirReversed(schedule.getRouteDirReversed());
-        dto.setTimeList(schedule.getTimeList());
-        dto.setWorkInProgress(schedule.getWorkInProgress());
-        dto.setTimeConstraintsDescription(schedule.getTimeConstraintsDescription());
-        dto.setRunsOnWeekly(schedule.getRunsOnWeekly());
-        dto.setRunsOnPublicHolidays(schedule.isRunsOnPublicHolidays());
-        dto.setRunsOnYearly(schedule.getRunsOnYearly());
-
-//        dto.customName =
-
-        return null;
-    }
+//    public static SchedulesDto scheduleToDto(Schedule schedule){
+//        SchedulesDto dto = new SchedulesDto();
+//        dto.setBoundFor(schedule.getBoundFor());
+//        dto.setId(schedule.getId());
+//
+//        dto.setRoute(schedule.getRoute());
+//        dto.getRoute().setDistanceMetersList(null);
+//
+//        dto.setRouteDirReversed(schedule.getRouteDirReversed());
+//        dto.setTimeList(schedule.getTimeList());
+//        dto.setWorkInProgress(schedule.getWorkInProgress());
+//        dto.setTimeConstraintsDescription(schedule.getTimeConstraintsDescription());
+//        dto.setRunsOnWeekly(schedule.getRunsOnWeekly());
+//        dto.setRunsOnPublicHolidays(schedule.isRunsOnPublicHolidays());
+//        dto.setRunsOnYearly(schedule.getRunsOnYearly());
+//
+////        dto.customName =
+//
+//        return null;
+//    }
 
     //==================
     public SchedulesDto() {

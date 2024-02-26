@@ -48,16 +48,16 @@ public class LineService {
 
 
     public Line save1(Line line) {
-//        for (Route route : line.getRoutes()) {
-//            for (BusStop busStop : route.getStopsArr()) {
-//                if (busStop.getId() < 0) { // Assuming negative IDs indicate new entities
-//                    // Persist the BusStop to the database to get a new ID
-//                    BusStop persistedBusStop = busStopRepo.save(busStop);
-//                    // Update the BusStop object with the new ID
-//                    busStop.setId(persistedBusStop.getId());
-//                }
-//            }
-//        }
+        for (Route route : line.getRoutes()) {
+            for (BusStop busStop : route.getStopsArr()) {
+                if (busStop.getId() < 0) { // Assuming negative IDs indicate new entities
+                    // Persist the BusStop to the database to get a new ID
+                    BusStop persistedBusStop = busStopRepo.save(busStop);
+                    // Update the BusStop object with the new ID
+                    busStop.setId(persistedBusStop.getId());
+                }
+            }
+        }
 
         //if id negative, assign null; negative id assigned at front end means new entry
         for (Route route : line.getRoutes()) {
@@ -69,11 +69,11 @@ public class LineService {
 
     @Transactional
     public void delete1byId(Long id) {
-
+//TODO fix this
         List<Route> routes = routeRepo.findByLineId(id);
         System.out.println(routes);
         for (Route route : routes) {
-            scheduleRepo.deleteByRoute(route);
+//            scheduleRepo.deleteByRoute(route);
         }
 
 

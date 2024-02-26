@@ -60,39 +60,39 @@ public class ScheduleService {
 
     //===============================================================
     public SingleTrip getSingleTrip(Long id) {
-        LocalTime now = LocalTime.now();
         Optional<Schedule> singleEntityOptional = scheduleRepo.findById(id);
 
         if (singleEntityOptional.isEmpty()) return new SingleTrip();
 
         Schedule schedule = singleEntityOptional.get();
-        Line line = schedule.getRoute().getLine();
-
-        List<LocalTime> tp = schedule.getTimeList();
-        List<BusStop> bs = schedule.getRoute().getStopsArr();
-
-        if (schedule.getRouteDirReversed())
-            Collections.reverse(bs);
-
-        List<SingleStop> stopsList = new ArrayList<>();
-        for (int i = 0; i < schedule.getRoute().getStopsArr().size(); i++) {
-            stopsList.add(new SingleStop(
-                    bs.get(i).getId(), tp.get(i).toString(), bs.get(i).getName())
-            );
-        }
-
-        return new SingleTrip(
-                line.getName(),
-                line.getRouteStart(),
-                line.getRouteEnd(),
-                line.getVia(),
-                line.getOperator(),
-                line.getAnykStationPlatform(),
-                line.getPrice(),
-                line.getRouteType().toString(),
-                schedule.getTimeConstraintsDescription(),
-                stopsList
-        );
+        Line line = schedule.getLine();
+//
+//        List<LocalTime> tp = schedule.getTimeList();
+//        List<BusStop> bs = schedule.getRoute().getStopsArr();
+//
+//        if (schedule.getRouteDirReversed())
+//            Collections.reverse(bs);
+//
+//        List<SingleStop> stopsList = new ArrayList<>();
+//        for (int i = 0; i < schedule.getRoute().getStopsArr().size(); i++) {
+//            stopsList.add(new SingleStop(
+//                    bs.get(i).getId(), tp.get(i).toString(), bs.get(i).getName())
+//            );
+//        }
+//
+//        return new SingleTrip(
+//                line.getName(),
+//                line.getRouteStart(),
+//                line.getRouteEnd(),
+//                line.getVia(),
+//                line.getOperator(),
+//                line.getAnykStationPlatform(),
+//                line.getPrice(),
+//                line.getRouteType().toString(),
+//                schedule.getTimeConstraintsDescription(),
+//                stopsList
+//        );
+        return null;
     }
 
     @Autowired
@@ -108,27 +108,21 @@ public class ScheduleService {
         List<RunsOnYearly> runsOnYearlyList = runsOnYearlyService.passingYearlyRulesByDate(date);
 
         List<Schedule> allSchedules = scheduleRepo.findSchedulesByDayOfWeekAndPublicHolidayAndRunsOnYearly(dayOfWeek, isPublicHoliday, runsOnYearlyList);
-        return allSchedules.stream().map(entity -> {
-            SchedItemHomeDto dto = new SchedItemHomeDto();
-            dto.setId(entity.getId());
-            dto.setDestination(entity.getRoute().getLine().getRouteEnd());
-            dto.setTimeDepart(entity.getTimeList().getFirst().toString());
-            dto.setLineName(entity.getRoute().getLine().getName());
 
-            dto.setTooLate(now.isAfter(entity.getTimeList().getFirst()));
-            return dto;
-
+        return allSchedules.stream().flatMap(schedule -> {
+          List<SchedItemHomeDto> dtoList = SchedItemHomeDto.scheduleTo2Dto(schedule);
+            return dtoList.stream();
         }).toList();
     }
     //=================
 
 @Transactional
     public List<Schedule> getScheduleByLine (Long lineId){
-        List<Schedule> schedules = scheduleRepo.findByRoute_Line_Id(lineId);
+        List<Schedule> schedules = scheduleRepo.findByLineId(lineId);
 
-        //accessing to fetch lazy data
-//        schedules.forEach(x->x.getRoute().getDistanceMetersList().size());
-    schedules.forEach(x->x.getRoute().setDistanceMetersList(null));
+    schedules.forEach(x-> {
+        x.getTrips().forEach(trip -> trip.getRoute().setDistanceMetersList(null));
+    });
         return schedules;
     }
 }

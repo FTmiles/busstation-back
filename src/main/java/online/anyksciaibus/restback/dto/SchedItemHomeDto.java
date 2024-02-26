@@ -1,6 +1,10 @@
 package online.anyksciaibus.restback.dto;
 
+import online.anyksciaibus.restback.entities.Schedule;
+
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SchedItemHomeDto {
@@ -13,7 +17,24 @@ public class SchedItemHomeDto {
 
 
 
+    //===============================================
+    public static List<SchedItemHomeDto> scheduleTo2Dto(Schedule schedule){
+        LocalTime now = LocalTime.now();
 
+        return schedule.getTrips().stream().map(trip1Way -> {
+            SchedItemHomeDto dto = new SchedItemHomeDto();
+            dto.setId(trip1Way.getId());
+
+            if (!trip1Way.getTimeList().isEmpty())
+                dto.setTimeDepart(trip1Way.getTimeList().getFirst().toString());
+
+            dto.setLineName(trip1Way.getRoute().getLine().getName());
+
+            dto.setTooLate(now.isAfter(trip1Way.getTimeList().getFirst()));
+
+            return dto;
+        }).toList();
+    }
 
 
 
