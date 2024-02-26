@@ -27,7 +27,7 @@ public class Line {
 
     //fetch = FetchType.EAGER
 //    @JsonIgnore
-    @OneToMany(mappedBy = "line", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "line", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonIdentityInfo(
 //            generator = ObjectIdGenerators.PropertyGenerator.class,
 //            property = "id")

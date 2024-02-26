@@ -59,6 +59,10 @@ public class LineService {
             }
         }
 
+        //delete schedules
+//        List<Schedule>
+
+
         //if id negative, assign null; negative id assigned at front end means new entry
         for (Route route : line.getRoutes()) {
             if (route.getId()<0) route.setId(null);
