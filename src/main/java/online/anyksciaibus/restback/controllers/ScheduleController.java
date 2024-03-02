@@ -3,6 +3,8 @@ package online.anyksciaibus.restback.controllers;
 
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
+import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
+import online.anyksciaibus.restback.entities.BoundFor;
 import online.anyksciaibus.restback.entities.Schedule;
 import online.anyksciaibus.restback.services.ScheduleService;
 
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -92,9 +95,31 @@ public class ScheduleController {
     }
 
 
+//    @GetMapping("/schedule-by-line")
+//    public List<ScheduleDto> getScheduleByLineId(@RequestParam Long lineId) {
+//        return service.getScheduleByLine(lineId)
+//                .stream().map(ScheduleDto::scheduleToDto).toList();
+//    }
+
     @GetMapping("/schedule-by-line")
-    public List<Schedule> getScheduleByLineId(@RequestParam Long lineId) {
-        return service.getScheduleByLine(lineId);
+    public Map<String, Object> getScheduleByLineId(@RequestParam Long lineId) {
+        //Map.of()  - small up to 10, vs  -  Map.ofEntries(Map.entry("key", new Object()));
+        return Map.of(
+            //List<ScheduleDto>
+            "data" , service.getScheduleByLine(lineId)
+                        .stream().map(ScheduleDto::scheduleToDto).toList(),
+            //List<BoundFor> used for select
+            "boundForOptions", BoundFor.values(),
+            //empty ScheduleDto
+            "empty", service.getEmptyDto()
+        );
+    }
+
+    //I think unused, can be deleted
+    @GetMapping("/schedule-empty")
+    public ScheduleDto getScheduleDtoEmpty() {
+//        ScheduleDto dto = ScheduleDto.scheduleToDto(new Schedule());
+        return service.getEmptyDto();
     }
 
 }

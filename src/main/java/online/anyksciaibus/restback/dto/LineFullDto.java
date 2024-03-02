@@ -3,6 +3,8 @@ package online.anyksciaibus.restback.dto;
 import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.RouteType;
+import online.anyksciaibus.restback.services.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +14,7 @@ public class LineFullDto {
     LineInfo info;
     List<Route> routes;
     List<RouteType> routeTypeOptions;
+    List<List<Long>> routeUsage;
     //------------------------------------
     public static LineFullDto lineToDto (Line line){
         LineInfo info = new LineInfo();
@@ -80,6 +83,14 @@ public class LineFullDto {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public List<List<Long>> getRouteUsage() {
+        return routeUsage;
+    }
+
+    public void setRouteUsage(List<List<Long>> routeUsage) {
+        this.routeUsage = routeUsage;
     }
 
     public List<RouteType> getRouteTypeOptions() {

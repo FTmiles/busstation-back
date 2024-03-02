@@ -2,16 +2,10 @@ package online.anyksciaibus.restback.services;
 
 import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.dto.LinePreviewDto;
-import online.anyksciaibus.restback.entities.BusStop;
-import online.anyksciaibus.restback.entities.Line;
+import online.anyksciaibus.restback.entities.*;
 
 
-import online.anyksciaibus.restback.entities.Route;
-import online.anyksciaibus.restback.entities.Schedule;
-import online.anyksciaibus.restback.repositories.BusStopRepo;
-import online.anyksciaibus.restback.repositories.LineRepo;
-import online.anyksciaibus.restback.repositories.RouteRepo;
-import online.anyksciaibus.restback.repositories.ScheduleRepo;
+import online.anyksciaibus.restback.repositories.*;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -25,12 +19,14 @@ public class LineService {
     BusStopRepo busStopRepo;
     RouteRepo routeRepo;
     ScheduleRepo scheduleRepo;
+    Trip1WayRepo trip1WayRepo;
 
-    public LineService(LineRepo lineRepo, BusStopRepo busStopRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo) {
+    public LineService(LineRepo lineRepo, BusStopRepo busStopRepo, RouteRepo routeRepo, ScheduleRepo scheduleRepo, Trip1WayRepo trip1WayRepo) {
         this.busStopRepo = busStopRepo;
         this.lineRepo = lineRepo;
         this.routeRepo = routeRepo;
         this.scheduleRepo = scheduleRepo;
+        this.trip1WayRepo = trip1WayRepo;
     }
 
 
@@ -47,6 +43,21 @@ public class LineService {
     }
 
 
+    public boolean hasViolatedFKinTrip(Line line){
+        //checking if violates FK constrained in Trip1Way, can't delete route if trip has route.
+        List<Route> newRouteList = line.getRoutes();
+        List<Trip1Way> ogTrips = trip1WayRepo.findByRouteLine(line);
+
+
+        for (Trip1Way ogTrip : ogTrips) {
+            if ( !newRouteList.contains(ogTrip.getRoute())){
+                System.out.println("FOREIGN KEY got violated - can't delete routes because used in trip1way");
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Line save1(Line line) {
         for (Route route : line.getRoutes()) {
             for (BusStop busStop : route.getStopsArr()) {
@@ -59,25 +70,25 @@ public class LineService {
             }
         }
 
-        //delete schedules
-//        List<Schedule>
-
+        line.getRoutes().forEach(route -> {
+            if (route.getId() < 0) route.setId(null);
+        });
 
         //if id negative, assign null; negative id assigned at front end means new entry
-        for (Route route : line.getRoutes()) {
-            if (route.getId()<0) route.setId(null);
-        }
+//        for (Route route : line.getRoutes()) {
+//            if (route.getId()<0) route.setId(null);
+//        }
 
         return lineRepo.save(line);
     }
 
     @Transactional
     public void delete1byId(Long id) {
-//TODO fix this
+
         List<Route> routes = routeRepo.findByLineId(id);
         System.out.println(routes);
         for (Route route : routes) {
-//            scheduleRepo.deleteByRoute(route);
+            scheduleRepo.deleteByTripsRoute(route);
         }
 
 
@@ -102,4 +113,5 @@ public class LineService {
     public Optional<Line> myLineById(Long id) {
         return lineRepo.findById(id);
     }
+
 }

@@ -5,6 +5,8 @@ import online.anyksciaibus.restback.controllers.PublicHolidayController;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.dto.SingleStop;
+import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
+import online.anyksciaibus.restback.dto.scheduling.Trip1WayIdDto;
 import online.anyksciaibus.restback.entities.*;
 
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
@@ -120,9 +122,29 @@ public class ScheduleService {
     public List<Schedule> getScheduleByLine (Long lineId){
         List<Schedule> schedules = scheduleRepo.findByLineId(lineId);
 
-    schedules.forEach(x-> {
-        x.getTrips().forEach(trip -> trip.getRoute().setDistanceMetersList(null));
-    });
+//    schedules.forEach(x-> {
+//        x.getTrips().forEach(trip -> trip.getRoute().setDistanceMetersList(null));
+//    });
         return schedules;
     }
+
+    public List<Long> getScheduleIdsByRoute(Route route){
+        return scheduleRepo.findScheduleIdsByRoute(route);
+    }
+
+    public ScheduleDto getEmptyDto(){
+        ScheduleDto dto = ScheduleDto.scheduleToDto(new Schedule());
+        Trip1WayIdDto tripDto = new Trip1WayIdDto();
+        tripDto.setBoundFor(BoundFor.values()[0]);
+        tripDto.setRouteDirReversed(false);
+        tripDto.setTimeList(Collections.emptyList());
+        dto.setTrips(List.of(tripDto));
+
+
+        return dto;
+
+    }
+
+
 }
+

@@ -1,5 +1,7 @@
 package online.anyksciaibus.restback.repositories;
 
+import jakarta.transaction.Transactional;
+import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.Schedule;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
@@ -32,5 +34,20 @@ public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
 //    List<Schedule> findByRoute_Line_Id(Long lineId);
     List<Schedule> findByLineId(Long lineId);
 
+
+    @Transactional
+    void deleteByTripsRoute(Route route);
+
+//    List<Schedule> findByLine(Line line);
+//    List<Schedule> findByRoute(Route route);
+
+//    @Query("SELECT s.id FROM Schedule s WHERE s.route = :route")
+//    List<Long> findScheduleIdsByRoute(Route route);
+
+//    @Query("SELECT DISTINCT t.route.id FROM Schedule s JOIN s.trips t WHERE s.route = :route")
+//    List<Long> findScheduleRouteIdsByRoute(Route route);
+
+    @Query("SELECT DISTINCT s.id FROM Schedule s JOIN s.trips t WHERE t.route = :route")
+    List<Long> findScheduleIdsByRoute(Route route);
 
 }

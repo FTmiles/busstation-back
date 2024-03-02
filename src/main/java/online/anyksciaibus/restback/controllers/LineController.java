@@ -11,9 +11,11 @@ import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.RouteType;
 import online.anyksciaibus.restback.services.LineService;
+import online.anyksciaibus.restback.services.ScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +26,10 @@ public class LineController {
 
 
     LineService service;
-
-    public LineController(LineService service) {
+    ScheduleService scheduleService;
+    public LineController(LineService service, ScheduleService scheduleService) {
         this.service = service;
+        this.scheduleService = scheduleService;
     }
 
 
@@ -104,6 +107,10 @@ public class LineController {
         Line line = LineFullDto.dtoToLine(dto);
         System.out.println("hello");
         System.out.println(line);
+
+        if (line.getId() != null && line.getId() > 0 && service.hasViolatedFKinTrip(line))
+            return line.getId();
+
         Line returned = service.save1(line);
         return returned.getId();
     }
@@ -120,13 +127,27 @@ public class LineController {
         //accessing to fetch lazy data
         myData.getRoutes().forEach(x->x.getDistanceMetersList().size());
 
-        return ResponseEntity.ok(LineFullDto.lineToDto(myData));
+//        scheduleService.
+
+        LineFullDto dto = LineFullDto.lineToDto(myData);
+
+        List<List<Long>> usage = myData.getRoutes().stream().map(route-> {
+        return    scheduleService.getScheduleIdsByRoute(route);
+        }).toList();
+
+        dto.setRouteUsage(usage);
+
+        return ResponseEntity.ok(dto);
 
     }
-
+  //!!!! CHECK FOR routeUsage.  left unimplemented properly. static lineToDto doesn't work it. Should be passed as argument
     @GetMapping("get-empty")
     public LineFullDto getEmpty() {
-        return LineFullDto.lineToDto(new Line());
+        LineFullDto dto = LineFullDto.lineToDto(new Line());
+        dto.setRouteUsage(Collections.emptyList());
+        return dto;
+
+//      return LineFullDto.lineToDto(new Line());
     }
 
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Route {
@@ -28,7 +29,7 @@ public class Route {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn(name = "distanceMetersListOrder")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     List<Integer> distanceMetersList;
 
 
@@ -107,6 +108,19 @@ public class Route {
         sb.append(", line=").append(line);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equals(id, route.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 
