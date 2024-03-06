@@ -1,23 +1,18 @@
 package online.anyksciaibus.restback.services;
 
 import jakarta.transaction.Transactional;
-import online.anyksciaibus.restback.controllers.PublicHolidayController;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
-import online.anyksciaibus.restback.dto.SingleStop;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
 import online.anyksciaibus.restback.dto.scheduling.Trip1WayIdDto;
 import online.anyksciaibus.restback.entities.*;
 
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
-import online.anyksciaibus.restback.repositories.RunsOnYearlyRepo;
 import online.anyksciaibus.restback.repositories.ScheduleRepo;
 import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -44,6 +39,7 @@ public class ScheduleService {
     }
 
     public List<Schedule> saveAll(List<Schedule> scheduleList) {
+
         return scheduleRepo.saveAll(scheduleList);
     }
 
@@ -128,6 +124,14 @@ public class ScheduleService {
         return schedules;
     }
 
+    public String findLineNameByLineId(Long id){
+        Optional<String> nameOptional = scheduleRepo.getLineTitleByLineId(id);
+        if (nameOptional.isPresent())
+            return nameOptional.get();
+        else return "name not found";
+    }
+
+
     public List<Long> getScheduleIdsByRoute(Route route){
         return scheduleRepo.findScheduleIdsByRoute(route);
     }
@@ -139,7 +143,6 @@ public class ScheduleService {
         tripDto.setRouteDirReversed(false);
         tripDto.setTimeList(Collections.emptyList());
         dto.setTrips(List.of(tripDto));
-
 
         return dto;
 

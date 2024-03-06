@@ -3,19 +3,23 @@ package online.anyksciaibus.restback.controllers;
 
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
+import online.anyksciaibus.restback.dto.scheduling.RunsOnYearlyOptionDto;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
 import online.anyksciaibus.restback.entities.BoundFor;
 import online.anyksciaibus.restback.entities.Schedule;
 import online.anyksciaibus.restback.services.ScheduleService;
 
+import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/scheduleItem")
@@ -24,9 +28,11 @@ public class ScheduleController {
 
 
     ScheduleService service;
+    RunsOnYearlyService runsOnYearlyService;
 
-    public ScheduleController(ScheduleService service) {
+    public ScheduleController(ScheduleService service, RunsOnYearlyService runsOnYearlyService) {
         this.service = service;
+        this.runsOnYearlyService = runsOnYearlyService;
     }
 
 
@@ -104,6 +110,7 @@ public class ScheduleController {
     @GetMapping("/schedule-by-line")
     public Map<String, Object> getScheduleByLineId(@RequestParam Long lineId) {
         //Map.of()  - small up to 10, vs  -  Map.ofEntries(Map.entry("key", new Object()));
+
         return Map.of(
             //List<ScheduleDto>
             "data" , service.getScheduleByLine(lineId)
@@ -111,7 +118,11 @@ public class ScheduleController {
             //List<BoundFor> used for select
             "boundForOptions", BoundFor.values(),
             //empty ScheduleDto
-            "empty", service.getEmptyDto()
+            "empty", service.getEmptyDto(),
+            "yearlyOptions", runsOnYearlyService.getAll().stream()
+                        .map(RunsOnYearlyOptionDto::RunsOnYearlyToDto)
+                                .collect(Collectors.groupingBy(RunsOnYearlyOptionDto::getTypeOfYearlyRule)),
+                "lineTitle", service.findLineNameByLineId(lineId)
         );
     }
 
@@ -122,5 +133,11 @@ public class ScheduleController {
         return service.getEmptyDto();
     }
 
+    @PostMapping("post-schedule-dto")
+    public List<ScheduleDto> postScheduleDto(@RequestBody List<ScheduleDto> scheduleDtoList){
+        List<Schedule> response = service.saveAll(scheduleDtoList.stream()
+                .map(ScheduleDto::dtoToSchedule).toList());
+        return response.stream().map(ScheduleDto::scheduleToDto).toList();
+    }
 }
 

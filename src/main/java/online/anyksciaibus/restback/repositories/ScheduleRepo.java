@@ -1,7 +1,6 @@
 package online.anyksciaibus.restback.repositories;
 
 import jakarta.transaction.Transactional;
-import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.Schedule;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
@@ -10,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
@@ -50,4 +49,6 @@ public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
     @Query("SELECT DISTINCT s.id FROM Schedule s JOIN s.trips t WHERE t.route = :route")
     List<Long> findScheduleIdsByRoute(Route route);
 
+    @Query("SELECT CONCAT(l.name, ' - ', l.routeStart, ' - ', l.routeEnd) FROM Line l WHERE l.id = :lineId")
+    Optional<String> getLineTitleByLineId(Long lineId);
 }

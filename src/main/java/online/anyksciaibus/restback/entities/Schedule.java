@@ -14,7 +14,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    Boolean isWorkInProgress;
     String timeConstraintsDescription;
 
 
@@ -27,7 +26,7 @@ public class Schedule {
     List<DayOfWeek> runsOnWeekly;   //which days of the week
 
     //Rules by year
-    @ManyToOne  (cascade = CascadeType.ALL) //TODO not final, maybe no cascade. OG ALL
+    @ManyToOne  // need cascade or no? was ALL, now deleted
     RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
 
     boolean runsOnPublicHolidays; //true = runs on public holidays
@@ -42,8 +41,7 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(Boolean isWorkInProgress, String timeConstraintsDescription,  List<Trip1Way> trips) {
-        this.isWorkInProgress = isWorkInProgress;
+    public Schedule(String timeConstraintsDescription,  List<Trip1Way> trips) {
         this.timeConstraintsDescription = timeConstraintsDescription;
 //        this.runsOnWeekly = runsOnWeekly;
 //        this.runsOnYearly = runsOnYearly;
@@ -57,14 +55,6 @@ public class Schedule {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getWorkInProgress() {
-        return isWorkInProgress;
-    }
-
-    public void setWorkInProgress(Boolean workInProgress) {
-        isWorkInProgress = workInProgress;
     }
 
     public String getTimeConstraintsDescription() {

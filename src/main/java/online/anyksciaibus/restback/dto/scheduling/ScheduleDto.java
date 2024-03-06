@@ -1,33 +1,63 @@
 package online.anyksciaibus.restback.dto.scheduling;
 
+import com.fasterxml.jackson.annotation.*;
+import online.anyksciaibus.restback.entities.Line;
+import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.Schedule;
+import online.anyksciaibus.restback.entities.Trip1Way;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
+import online.anyksciaibus.restback.services.LineService;
+import online.anyksciaibus.restback.services.RouteService;
 
 import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ScheduleDto {
     Long id;
-
-    Boolean isWorkInProgress;
 
     List<Trip1WayIdDto> trips;
 
     String timeConstraintsDescription;
     List<DayOfWeek> runsOnWeekly;   //which days of the week
-    RunsOnYearly runsOnYearly;       //which periods like summer, schooldays,...
+
+
+    //-------------------------serialize annotations, @JsonSetter for deserializing id to obj
+    @JsonProperty("runsOnYearlyId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    RunsOnYearly runsOnYearly;
+
+    @JsonSetter
+    public void setRunsOnYearlyId(Long id){
+        this.runsOnYearly = new RunsOnYearly(id);
+    }
+    //---------------------------
+
     boolean runsOnPublicHolidays; //true = runs on public holidays
 
+    //-------------------------serialize annotations, @JsonSetter for deserializing id to obj
+    @JsonProperty("lineId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Line line;
+
+    @JsonSetter
+    public void setLineId(Long id){
+        this.line = new Line(id);
+    }
     //==================
 
     public static ScheduleDto scheduleToDto(Schedule schedule){
         ScheduleDto dto = new ScheduleDto();
         dto.setId(schedule.getId());
-        dto.setWorkInProgress(schedule.getWorkInProgress());
         dto.setTimeConstraintsDescription(schedule.getTimeConstraintsDescription());
         dto.setRunsOnPublicHolidays(schedule.isRunsOnPublicHolidays());
+
         dto.setRunsOnYearly(schedule.getRunsOnYearly());
+//        if (schedule.getRunsOnYearly() != null)
+//            dto.setRunsOnYearlyId(schedule.getRunsOnYearly().getId());
 
         if (schedule.getRunsOnWeekly() == null)
             dto.setRunsOnWeekly(Collections.emptyList());
@@ -39,7 +69,25 @@ public class ScheduleDto {
         else
             dto.setTrips(schedule.getTrips().stream().map(Trip1WayIdDto::tripToDto).toList());
 
+        dto.setLine(schedule.getLine());
+
         return dto;
+    }
+
+    //==================
+
+    public static Schedule dtoToSchedule(ScheduleDto dto){
+        Schedule schedule = new Schedule();
+        schedule.setId(dto.getId());
+        schedule.setTrips(dto.getTrips().stream().map(Trip1WayIdDto::dtoToTrip1Way).toList());
+        schedule.setLine(dto.getLine());
+        schedule.setRunsOnYearly(dto.getRunsOnYearly());
+        schedule.setRunsOnWeekly(dto.getRunsOnWeekly());
+        schedule.setRunsOnPublicHolidays(dto.getRunsOnPublicHolidays());
+        schedule.setTimeConstraintsDescription(dto.getTimeConstraintsDescription());
+
+
+        return schedule;
     }
 
     //==================
@@ -55,13 +103,6 @@ public class ScheduleDto {
         this.id = id;
     }
 
-    public Boolean getWorkInProgress() {
-        return isWorkInProgress;
-    }
-
-    public void setWorkInProgress(Boolean workInProgress) {
-        isWorkInProgress = workInProgress;
-    }
 
     public List<Trip1WayIdDto> getTrips() {
         return trips;
@@ -79,6 +120,11 @@ public class ScheduleDto {
         this.timeConstraintsDescription = timeConstraintsDescription;
     }
 
+
+
+
+
+
     public List<DayOfWeek> getRunsOnWeekly() {
         return runsOnWeekly;
     }
@@ -95,12 +141,22 @@ public class ScheduleDto {
         this.runsOnYearly = runsOnYearly;
     }
 
-    public boolean isRunsOnPublicHolidays() {
+    public boolean getRunsOnPublicHolidays() {
         return runsOnPublicHolidays;
     }
 
     public void setRunsOnPublicHolidays(boolean runsOnPublicHolidays) {
         this.runsOnPublicHolidays = runsOnPublicHolidays;
     }
+
+    public Line getLine() {
+        return line;
+    }
+
+    public void setLine(Line line) {
+        this.line = line;
+    }
+
+
 }
 

@@ -50,6 +50,10 @@ public class Route {
     public Route() {
     }
 
+    public Route(Long id) {
+        this.id = id;
+    }
+
     public Route(List<BusStop> stopsArr, List<Integer> distanceMetersList, Line line, String routeNotes) {
         this.stopsArr = stopsArr;
         this.distanceMetersList = distanceMetersList;

@@ -41,6 +41,10 @@ public class Line {
     public Line() {
     }
 
+    public Line(Long id) {
+        this.id = id;
+    }
+
     public Line(String name, String routeStart, String routeEnd, String via, String operator, String anykStationPlatform, String price, RouteType routeType, List<Route> route) {
         this.name = name;
         this.routeStart = routeStart;

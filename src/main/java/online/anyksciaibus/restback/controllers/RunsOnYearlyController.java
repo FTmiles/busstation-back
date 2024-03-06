@@ -2,13 +2,16 @@ package online.anyksciaibus.restback.controllers;
 
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Map;
 
 @RestController
+@RequestMapping("yearly-rules")
 public class RunsOnYearlyController {
     RunsOnYearlyService service;
 
@@ -26,4 +29,11 @@ public class RunsOnYearlyController {
         }
         return service.passingYearlyRulesByDate(date).toString();
     }
+
+    @GetMapping("/get-all")
+    public Map<String, Object> getAllRules(){
+        return Map.of(
+                "service.getAll()
+    }
+
 }

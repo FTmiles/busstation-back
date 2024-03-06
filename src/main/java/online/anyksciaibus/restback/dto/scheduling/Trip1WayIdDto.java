@@ -1,8 +1,9 @@
 package online.anyksciaibus.restback.dto.scheduling;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import online.anyksciaibus.restback.entities.BoundFor;
+import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.Trip1Way;
 
@@ -16,19 +17,38 @@ public class Trip1WayIdDto {
     BoundFor boundFor;  //used for filtering routes
     List<LocalTime> timeList;
 
+    //-------------------------serialize annotations, @JsonSetter for deserializing id to obj
 //    @JsonIdentityReference(alwaysAsId=true)
-    Long routeId;
+    @JsonProperty("routeId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    Route route;
 
+    @JsonSetter
+    public void setRouteId(Long id){
+        this.route = new Route(id);
+    }
     //===================
 
     public static Trip1WayIdDto tripToDto(Trip1Way trip1way){
         Trip1WayIdDto dto = new Trip1WayIdDto();
         dto.setBoundFor(trip1way.getBoundFor());
         dto.setId(trip1way.getId());
-        dto.setRouteId(trip1way.getRoute().getId());
+        dto.setRoute(trip1way.getRoute());
         dto.setRouteDirReversed(trip1way.getRouteDirReversed());
         dto.setTimeList(trip1way.getTimeList());
         return dto;
+    }
+
+    public static Trip1Way dtoToTrip1Way(Trip1WayIdDto dto) {
+        Trip1Way trip = new Trip1Way();
+        trip.setId(dto.getId());
+        trip.setRouteDirReversed(dto.getRouteDirReversed());
+        trip.setBoundFor(dto.getBoundFor());
+        trip.setTimeList(dto.getTimeList());
+
+        trip.setRoute(dto.getRoute());
+        return trip;
     }
 
     //===================
@@ -69,13 +89,11 @@ public class Trip1WayIdDto {
         this.timeList = timeList;
     }
 
-    public Long getRouteId() {
-        return routeId;
+    public Route getRoute() {
+        return route;
     }
 
-    public void setRouteId(Long routeId) {
-        this.routeId = routeId;
+    public void setRoute(Route route) {
+        this.route = route;
     }
-
-
 }
