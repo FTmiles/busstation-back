@@ -6,7 +6,9 @@ import online.anyksciaibus.restback.services.BusStopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +27,19 @@ public class BusStopController {
         return service.getAll();
     }
 
+    @GetMapping("/get-all-with-usage")
+    public List<Map<String, Object>> getAllWithUsage() {
+        List<BusStop> allStops = service.getAll();
+
+
+        return allStops.stream().map(busStop -> {
+            Map<String, Object> combo = new HashMap<>();
+            combo.put("stop", busStop);
+            combo.put("usedInLines", service.findLineIdNameDtoByBusStop(busStop));
+            return combo;
+        }).toList();
+
+    }
 
 
     @GetMapping("/get/{id}")

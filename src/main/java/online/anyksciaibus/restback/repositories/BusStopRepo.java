@@ -1,7 +1,9 @@
 package online.anyksciaibus.restback.repositories;
 
 import online.anyksciaibus.restback.dto.BusStopsDto;
+import online.anyksciaibus.restback.dto.LineIdNameDto;
 import online.anyksciaibus.restback.entities.BusStop;
+import online.anyksciaibus.restback.entities.Line;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,7 +33,18 @@ public interface BusStopRepo extends JpaRepository<BusStop, Long> {
 //    @Query("SELECT DISTINCT r.line.id FROM Route r JOIN r.stopsArr s WHERE s.id = :busStopId")
 //    List<Long> findLineIdsByBusStopId(@Param("busStopId") Long busStopId);
 
+    //DELETE THIS
     @Query("SELECT DISTINCT r.line.id FROM Route r JOIN r.stopsArr s WHERE s = :busStop")
     List<Long> findLineIdsByBusStop(@Param("busStop") BusStop busStop);
+
+    @Query("SELECT DISTINCT NEW online.anyksciaibus.restback.dto.LineIdNameDto(r.line.id, r.line.name) FROM Route r JOIN r.stopsArr s WHERE s = :busStop")
+    List<LineIdNameDto> findLineIdsAndNamesByBusStop(@Param("busStop") BusStop busStop);
+
+//    @Query("SELECT DISTINCT r.line FROM Route r JOIN r.stopsArr s WHERE s = :busStop")
+//    List<Line> findLinesByBusStop(@Param("busStop") BusStop busStop);
+
+
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN TRUE ELSE FALSE END FROM Route r JOIN r.stopsArr s WHERE s.id = :busStopId")
+    boolean existsRoutesForBusStop(@Param("busStopId") Long busStopId);
 
 }

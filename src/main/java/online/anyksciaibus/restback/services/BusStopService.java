@@ -1,9 +1,11 @@
 package online.anyksciaibus.restback.services;
 
 import online.anyksciaibus.restback.dto.BusStopsDto;
+import online.anyksciaibus.restback.dto.LineIdNameDto;
 import online.anyksciaibus.restback.entities.BusStop;
 import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.repositories.BusStopRepo;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +36,9 @@ public class BusStopService {
     }
 
     public void delete1byId(Long id) {
-        busStopRepo.deleteById(id);
+    //Route holds List<BusStop> stopsArr, its elements hold bus stop FK
+        if (!busStopRepo.existsRoutesForBusStop(id))
+            busStopRepo.deleteById(id);
     }
 
     public void deleteMultiple(List<Long> ids) {
@@ -62,7 +66,7 @@ public class BusStopService {
         return busStopRepo.findAllBusStops();
     }
 
-    public List<Long> findLineIdsByBusStop(BusStop busStop) {
-        return busStopRepo.findLineIdsByBusStop(busStop);
+    public List<LineIdNameDto> findLineIdNameDtoByBusStop(BusStop busStop) {
+        return busStopRepo.findLineIdsAndNamesByBusStop(busStop);
     }
 }
