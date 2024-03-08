@@ -33,4 +33,6 @@ public enum TypeOfYearlyRule {
         }
         return null; // Or throw IllegalArgumentException("Invalid description: " + description);
     }
+
+
     }

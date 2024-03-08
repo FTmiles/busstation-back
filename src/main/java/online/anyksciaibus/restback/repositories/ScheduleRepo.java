@@ -51,4 +51,7 @@ public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT CONCAT(l.name, ' - ', l.routeStart, ' - ', l.routeEnd) FROM Line l WHERE l.id = :lineId")
     Optional<String> getLineTitleByLineId(Long lineId);
+
+    List<Schedule> findByRunsOnYearlyId(Long runsOnYearlyId);
+
 }

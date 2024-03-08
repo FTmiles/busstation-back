@@ -2,7 +2,10 @@ package online.anyksciaibus.restback.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.RouteType;
+
+import java.util.Objects;
 
 public class LineInfo {
     Long id;
@@ -31,6 +34,21 @@ public class LineInfo {
         this.anykStationPlatform = anykStationPlatform;
         this.price = price;
         this.routeType = routeType;
+    }
+
+    public static LineInfo LineToDto(Line line){
+        LineInfo dto = new LineInfo();
+        dto.setVia(line.getVia());
+        dto.setName(line.getName());
+        dto.setId(line.getId());
+        dto.setRouteStart(line.getRouteStart());
+        dto.setRouteEnd(line.getRouteEnd());
+        dto.setPrice(line.getPrice());
+        dto.setAnykStationPlatform(line.getAnykStationPlatform());
+        dto.setOperator(line.getOperator());
+        dto.setRouteType(line.getRouteType());
+
+        return dto;
     }
 
     public Long getId() {
@@ -103,5 +121,18 @@ public class LineInfo {
 
     public void setRouteType(RouteType routeType) {
         this.routeType = routeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LineInfo lineInfo = (LineInfo) o;
+        return Objects.equals(id, lineInfo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

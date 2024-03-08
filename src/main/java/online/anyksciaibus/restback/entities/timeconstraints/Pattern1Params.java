@@ -12,6 +12,7 @@ import java.time.DayOfWeek;
  * ENUM value - DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH<br>
  * Dynamic Pattern is contrasted with Fixed Days Period.<br>
  * Every Nth Xday Each Month (e.g. every second Thursday each month)
+ * e.g. First Wednesday of the month  nthOccurenceEachMonth = 1    (not 0)
  */
 
 

@@ -1,16 +1,21 @@
 package online.anyksciaibus.restback.controllers;
 
+import online.anyksciaibus.restback.dto.scheduling.RunsOnYearlyOptionDto;
+import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
+import online.anyksciaibus.restback.entities.timeconstraints.TypeOfYearlyRule;
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.Array;
 
 @RestController
+@CrossOrigin
 @RequestMapping("yearly-rules")
 public class RunsOnYearlyController {
     RunsOnYearlyService service;
@@ -32,8 +37,22 @@ public class RunsOnYearlyController {
 
     @GetMapping("/get-all")
     public Map<String, Object> getAllRules(){
-        return Map.of(
-                "service.getAll()
+        List<RunsOnYearly> allRules = service.getAll();
+        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules =  allRules.stream()
+                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
+
+
+        return Map.of
+                (
+                "rules", rules,
+                "schedules", service.findScheduleIdsByRunsOnYearly(allRules)
+                );
+    }
+
+    @PostMapping("/post-combo-list")
+    public Map<TypeOfYearlyRule, List<RunsOnYearly>> postListOfYearlyRules(@RequestBody List<RunsOnYearly> list) {
+        return service.saveAll(list).stream()
+                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
     }
 
 }

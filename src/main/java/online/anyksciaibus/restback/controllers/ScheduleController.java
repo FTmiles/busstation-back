@@ -1,7 +1,9 @@
 package online.anyksciaibus.restback.controllers;
 
 
+import online.anyksciaibus.restback.dto.LineInfo;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
+import online.anyksciaibus.restback.dto.ScheduleByYearlyRuleDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.dto.scheduling.RunsOnYearlyOptionDto;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -133,11 +132,18 @@ public class ScheduleController {
         return service.getEmptyDto();
     }
 
-    @PostMapping("post-schedule-dto")
+    @PostMapping("/post-schedule-dto")
     public List<ScheduleDto> postScheduleDto(@RequestBody List<ScheduleDto> scheduleDtoList){
         List<Schedule> response = service.saveAll(scheduleDtoList.stream()
                 .map(ScheduleDto::dtoToSchedule).toList());
         return response.stream().map(ScheduleDto::scheduleToDto).toList();
     }
+
+
+    @GetMapping("/get-schedules-by-rule")
+    public List<Map<String, Object>> getSchedulesByRule(@RequestParam Long ruleId) {
+        return service.findByRunsOnYearlyIdGroupByLine(ruleId);
+    }
+
 }
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -31,8 +32,19 @@ public class RunsOnYearlyService {
         return repo.findById(id);
     }
 
-    public List<RunsOnYearly> saveAll(List<RunsOnYearly> runsOnYearlyList) {
-        return repo.saveAll(runsOnYearlyList);
+    public List<RunsOnYearly> saveAll(List<RunsOnYearly> updatedRules) {
+        List<RunsOnYearly> allRulesInDB = repo.findAll();
+
+        List<RunsOnYearly> rulesToDelete = new ArrayList<>(allRulesInDB);
+        rulesToDelete.removeAll(updatedRules);
+        for (RunsOnYearly rule : rulesToDelete) {
+            if (repo.existsSchedulesByRunsOnYearly(rule))
+                rulesToDelete.remove(rule);
+        }
+
+        repo.deleteAll(rulesToDelete);
+
+        return repo.saveAll(updatedRules);
     }
 
     public RunsOnYearly save1(RunsOnYearly runsOnYearly) {
@@ -69,4 +81,18 @@ public class RunsOnYearlyService {
                 .toList();
 
     }
+
+    public List<RunsOnYearly> getAllRulesGroupedByType(TypeOfYearlyRule type){
+        return repo.findByTypeOfYearlyRule(type);
+    }
+
+    public List<Map<String, Object>> findScheduleIdsByRunsOnYearly(List<RunsOnYearly> runsOnYearlyList) {
+     return    runsOnYearlyList.stream().map(roy ->
+           //map: key = RunsOnYearly id, value = List of schedules that use this rule
+             Map.of(
+                   "ruleId", roy.getId() ,
+                   "schedules" ,repo.findScheduleIdsByRunsOnYearly(roy)
+        )).toList();
+    }
+
 }

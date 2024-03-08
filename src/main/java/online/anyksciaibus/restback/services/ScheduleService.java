@@ -1,7 +1,9 @@
 package online.anyksciaibus.restback.services;
 
 import jakarta.transaction.Transactional;
+import online.anyksciaibus.restback.dto.LineInfo;
 import online.anyksciaibus.restback.dto.SchedItemHomeDto;
+import online.anyksciaibus.restback.dto.ScheduleByYearlyRuleDto;
 import online.anyksciaibus.restback.dto.SingleTrip;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
 import online.anyksciaibus.restback.dto.scheduling.Trip1WayIdDto;
@@ -18,6 +20,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleService {
@@ -39,7 +42,6 @@ public class ScheduleService {
     }
 
     public List<Schedule> saveAll(List<Schedule> scheduleList) {
-
         return scheduleRepo.saveAll(scheduleList);
     }
 
@@ -148,6 +150,26 @@ public class ScheduleService {
 
     }
 
+    public List<Map<String, Object>>  findByRunsOnYearlyIdGroupByLine(Long id){
+
+        List<Schedule> schedules = scheduleRepo.findByRunsOnYearlyId(id);
+
+        Map<LineInfo, List<ScheduleByYearlyRuleDto>> groupedMap = schedules.stream().map(ScheduleByYearlyRuleDto::ScheduleToDto)
+                .collect(Collectors.groupingBy(ScheduleByYearlyRuleDto::getLineInfo));
+
+        List<Map<String, Object>> resultList = groupedMap.entrySet().stream()
+                .map(entry -> {
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("line", entry.getKey());
+                    resultMap.put("schedules", entry.getValue());
+                    return resultMap;
+                })
+                .collect(Collectors.toList());
+
+        return resultList;
+
+
+    }
 
 }
 

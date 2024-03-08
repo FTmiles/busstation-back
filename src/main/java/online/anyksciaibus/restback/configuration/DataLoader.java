@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 public class DataLoader implements CommandLineRunner {

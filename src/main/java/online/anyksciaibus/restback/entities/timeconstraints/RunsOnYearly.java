@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class RunsOnYearly {
@@ -29,6 +30,7 @@ public class RunsOnYearly {
 
 
     //pattern 1 - Every Nth Xday Each Month (e.g. every second Thursday each month)
+    //First
     public boolean testPattern1(LocalDate date) {
 
         if (this.pattern1Params.isEmpty()) return false;
@@ -121,6 +123,19 @@ public class RunsOnYearly {
 
     public void setPattern1Params(List<Pattern1Params> pattern1Params) {
         this.pattern1Params = pattern1Params;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RunsOnYearly that = (RunsOnYearly) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

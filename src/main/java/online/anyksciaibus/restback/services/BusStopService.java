@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.services;
 
 import online.anyksciaibus.restback.dto.BusStopsDto;
 import online.anyksciaibus.restback.entities.BusStop;
+import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.repositories.BusStopRepo;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +60,9 @@ public class BusStopService {
 
     public List<BusStopsDto> getAllDto(){
         return busStopRepo.findAllBusStops();
+    }
+
+    public List<Long> findLineIdsByBusStop(BusStop busStop) {
+        return busStopRepo.findLineIdsByBusStop(busStop);
     }
 }
