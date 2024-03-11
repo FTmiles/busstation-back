@@ -31,7 +31,7 @@ public class Schedule {
 
     boolean runsOnPublicHolidays; //true = runs on public holidays
 
-    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Trip1Way> trips;
 
     @JsonIgnore

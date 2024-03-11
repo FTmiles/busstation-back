@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/busstop")
@@ -28,7 +29,7 @@ public class BusStopController {
     }
 
     @GetMapping("/get-all-with-usage")
-    public List<Map<String, Object>> getAllWithUsage() {
+    public List<Map<String, ?>> getAllWithUsage() {
         List<BusStop> allStops = service.getAll();
 
 
@@ -37,7 +38,7 @@ public class BusStopController {
             combo.put("stop", busStop);
             combo.put("usedInLines", service.findLineIdNameDtoByBusStop(busStop));
             return combo;
-        }).toList();
+        }).collect(Collectors.toList());
 
     }
 
@@ -52,8 +53,14 @@ public class BusStopController {
     }
 
     @PostMapping("/save/multi")
-    public List<BusStop> saveMulti(@RequestBody List<BusStop> list) {
-        return service.saveAll(list);
+    public List<Map<String, ?>> saveMulti(@RequestBody List<BusStop> list) {
+
+        return service.saveAll(list).stream().map(busStop -> {
+            Map<String, Object> combo = new HashMap<>();
+            combo.put("stop", busStop);
+            combo.put("usedInLines", service.findLineIdNameDtoByBusStop(busStop));
+            return combo;
+        }).collect(Collectors.toList());
     }
 
     @PostMapping("/save/one")
@@ -106,18 +113,30 @@ public class BusStopController {
 
         return ResponseEntity.noContent().build(); // Return 204 No Content for successful update
     }
-
+    //private, used by admin panel bus stop manager page
     @GetMapping("/searchresults")
-    public List<BusStop> getSearchByName(@RequestParam String query){
-        return service.getBySearchName(query);
+    public List<Map<String, ?>> getSearchByName(@RequestParam String query){
+        List<BusStop> allStops = service.getBySearchName(query);
+
+        return allStops.stream().map(busStop -> {
+            Map<String, Object> combo = new HashMap<>();
+            combo.put("stop", busStop);
+            combo.put("usedInLines", service.findLineIdNameDtoByBusStop(busStop));
+            return combo;
+        }).collect(Collectors.toList());
+
+
     }
 
 
 //============?
+    //public upen - used by header search bar
     @GetMapping("/search")
     public List<BusStopsDto> getinit(@RequestParam String str) {
         return service.getSearchOptions(str);
     }
+
+
 
     @GetMapping("/alldto")
     public List<BusStopsDto> getAllDto(){

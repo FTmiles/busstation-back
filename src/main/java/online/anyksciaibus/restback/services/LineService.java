@@ -85,11 +85,14 @@ public class LineService {
     @Transactional
     public void delete1byId(Long id) {
 
+        lineRepo.deleteSchedulesByLineId(id);
+
         List<Route> routes = routeRepo.findByLineId(id);
-        System.out.println(routes);
-        for (Route route : routes) {
-            scheduleRepo.deleteByTripsRoute(route);
-        }
+        lineRepo.deleteTrip1WaysByRoutes(routes);
+//        System.out.println(routes);
+//        for (Route route : routes) {
+//            scheduleRepo.deleteByTripsRoute(route);
+//        }
 
 
         lineRepo.deleteById(id);

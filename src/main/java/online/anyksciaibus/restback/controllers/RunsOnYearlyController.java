@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,21 +40,38 @@ public class RunsOnYearlyController {
     @GetMapping("/get-all")
     public Map<String, Object> getAllRules(){
         List<RunsOnYearly> allRules = service.getAll();
+
+
+        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
+        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
+            rulesMap.put(type, new ArrayList<>());
+        }
+
         Map<TypeOfYearlyRule, List<RunsOnYearly>> rules =  allRules.stream()
                 .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
 
+        rulesMap.putAll(rules);
 
         return Map.of
                 (
-                "rules", rules,
+                "rules", rulesMap,
                 "schedules", service.findScheduleIdsByRunsOnYearly(allRules)
                 );
     }
 
     @PostMapping("/post-combo-list")
     public Map<TypeOfYearlyRule, List<RunsOnYearly>> postListOfYearlyRules(@RequestBody List<RunsOnYearly> list) {
-        return service.saveAll(list).stream()
+
+        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
+        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
+            rulesMap.put(type, new ArrayList<>());
+        }
+
+        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules = service.saveAll(list).stream()
                 .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
+
+        rulesMap.putAll(rules);
+        return rulesMap;
     }
 
 }
