@@ -1,11 +1,14 @@
 package online.anyksciaibus.restback.repositories;
 
 import jakarta.transaction.Transactional;
+import online.anyksciaibus.restback.entities.BoundFor;
 import online.anyksciaibus.restback.entities.Route;
 import online.anyksciaibus.restback.entities.Schedule;
+import online.anyksciaibus.restback.entities.Trip1Way;
 import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
@@ -53,5 +56,67 @@ public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
     Optional<String> getLineTitleByLineId(Long lineId);
 
     List<Schedule> findByRunsOnYearlyId(Long runsOnYearlyId);
+
+
+    //------------------
+
+
+    @Query("SELECT t FROM Schedule s JOIN s.trips t "
+            + "WHERE (:runsOnPublicHolidays IS NULL OR s.runsOnPublicHolidays = :runsOnPublicHolidays) "
+            + "AND s.runsOnYearly IN :runsOnYearlyList "
+            + "AND :dayOfWeek MEMBER OF s.runsOnWeekly "
+            + "AND (t.boundFor = :boundFor OR t.boundFor = CIRCLE) "
+            + "AND EXISTS (SELECT bs FROM Route r JOIN r.stopsArr bs WHERE r = t.route AND bs.id = :busStopId) ")
+    List<Trip1Way> findTripsByConditions(@Param("runsOnYearlyList") List<RunsOnYearly> runsOnYearlyList,
+                                         @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                         @Param("boundFor") BoundFor boundFor,
+                                         @Param("busStopId") Long busStopId,
+                                         @Param("runsOnPublicHolidays") Boolean runsOnPublicHolidays);
+
+    @Query("SELECT t FROM Schedule s JOIN s.trips t "
+            + "WHERE (:runsOnPublicHolidays IS NULL OR s.runsOnPublicHolidays = :runsOnPublicHolidays) "
+            + "AND s.runsOnYearly IN :runsOnYearlyList "
+            + "AND :dayOfWeek MEMBER OF s.runsOnWeekly "
+            + "AND (t.boundFor = :boundFor OR t.boundFor = CIRCLE) "
+            + "AND EXISTS (SELECT bs FROM Route r JOIN r.stopsArr bs WHERE r = t.route AND bs.id = :busStopId) "
+            + "AND t.route.line.routeType != CITY_BUS") // Exclude schedules where Trip1Way's route's Line's routeType is CITY_BUS
+    List<Trip1Way> findTripsByConditionsNotCityBus(@Param("runsOnYearlyList") List<RunsOnYearly> runsOnYearlyList,
+                                         @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                         @Param("boundFor") BoundFor boundFor,
+                                         @Param("busStopId") Long busStopId,
+                                         @Param("runsOnPublicHolidays") Boolean runsOnPublicHolidays);
+
+    @Query("SELECT t FROM Schedule s JOIN s.trips t "
+            + "WHERE (:runsOnPublicHolidays IS NULL OR s.runsOnPublicHolidays = :runsOnPublicHolidays) "
+            + "AND s.runsOnYearly IN :runsOnYearlyList "
+            + "AND :dayOfWeek MEMBER OF s.runsOnWeekly "
+            + "AND EXISTS (SELECT bs FROM Route r JOIN r.stopsArr bs WHERE r = t.route AND bs.id = :busStopId) "
+            + "AND t.route.line.routeType = CITY_BUS") // Exclude schedules where Trip1Way's route's Line's routeType is CITY_BUS
+    List<Trip1Way> findTripsCityBus(@Param("runsOnYearlyList") List<RunsOnYearly> runsOnYearlyList,
+                                         @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                         @Param("busStopId") Long busStopId,
+                                         @Param("runsOnPublicHolidays") Boolean runsOnPublicHolidays);
+
+
+    @Query("SELECT t FROM Schedule s JOIN s.trips t "
+            + "WHERE (:runsOnPublicHolidays IS NULL OR s.runsOnPublicHolidays = :runsOnPublicHolidays) "
+            + "AND s.runsOnYearly IN :runsOnYearlyList "
+            + "AND :dayOfWeek MEMBER OF s.runsOnWeekly "
+            + "AND (t.boundFor = :boundFor OR t.boundFor = CIRCLE) "
+            + "AND EXISTS (SELECT bs FROM Route r JOIN r.stopsArr bs WHERE r = t.route AND bs.id = :busStopId) "
+            + "AND t.boundFor != CITY_BOUND " // Additional criteria: boundFor is not CITY_BOUND
+            + "AND EXISTS (SELECT bs FROM Route r JOIN r.stopsArr bs WHERE r = t.route AND bs.id = :qbstopto)")
+    List<Trip1Way> findTripsByConditionsToAndFrom(@Param("runsOnYearlyList") List<RunsOnYearly> runsOnYearlyList,
+                                         @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                         @Param("boundFor") BoundFor boundFor,
+                                         @Param("busStopId") Long busStopId,
+                                         @Param("runsOnPublicHolidays") Boolean runsOnPublicHolidays,
+                                         @Param("qbstopto") Long qbstopto); // New parameter: qbstopto
+
+
+
+
+    @Query("SELECT s FROM Schedule s JOIN s.trips t WHERE t.id = :tripId")
+    Optional<Schedule> findByTripId(@Param("tripId") Long tripId);
 
 }

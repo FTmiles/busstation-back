@@ -8,7 +8,10 @@ public enum TypeOfYearlyRule {
     FIXED_TIME_PERIOD("Static dates"),
 
     //check if the date passes the method - pattern #1
-    DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH("Formula pattern");
+    DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH("Formula pattern"),
+
+    //combo of the two
+    COMBO_FIXED_AND_DYNAMIC_PATTERN1("Combo");
 
 
 

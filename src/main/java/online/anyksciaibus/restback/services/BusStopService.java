@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -69,4 +70,31 @@ public class BusStopService {
     public List<LineIdNameDto> findLineIdNameDtoByBusStop(BusStop busStop) {
         return busStopRepo.findLineIdsAndNamesByBusStop(busStop);
     }
+
+    public Map<String, BusStopsDto> get2ById (Long fromId, Long toId ) {
+//        if (fromId == null)
+//            return Map.of("from", new BusStopsDto(), "to", new BusStopsDto());
+
+
+        BusStop from = new BusStop();
+        BusStop to = new BusStop();
+
+        //in front end, if FROM is not 1L then To is not needed, auto cleared
+        if (fromId.equals(1L)){
+            from = busStopRepo.findById(fromId).orElse(from);
+            if (toId != null)
+                to = busStopRepo.findById(toId).orElse(to);
+        } else {
+            from = busStopRepo.findById(fromId).orElse(
+                    busStopRepo.findById(1L).orElse(from)
+            );
+        }
+//        to = busStopRepo.findById(4L).get();
+        return Map.of(
+                "from", BusStopsDto.busStopToDto(from),
+                "to", BusStopsDto.busStopToDto(to)
+        );
+    }
+
+
 }

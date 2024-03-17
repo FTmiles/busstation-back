@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/busstop")
-@CrossOrigin
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST}) // Allow CORS for all origins and both GET and POST methods
 public class BusStopController {
     BusStopService service;
 
@@ -43,13 +43,11 @@ public class BusStopController {
     }
 
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<BusStop> getOne(@PathVariable Long id) {
-        Optional<BusStop> data = service.get1BusStopById(id);
-        if (data.isPresent())
-            return ResponseEntity.ok(data.get());
-        else
-            return ResponseEntity.notFound().build();
+    @GetMapping("/get2")
+    public Map<String, BusStopsDto> getTwo(@RequestParam(value = "fromId", defaultValue = "1") Long fromId,
+                                            Long toId) {
+
+    return service.get2ById(fromId, toId);
     }
 
     @PostMapping("/save/multi")

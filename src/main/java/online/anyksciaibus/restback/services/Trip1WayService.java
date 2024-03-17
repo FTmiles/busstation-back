@@ -6,6 +6,7 @@ import online.anyksciaibus.restback.repositories.Trip1WayRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,4 +29,7 @@ public class Trip1WayService {
     public List<Trip1Way> saveAll(List<Trip1Way> trip1WayList) {
         return repo.saveAll(trip1WayList);
     }
+
+
+
 }

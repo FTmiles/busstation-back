@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RunsOnYearlyService {
@@ -44,6 +45,24 @@ public class RunsOnYearlyService {
 
         repo.deleteAll(rulesToDelete);
 
+        //without it server 500 error - tried persisting with duplicate key ..
+        updatedRules.forEach(rule -> {
+            if (rule.getCopyTimePeriodsFromOtherRule() == null) return;
+
+            Long id = rule.getCopyTimePeriodsFromOtherRule().getId();
+            if (id != null) {
+                Optional<RunsOnYearly> optionalCopy = repo.findById(id);
+                if (optionalCopy.isPresent())
+                    rule.setCopyTimePeriodsFromOtherRule(optionalCopy.get());
+            }
+            else
+                rule.setCopyTimePeriodsFromOtherRule(null);
+        });
+
+//        for (RunsOnYearly ru : updatedRules) {
+//            repo.save(ru);
+//        }
+
         return repo.saveAll(updatedRules);
     }
 
@@ -60,25 +79,57 @@ public class RunsOnYearlyService {
     }
 
     public List<RunsOnYearly> passingYearlyRulesByDate(LocalDate date){
-        return allYearlyRules.stream().filter(rule->{
-            if (rule.getTypeOfYearlyRule().equals(TypeOfYearlyRule.FIXED_TIME_PERIOD)){
-                for (TimePeriod d : rule.getTimePeriods()) {
+
+        List<RunsOnYearly> allRules = repo.findAll();
+        return allRules.stream().filter(rule -> {
+            rule.updateFromDateRangeRefs();
+
+            //check FIXED_DATES first, is the date within date ranges? if no date ranges - skip
+            List<TimePeriod> dateRanges = rule.getTimePeriods();
+
+            boolean passedStaticDateRange = true;
+            if (!dateRanges.isEmpty()) {
+                passedStaticDateRange = false;
+
+                for (TimePeriod d : dateRanges) {
                     LocalDate start = LocalDate.of(date.getYear(),d.getStartMonth(), d.getStartDay());
                     LocalDate end = LocalDate.of(date.getYear(),d.getEndMonth(), d.getEndDay());
-                    if( (date.isAfter(start) || date.isEqual(start))&&
-                            (date.isBefore(end)) || date.isEqual(end))
-                        return true;
-                }
-                return false;
-            }
-            else if (rule.getTypeOfYearlyRule().equals(TypeOfYearlyRule.DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH)){
-                return rule.testPattern1(date);
-            }
-            return false;
-        })
 
-//                .map(RunsOnYearly::getId)
-                .toList();
+                    if( (date.isAfter(start) || date.isEqual(start)) &&
+                        (date.isBefore(end) || date.isEqual(end))  ) {
+                        passedStaticDateRange = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!passedStaticDateRange) return false;
+
+            //FIXED_DATES passes (or non existent) then
+            //check if passes FORMULA_PATTERN. If doesn't exist, auto pass
+            return rule.testPattern1(date);
+
+        }).collect(Collectors.toList());
+
+//        return allYearlyRules.stream().filter(rule->{
+//            if (rule.getTypeOfYearlyRule().equals(TypeOfYearlyRule.FIXED_TIME_PERIOD)){
+//                for (TimePeriod d : rule.getTimePeriods()) {
+//                    LocalDate start = LocalDate.of(date.getYear(),d.getStartMonth(), d.getStartDay());
+//                    LocalDate end = LocalDate.of(date.getYear(),d.getEndMonth(), d.getEndDay());
+//                    if( (date.isAfter(start) || date.isEqual(start))&&
+//                            (date.isBefore(end) || date.isEqual(end))  )
+//                        return true;
+//                }
+//                return false;
+//            }
+//            else if (rule.getTypeOfYearlyRule().equals(TypeOfYearlyRule.DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH)){
+//                return rule.testPattern1(date);
+//            }
+//            return false;
+//        })
+//
+////                .map(RunsOnYearly::getId)
+//                .toList();
 
     }
 

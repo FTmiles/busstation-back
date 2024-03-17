@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.entities.timeconstraints;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,12 +19,36 @@ public class RunsOnYearly {
     TypeOfYearlyRule typeOfYearlyRule;
 
     //FIXED_TIME_PERIOD
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "runs_on_yearly_id")
     List<TimePeriod> timePeriods;
 
+    //-----------------
+    //if timePeriods is empty, will copy time periods from another rule
+    @ManyToOne
+    @JoinColumn(name = "copy_time_periods_from_other_rule_id", nullable = true)
+    @JsonProperty("otherRuleId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    RunsOnYearly copyTimePeriodsFromOtherRule;
+
+    @JsonSetter
+    public void setOtherRuleId(Long id){
+        if (id != null)
+            this.copyTimePeriodsFromOtherRule = new RunsOnYearly(id);
+    }
+
+
+    //run this before working with this object
+    public void updateFromDateRangeRefs() {
+        if (timePeriods.isEmpty() && copyTimePeriodsFromOtherRule != null)
+            setTimePeriods(copyTimePeriodsFromOtherRule.getTimePeriods());
+       }
+    //-----------------
+
+
     //DYNAMIC_PATTERN1_EACH_XDAY_OF_MONTH
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "runs_on_yearly_id")
     List<Pattern1Params> pattern1Params;
 
@@ -33,7 +58,7 @@ public class RunsOnYearly {
     //First
     public boolean testPattern1(LocalDate date) {
 
-        if (this.pattern1Params.isEmpty()) return false;
+        if (this.pattern1Params.isEmpty()) return true;
 
         for (Pattern1Params paramPair : this.pattern1Params) {
             System.out.println("should be 4 times");
@@ -109,9 +134,9 @@ public class RunsOnYearly {
         this.typeOfYearlyRule = typeOfYearlyRule;
     }
 
-    public List<TimePeriod> getTimePeriods() {
-        return timePeriods;
-    }
+//    public List<TimePeriod> getTimePeriods() {
+//        return timePeriods;
+//    }
 
     public void setTimePeriods(List<TimePeriod> timePeriods) {
         this.timePeriods = timePeriods;
@@ -123,6 +148,18 @@ public class RunsOnYearly {
 
     public void setPattern1Params(List<Pattern1Params> pattern1Params) {
         this.pattern1Params = pattern1Params;
+    }
+
+    public RunsOnYearly getCopyTimePeriodsFromOtherRule() {
+        return copyTimePeriodsFromOtherRule;
+    }
+
+    public void setCopyTimePeriodsFromOtherRule(RunsOnYearly copyTimePeriodsFromOtherRule) {
+        this.copyTimePeriodsFromOtherRule = copyTimePeriodsFromOtherRule;
+    }
+
+    public List<TimePeriod> getTimePeriods() {
+        return timePeriods;
     }
 
     @Override

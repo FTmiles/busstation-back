@@ -41,37 +41,39 @@ public class RunsOnYearlyController {
     public Map<String, Object> getAllRules(){
         List<RunsOnYearly> allRules = service.getAll();
 
-
-        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
-        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
-            rulesMap.put(type, new ArrayList<>());
-        }
-
-        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules =  allRules.stream()
-                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
-
-        rulesMap.putAll(rules);
+//
+//        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
+//        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
+//            rulesMap.put(type, new ArrayList<>());
+//        }
+//
+//        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules =  allRules.stream()
+//                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
+//
+//        rulesMap.putAll(rules);
 
         return Map.of
                 (
-                "rules", rulesMap,
+                "rules", allRules,
                 "schedules", service.findScheduleIdsByRunsOnYearly(allRules)
                 );
     }
 
     @PostMapping("/post-combo-list")
-    public Map<TypeOfYearlyRule, List<RunsOnYearly>> postListOfYearlyRules(@RequestBody List<RunsOnYearly> list) {
-
-        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
-        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
-            rulesMap.put(type, new ArrayList<>());
-        }
-
-        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules = service.saveAll(list).stream()
-                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
-
-        rulesMap.putAll(rules);
-        return rulesMap;
+    public List<RunsOnYearly> postListOfYearlyRules(@RequestBody List<RunsOnYearly> list) {
+//    public Map<TypeOfYearlyRule, List<RunsOnYearly>> postListOfYearlyRules(@RequestBody List<RunsOnYearly> list) {
+//
+//        Map<TypeOfYearlyRule, List<RunsOnYearly>> rulesMap = new HashMap<>();
+//        for (TypeOfYearlyRule type : TypeOfYearlyRule.values()) {
+//            rulesMap.put(type, new ArrayList<>());
+//        }
+//
+//        Map<TypeOfYearlyRule, List<RunsOnYearly>> rules = service.saveAll(list).stream()
+//                .collect(Collectors.groupingBy(RunsOnYearly::getTypeOfYearlyRule));
+//
+//        rulesMap.putAll(rules);
+//        return rulesMap;
+        return service.saveAll(list);
     }
 
 }

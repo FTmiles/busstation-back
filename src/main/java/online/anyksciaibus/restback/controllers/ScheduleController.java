@@ -1,14 +1,12 @@
 package online.anyksciaibus.restback.controllers;
 
 
-import online.anyksciaibus.restback.dto.LineInfo;
-import online.anyksciaibus.restback.dto.SchedItemHomeDto;
-import online.anyksciaibus.restback.dto.ScheduleByYearlyRuleDto;
-import online.anyksciaibus.restback.dto.SingleTrip;
+import online.anyksciaibus.restback.dto.*;
 import online.anyksciaibus.restback.dto.scheduling.RunsOnYearlyOptionDto;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
 import online.anyksciaibus.restback.entities.BoundFor;
 import online.anyksciaibus.restback.entities.Schedule;
+import online.anyksciaibus.restback.services.DatePropertiesRecord;
 import online.anyksciaibus.restback.services.ScheduleService;
 
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
@@ -83,15 +81,28 @@ public class ScheduleController {
     }
 
     //===================================
-    @GetMapping("/home/{dateStr}")
-    public List<SchedItemHomeDto> getScheduleItemsForHome(@PathVariable String dateStr){
+    @GetMapping("/home-from")
+    public List<Trip1WayHomeDto> getScheduleItemsForHomeFrom(@RequestParam String qdate, String qdir, Long qbstopfrom, Long qbstopto){
         LocalDate date;
+        BoundFor boundFor = BoundFor.getByDescription(qdir);
         try{
-            date = LocalDate.parse(dateStr);
+            date = LocalDate.parse(qdate);
         }catch (DateTimeParseException e){
             return null;
         }
-        return service.getScheduleItemsHome(date);
+        return service.getScheduleItemsHome(date, boundFor, qbstopfrom, qbstopto);
+    }
+
+    @GetMapping("/home-fromto")
+    public List<Trip1WayHomeDto> getScheduleItemsForHomeFromTo(@RequestParam String qdate, String qdir, Long qbstopfrom, Long qbstopto){
+        LocalDate date;
+        BoundFor boundFor = BoundFor.getByDescription(qdir);
+        try{
+            date = LocalDate.parse(qdate);
+        }catch (DateTimeParseException e){
+            return null;
+        }
+        return service.getScheduleItemsHome(date, boundFor, qbstopfrom, qbstopto);
     }
 
     @GetMapping("/singleTrip/{id}")
@@ -100,11 +111,6 @@ public class ScheduleController {
     }
 
 
-//    @GetMapping("/schedule-by-line")
-//    public List<ScheduleDto> getScheduleByLineId(@RequestParam Long lineId) {
-//        return service.getScheduleByLine(lineId)
-//                .stream().map(ScheduleDto::scheduleToDto).toList();
-//    }
 
     @GetMapping("/schedule-by-line")
     public Map<String, Object> getScheduleByLineId(@RequestParam Long lineId) {
@@ -119,9 +125,8 @@ public class ScheduleController {
             //empty ScheduleDto
             "empty", service.getEmptyDto(),
             "yearlyOptions", runsOnYearlyService.getAll().stream()
-                        .map(RunsOnYearlyOptionDto::RunsOnYearlyToDto)
-                                .collect(Collectors.groupingBy(RunsOnYearlyOptionDto::getTypeOfYearlyRule)),
-                "lineTitle", service.findLineNameByLineId(lineId)
+                        .map(RunsOnYearlyOptionDto::RunsOnYearlyToDto).collect(Collectors.toList()),
+            "lineTitle", service.findLineNameByLineId(lineId)
         );
     }
 
@@ -144,6 +149,19 @@ public class ScheduleController {
     public List<Map<String, Object>> getSchedulesByRule(@RequestParam Long ruleId) {
         return service.findByRunsOnYearlyIdGroupByLine(ruleId);
     }
+
+
+    //for testing only. test date constraint rules. exposes the cache Map.
+//    @GetMapping("/show-cache")
+//    public Map<LocalDate, DatePropertiesRecord> getCashe(){
+//        return service.getDatePropertiesCache();
+//    }
+
+    @GetMapping("schedule-by-tripid")
+    public Map<String, ?> getScheduleByTripId(@RequestParam Long tripID){
+        return service.getSCheduleByTripInfo(tripID);
+    }
+
 
 }
 

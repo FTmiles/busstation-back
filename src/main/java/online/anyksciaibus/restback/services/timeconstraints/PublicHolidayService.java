@@ -55,14 +55,14 @@ public class PublicHolidayService {
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
 
+        List<PublicHoliday> publicHolidays = repo.findAll();
+
         for (PublicHoliday holiday : publicHolidays) {
             if (month == holiday.getMonth() && dayOfMonth == holiday.getDay())
                 return true;
         }
 
-        LocalDate easterDate = easterDateMap.get(date.getYear());
-        if (easterDate == null)
-            easterDate = calculateEasterDate(date.getYear());
+        LocalDate easterDate = calculateEasterDate(date.getYear());
 
 
         return date.isEqual(easterDate) ||

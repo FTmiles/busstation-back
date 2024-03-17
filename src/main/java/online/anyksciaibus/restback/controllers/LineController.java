@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.dto.KeyValueDto;
 import online.anyksciaibus.restback.dto.LineFullDto;
 import online.anyksciaibus.restback.dto.LinePreviewDto;
+import online.anyksciaibus.restback.dto.LinePreviewPublicDto;
 import online.anyksciaibus.restback.entities.Line;
 
 import online.anyksciaibus.restback.entities.Route;
@@ -86,6 +87,7 @@ public class LineController {
     public LinePreviewDto getSingleDto(@RequestParam Long id){
         return service.getLinePreviewDto(id);
     }
+
     @GetMapping("/preview")
     public List<LinePreviewDto> getListLinePreviewDto(){
         List<Line> allLines = service.getAll();
@@ -148,6 +150,14 @@ public class LineController {
         return dto;
 
 //      return LineFullDto.lineToDto(new Line());
+    }
+
+    @GetMapping("/line-preview-withid-public")
+    public List<LinePreviewPublicDto> getListLinePreviewPublicDto(){
+        List<Line> allLines = service.getAll();
+
+        return allLines.stream().map(LinePreviewPublicDto::convertToLinePreviewDto)
+                .toList();
     }
 
 }

@@ -1,10 +1,7 @@
 package online.anyksciaibus.restback.services;
 
 import jakarta.transaction.Transactional;
-import online.anyksciaibus.restback.dto.LineInfo;
-import online.anyksciaibus.restback.dto.SchedItemHomeDto;
-import online.anyksciaibus.restback.dto.ScheduleByYearlyRuleDto;
-import online.anyksciaibus.restback.dto.SingleTrip;
+import online.anyksciaibus.restback.dto.*;
 import online.anyksciaibus.restback.dto.scheduling.ScheduleDto;
 import online.anyksciaibus.restback.dto.scheduling.Trip1WayIdDto;
 import online.anyksciaibus.restback.entities.*;
@@ -14,6 +11,7 @@ import online.anyksciaibus.restback.repositories.ScheduleRepo;
 import online.anyksciaibus.restback.services.timeconstraints.PublicHolidayService;
 import online.anyksciaibus.restback.services.timeconstraints.RunsOnYearlyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -27,6 +25,16 @@ public class ScheduleService {
 
 
     ScheduleRepo scheduleRepo;
+
+    //LinkedHashMap to maintain the insertion order of the entries
+    private static final int CACHE_SIZE_LIMIT = 10;
+    private Map<LocalDate, DatePropertiesRecord> datePropertiesCache = new LinkedHashMap<LocalDate, DatePropertiesRecord>(CACHE_SIZE_LIMIT, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<LocalDate, DatePropertiesRecord> eldest) {
+            return size() > CACHE_SIZE_LIMIT;
+        }
+    };
+
 
     public ScheduleService(ScheduleRepo scheduleRepo) {
         this.scheduleRepo = scheduleRepo;
@@ -100,21 +108,51 @@ public class ScheduleService {
     @Autowired
     RunsOnYearlyService runsOnYearlyService;
 
-    public List<SchedItemHomeDto> getScheduleItemsHome(LocalDate date) {
-        LocalTime now = LocalTime.now();
+    public List<Trip1WayHomeDto> getScheduleItemsHome(LocalDate date, BoundFor boundFor, Long qbstopfrom, Long qbstopto) {
+        if (date == null || boundFor == null || qbstopfrom == null) return List.of(new Trip1WayHomeDto());
 
-        boolean isPublicHoliday = publicHolidayService.isTheDayPublicHoliday(date);
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        List<RunsOnYearly> runsOnYearlyList = runsOnYearlyService.passingYearlyRulesByDate(date);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();;
 
-        List<Schedule> allSchedules = scheduleRepo.findSchedulesByDayOfWeekAndPublicHolidayAndRunsOnYearly(dayOfWeek, isPublicHoliday, runsOnYearlyList);
+        boolean isPublicHoliday;
+        List<RunsOnYearly> runsOnYearlyList;
 
-        return allSchedules.stream().flatMap(schedule -> {
-          List<SchedItemHomeDto> dtoList = SchedItemHomeDto.scheduleTo2Dto(schedule);
+        DatePropertiesRecord cacheRec = datePropertiesCache.get(date);
+        if (cacheRec == null) {
+            isPublicHoliday = publicHolidayService.isTheDayPublicHoliday(date);
+            runsOnYearlyList = runsOnYearlyService.passingYearlyRulesByDate(date);
+
+            DatePropertiesRecord cacheRecord = new DatePropertiesRecord(isPublicHoliday, runsOnYearlyList);
+            datePropertiesCache.put(date, cacheRecord);
+
+        } else {
+            isPublicHoliday = cacheRec.isPublicHoliday();
+            runsOnYearlyList = cacheRec.runsOnYearlyList();
+        }
+
+        List<Trip1Way> foundTrips;
+        //qbstopfrom = 1L is the main station of the city.  main station + CITY_BOUND makes no sense, so it is used for inner city buses
+        if (qbstopfrom.equals(1L) && qbstopto != null && boundFor == BoundFor.OUT_BOUND) {
+            foundTrips = scheduleRepo.findTripsByConditionsToAndFrom(runsOnYearlyList, dayOfWeek, boundFor, qbstopfrom, isPublicHoliday ? true : null, qbstopto);
+        }
+        else if (qbstopfrom.equals(1L)  && boundFor == BoundFor.CITY_BOUND)
+            foundTrips = scheduleRepo.findTripsCityBus(runsOnYearlyList, dayOfWeek, qbstopfrom, isPublicHoliday ? true : null);
+        else if (qbstopfrom.equals(1L) && boundFor == BoundFor.OUT_BOUND)
+            foundTrips = scheduleRepo.findTripsByConditionsNotCityBus(runsOnYearlyList, dayOfWeek, boundFor ,qbstopfrom, isPublicHoliday ? true : null);
+        else
+            foundTrips = scheduleRepo.findTripsByConditions(runsOnYearlyList, dayOfWeek, boundFor ,qbstopfrom, isPublicHoliday ? true : null);
+
+
+        return foundTrips.stream().flatMap(trip -> {
+            List<Trip1WayHomeDto> dtoList = Trip1WayHomeDto.tripToDtoList(trip, qbstopfrom);
+
             return dtoList.stream();
         }).toList();
     }
     //=================
+
+    public Map<LocalDate, DatePropertiesRecord> getDatePropertiesCache() {
+        return datePropertiesCache;
+    }
 
 @Transactional
     public List<Schedule> getScheduleByLine (Long lineId){
@@ -169,6 +207,17 @@ public class ScheduleService {
         return resultList;
 
 
+    }
+
+    //single trip page
+
+    public Map<String, ?> getSCheduleByTripInfo(Long id) {
+        Schedule schedule = scheduleRepo.findByTripId(id).orElse(new Schedule());
+
+        return Map.of(
+                "schedule", schedule,
+                "tripId", id,
+                "lineInfo", LineInfo.LineToDto(schedule.getLine()));
     }
 
 }

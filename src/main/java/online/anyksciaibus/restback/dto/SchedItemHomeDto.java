@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.dto;
 
+import online.anyksciaibus.restback.entities.BoundFor;
 import online.anyksciaibus.restback.entities.Schedule;
 
 import java.time.LocalTime;
@@ -10,7 +11,7 @@ import java.util.List;
 public class SchedItemHomeDto {
     Long id;
     String timeDepart;
-    String destination;
+    BoundFor direction;
     String lineName;
     Boolean isTooLate;
 
@@ -32,6 +33,8 @@ public class SchedItemHomeDto {
 
             dto.setTooLate(now.isAfter(trip1Way.getTimeList().getFirst()));
 
+            dto.setDirection(trip1Way.getBoundFor());
+
             return dto;
         }).toList();
     }
@@ -44,10 +47,10 @@ public class SchedItemHomeDto {
     public SchedItemHomeDto() {
     }
 
-    public SchedItemHomeDto(Long id, String timeDepart, String destination, String lineName, Boolean isTooLate) {
+    public SchedItemHomeDto(Long id, String timeDepart, BoundFor direction, String lineName, Boolean isTooLate) {
         this.id = id;
         this.timeDepart = timeDepart;
-        this.destination = destination;
+        this.direction = direction;
         this.lineName = lineName;
         this.isTooLate = isTooLate;
     }
@@ -68,12 +71,12 @@ public class SchedItemHomeDto {
         this.timeDepart = timeDepart;
     }
 
-    public String getDestination() {
-        return destination;
+    public BoundFor getDirection() {
+        return direction;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDirection(BoundFor direction) {
+        this.direction = direction;
     }
 
     public String getLineName() {

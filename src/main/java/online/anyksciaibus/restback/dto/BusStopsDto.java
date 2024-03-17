@@ -1,5 +1,8 @@
 package online.anyksciaibus.restback.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import online.anyksciaibus.restback.entities.BusStop;
+
 public class BusStopsDto {
     //actually it's ID
     Long value;
@@ -14,6 +17,14 @@ public class BusStopsDto {
 
     //==================
 
+    public static BusStopsDto busStopToDto(BusStop busStop) {
+        if (busStop == null) return null;
+
+        BusStopsDto dto = new BusStopsDto();
+        dto.setLabel(busStop.getName());
+        dto.setValue(busStop.getId());
+        return dto;
+    }
 
     public BusStopsDto() {
     }

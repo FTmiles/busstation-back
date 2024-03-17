@@ -2,6 +2,7 @@ package online.anyksciaibus.restback.services;
 
 import jakarta.transaction.Transactional;
 import online.anyksciaibus.restback.dto.LinePreviewDto;
+import online.anyksciaibus.restback.dto.LinePreviewPublicDto;
 import online.anyksciaibus.restback.entities.*;
 
 
@@ -116,5 +117,6 @@ public class LineService {
     public Optional<Line> myLineById(Long id) {
         return lineRepo.findById(id);
     }
+
 
 }
