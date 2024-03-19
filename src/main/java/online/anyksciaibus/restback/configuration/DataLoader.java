@@ -67,31 +67,6 @@ public class DataLoader implements CommandLineRunner {
 //        setPublicHolidays();
 
 
-//        System.out.println("----data loader-------");
-//        Line line = new Line();
-//        line.setId(3L);
-//        var xx = scheduleRepo.findByTripsRouteLine(line);
-//        System.out.println(xx);
-//        System.out.println("hello");
-
-//        Line line = new Line();
-//        line.setRouteEnd("War");
-//        line.setRouteStart("Peace");
-//        line.setVia("ass crack");
-//        line.setName("Levitatin");
-//        line.setPrice("2343");
-//        line.setRouteType(RouteType.REGIONAL_BUS);
-//        line.setOperator("Gastro");
-//        line.setAnykStationPlatform("234");
-//
-//        Route route = new Route();
-//        route.setDistanceMetersList(List.of(123, 123, 3425, 3456, 234, 366));
-//        route.setRouteNotes("Pull up yo pants");
-//        route.setLine(line);
-//        route.setStopsArr(List.of(new BusStop(2L)));
-//
-//        line.setRoutes(List.of(route));
-//        lineRepo.save(line);
 
     }
 
@@ -273,7 +248,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void createLine() {
-        Line line1 = new Line("M17-1", "Anykščiai", "Staškūniškis", "KURKLIUS", "Transporto Centras", "6", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
+        Line line1 = new Line("M17-1", "Anykščiai", "Staškūniškis",  "Transporto Centras", "6", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
         lineRepo.save(line1);
     }
 
@@ -458,7 +433,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
     }
 
     private void createLine2() {
-        Line line1 = new Line("M18-1-1", "Anykščiai AS", "Anykščiai AS", "Raguva, Troškūnai", "Transporto Centras", "1", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
+        Line line1 = new Line("M18-1-1", "Anykščiai AS", "Anykščiai AS",  "Transporto Centras", "1", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
         lineRepo.save(line1);
     }
 
@@ -709,7 +684,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
     }
 
     private void createLine3() {
-        Line line1 = new Line("M22", "ANYKŠČIAI", "VARKUJAI ", "DEBEIKIUS, AKNYSTAS", "Transporto Centras", "3", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
+        Line line1 = new Line("M22", "ANYKŠČIAI", "VARKUJAI ",  "Transporto Centras", "3", "Ask driver", RouteType.REGIONAL_BUS, List.of(new Route()) );
         lineRepo.save(line1);
     }
 

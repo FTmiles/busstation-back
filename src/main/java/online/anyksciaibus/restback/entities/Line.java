@@ -17,7 +17,6 @@ public class Line {
 
     String routeStart;  //which city, not which station
     String routeEnd;    //which city, not which station
-    String via;
     String operator;    //bus company
     String anykStationPlatform;
     String price;
@@ -50,11 +49,10 @@ public class Line {
         this.id = id;
     }
 
-    public Line(String name, String routeStart, String routeEnd, String via, String operator, String anykStationPlatform, String price, RouteType routeType, List<Route> route) {
+    public Line(String name, String routeStart, String routeEnd, String operator, String anykStationPlatform, String price, RouteType routeType, List<Route> route) {
         this.name = name;
         this.routeStart = routeStart;
         this.routeEnd = routeEnd;
-        this.via = via;
         this.operator = operator;
         this.anykStationPlatform = anykStationPlatform;
         this.price = price;
@@ -94,13 +92,7 @@ public class Line {
         this.routeEnd = routeEnd;
     }
 
-    public String getVia() {
-        return via;
-    }
 
-    public void setVia(String via) {
-        this.via = via;
-    }
 
     public String getOperator() {
         return operator;

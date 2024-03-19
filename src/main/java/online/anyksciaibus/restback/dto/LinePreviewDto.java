@@ -12,7 +12,6 @@ public class LinePreviewDto {
     String name;
     String routeStart;  //which city, not which station
     String routeEnd;    //which city, not which station
-    String via;
     List<String> mainStops;
     List<String> extraStops;
 
@@ -21,12 +20,11 @@ public class LinePreviewDto {
     public LinePreviewDto() {
     }
 
-    public LinePreviewDto(Long id, String name, String routeStart, String routeEnd, String via, List<String> mainStops, List<String> extraStops) {
+    public LinePreviewDto(Long id, String name, String routeStart, String routeEnd, List<String> mainStops, List<String> extraStops) {
         this.id = id;
         this.name = name;
         this.routeStart = routeStart;
         this.routeEnd = routeEnd;
-        this.via = via;
         this.mainStops = mainStops;
         this.extraStops = extraStops;
     }
@@ -63,13 +61,7 @@ public class LinePreviewDto {
         this.routeEnd = routeEnd;
     }
 
-    public String getVia() {
-        return via;
-    }
 
-    public void setVia(String via) {
-        this.via = via;
-    }
 
     public List<String> getMainStops() {
         return mainStops;
@@ -93,7 +85,6 @@ public class LinePreviewDto {
         LinePreviewDto dto = new LinePreviewDto();
         dto.setId(line.getId());
         dto.setName(line.getName());
-        dto.setVia(line.getVia());
         dto.setRouteEnd(line.getRouteEnd());
         dto.setRouteStart(line.getRouteStart());
 

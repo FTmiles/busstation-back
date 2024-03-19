@@ -26,7 +26,6 @@ public class LineFullDto {
         info.setRouteType(line.getRouteType());
         info.setRouteStart(line.getRouteStart());
         info.setRouteEnd(line.getRouteEnd());
-        info.setVia(line.getVia());
         info.setEnabledSeasonalYearlyRuleFilter(line.isEnabledSeasonalYearlyRuleFilter());
 
         List<Route> routes = line.getRoutes() != null ? line.getRoutes() : Collections.emptyList();
@@ -39,7 +38,6 @@ public class LineFullDto {
         Line line = new Line();
         LineInfo info = dto.getInfo();
         line.setId(info.getId());
-        line.setVia(info.via);
         line.setRouteType(info.getRouteType());
         line.setPrice(info.getPrice());
         line.setOperator(info.getOperator());

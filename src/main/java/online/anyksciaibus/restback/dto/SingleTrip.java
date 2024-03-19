@@ -6,7 +6,6 @@ public class SingleTrip {
     String lineName;
     String routeStart;
     String routeEnd;
-    String via;
     String operator;
     String anykStationPlatform;
     String price;
@@ -21,11 +20,10 @@ public class SingleTrip {
     public SingleTrip() {
     }
 
-    public SingleTrip(String lineName, String routeStart, String routeEnd, String via, String operator, String anykStationPlatform, String price, String routeType, String timeConstraintsDescription, List<SingleStop> stops) {
+    public SingleTrip(String lineName, String routeStart, String routeEnd,  String operator, String anykStationPlatform, String price, String routeType, String timeConstraintsDescription, List<SingleStop> stops) {
         this.lineName = lineName;
         this.routeStart = routeStart;
         this.routeEnd = routeEnd;
-        this.via = via;
         this.operator = operator;
         this.anykStationPlatform = anykStationPlatform;
         this.price = price;
@@ -58,13 +56,6 @@ public class SingleTrip {
         this.routeEnd = routeEnd;
     }
 
-    public String getVia() {
-        return via;
-    }
-
-    public void setVia(String via) {
-        this.via = via;
-    }
 
     public String getOperator() {
         return operator;

@@ -12,7 +12,6 @@ public class LineInfo {
     String name;
     String routeStart;  //which city, not which station
     String routeEnd;    //which city, not which station
-    String via;
     String operator;    //bus company
     String anykStationPlatform;
     String price;
@@ -25,12 +24,11 @@ public class LineInfo {
     public LineInfo() {
     }
 
-    public LineInfo(Long id, String name, String routeStart, String routeEnd, String via, String operator, String anykStationPlatform, String price, RouteType routeType) {
+    public LineInfo(Long id, String name, String routeStart, String routeEnd,  String operator, String anykStationPlatform, String price, RouteType routeType) {
         this.id = id;
         this.name = name;
         this.routeStart = routeStart;
         this.routeEnd = routeEnd;
-        this.via = via;
         this.operator = operator;
         this.anykStationPlatform = anykStationPlatform;
         this.price = price;
@@ -39,7 +37,6 @@ public class LineInfo {
 
     public static LineInfo LineToDto(Line line){
         LineInfo dto = new LineInfo();
-        dto.setVia(line.getVia());
         dto.setName(line.getName());
         dto.setId(line.getId());
         dto.setRouteStart(line.getRouteStart());
@@ -84,13 +81,6 @@ public class LineInfo {
         this.routeEnd = routeEnd;
     }
 
-    public String getVia() {
-        return via;
-    }
-
-    public void setVia(String via) {
-        this.via = via;
-    }
 
     public String getOperator() {
         return operator;

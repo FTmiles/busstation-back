@@ -92,7 +92,6 @@ public class ScheduleService {
 //                line.getName(),
 //                line.getRouteStart(),
 //                line.getRouteEnd(),
-//                line.getVia(),
 //                line.getOperator(),
 //                line.getAnykStationPlatform(),
 //                line.getPrice(),
