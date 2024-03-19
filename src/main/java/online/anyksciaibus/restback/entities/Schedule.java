@@ -14,6 +14,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    //in human language
     String timeConstraintsDescription;
 
 

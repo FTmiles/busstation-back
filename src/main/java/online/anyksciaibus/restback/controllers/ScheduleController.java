@@ -139,6 +139,7 @@ public class ScheduleController {
 
     @PostMapping("/post-schedule-dto")
     public List<ScheduleDto> postScheduleDto(@RequestBody List<ScheduleDto> scheduleDtoList){
+        System.out.println("hi");
         List<Schedule> response = service.saveAll(scheduleDtoList.stream()
                 .map(ScheduleDto::dtoToSchedule).toList());
         return response.stream().map(ScheduleDto::scheduleToDto).toList();
@@ -165,6 +166,7 @@ public class ScheduleController {
     @GetMapping("/schedule-by-lineid-browse")
     public Map<String, ?> getScheduleByLineIdBrowse(@RequestParam Long lineId){
         List<Schedule> allSchedules = service.getScheduleByLine(lineId);
+        if (allSchedules.isEmpty()) return Map.of("nothingFound", true);
 
         return Map.of("line", LineInfo.LineToDto(allSchedules.getFirst().getLine()),
         "schedules", allSchedules.stream().map(ScheduleBrowseDto::scheduleToDto).collect(Collectors.toList()),

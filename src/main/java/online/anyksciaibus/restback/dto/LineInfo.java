@@ -2,9 +2,12 @@ package online.anyksciaibus.restback.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import online.anyksciaibus.restback.entities.CustomLineNote;
 import online.anyksciaibus.restback.entities.Line;
 import online.anyksciaibus.restback.entities.RouteType;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class LineInfo {
@@ -16,6 +19,7 @@ public class LineInfo {
     String anykStationPlatform;
     String price;
     boolean enabledSeasonalYearlyRuleFilter;
+    List<CustomLineNote> customNotes;
 
     RouteType routeType;
 
@@ -46,6 +50,7 @@ public class LineInfo {
         dto.setOperator(line.getOperator());
         dto.setRouteType(line.getRouteType());
         dto.setEnabledSeasonalYearlyRuleFilter(line.isEnabledSeasonalYearlyRuleFilter());
+        dto.setCustomNotes(line.getCustomNotes());
         return dto;
     }
 
@@ -117,10 +122,19 @@ public class LineInfo {
     public boolean isEnabledSeasonalYearlyRuleFilter() {
         return enabledSeasonalYearlyRuleFilter;
     }
-
     public void setEnabledSeasonalYearlyRuleFilter(boolean enabledSeasonalYearlyRuleFilter) {
         this.enabledSeasonalYearlyRuleFilter = enabledSeasonalYearlyRuleFilter;
     }
+
+    public List<CustomLineNote> getCustomNotes() {
+        return customNotes;
+    }
+
+    public void setCustomNotes(List<CustomLineNote> customNotes) {
+        this.customNotes = customNotes;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,5 @@
 package online.anyksciaibus.restback.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,6 +18,10 @@ public class Line {
     String anykStationPlatform;
     String price;
 
+    //custom notes, such as WiFi YES, Vilnius AS platform #24, etc
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="line_id")
+    private List<CustomLineNote> customNotes;
 
 
     //when enabled, browse line page will show schedules filtered yearlyRule only - e.g. winter / summer
@@ -138,7 +139,15 @@ public class Line {
         return enabledSeasonalYearlyRuleFilter;
     }
 
-    public void setEnableSeasonalYearlyRuleFilter(boolean enabledSeasonalYearlyRuleFilter) {
+    public void setEnabledSeasonalYearlyRuleFilter(boolean enabledSeasonalYearlyRuleFilter) {
         this.enabledSeasonalYearlyRuleFilter = enabledSeasonalYearlyRuleFilter;
+    }
+
+    public List<CustomLineNote> getCustomNotes() {
+        return customNotes;
+    }
+
+    public void setCustomNotes(List<CustomLineNote> customNotes) {
+        this.customNotes = customNotes;
     }
 }

@@ -27,6 +27,7 @@ public class LineFullDto {
         info.setRouteStart(line.getRouteStart());
         info.setRouteEnd(line.getRouteEnd());
         info.setEnabledSeasonalYearlyRuleFilter(line.isEnabledSeasonalYearlyRuleFilter());
+        info.setCustomNotes(line.getCustomNotes() == null ? Collections.emptyList() : line.getCustomNotes());
 
         List<Route> routes = line.getRoutes() != null ? line.getRoutes() : Collections.emptyList();
 
@@ -45,6 +46,8 @@ public class LineFullDto {
         line.setRouteEnd(info.getRouteEnd());
         line.setRouteStart(info.getRouteStart());
         line.setAnykStationPlatform(info.anykStationPlatform);
+        line.setEnabledSeasonalYearlyRuleFilter(info.isEnabledSeasonalYearlyRuleFilter());
+        line.setCustomNotes(info.getCustomNotes());
 
         //add Line, it was ignored for JSON
         List<Route> routes = dto.getRoutes().stream().map(route -> {

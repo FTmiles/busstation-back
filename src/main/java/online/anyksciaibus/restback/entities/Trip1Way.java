@@ -27,6 +27,7 @@ public class Trip1Way {
 
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "schedule_id")
     Schedule schedule;
     //===================
 
