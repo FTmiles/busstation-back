@@ -16,6 +16,7 @@ public class LineInfo {
     String operator;    //bus company
     String anykStationPlatform;
     String price;
+    boolean enabledSeasonalYearlyRuleFilter;
 
     RouteType routeType;
 
@@ -47,7 +48,7 @@ public class LineInfo {
         dto.setAnykStationPlatform(line.getAnykStationPlatform());
         dto.setOperator(line.getOperator());
         dto.setRouteType(line.getRouteType());
-
+        dto.setEnabledSeasonalYearlyRuleFilter(line.isEnabledSeasonalYearlyRuleFilter());
         return dto;
     }
 
@@ -121,6 +122,14 @@ public class LineInfo {
 
     public void setRouteType(RouteType routeType) {
         this.routeType = routeType;
+    }
+
+    public boolean isEnabledSeasonalYearlyRuleFilter() {
+        return enabledSeasonalYearlyRuleFilter;
+    }
+
+    public void setEnabledSeasonalYearlyRuleFilter(boolean enabledSeasonalYearlyRuleFilter) {
+        this.enabledSeasonalYearlyRuleFilter = enabledSeasonalYearlyRuleFilter;
     }
 
     @Override

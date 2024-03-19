@@ -16,7 +16,8 @@ public class Trip1WayHomeDto {
     String lineName;
     String name;
     RouteType routeType;
-
+    Long lineId;
+    Long schedId;
 
 
 
@@ -43,7 +44,8 @@ public class Trip1WayHomeDto {
                 dto.setLineName(trip1Way.getRoute().getLine().getName());
                 dto.setTimeDepart(times.get(i));
                 dto.setRouteType(trip1Way.getRoute().getLine().getRouteType());
-
+                dto.setLineId(trip1Way.getRoute().getLine().getId());
+                dto.setSchedId(trip1Way.getSchedule().getId());
                 //construct and set name
                 RouteType routeType = trip1Way.getRoute().getLine().getRouteType();
                 String name;
@@ -120,5 +122,21 @@ public class Trip1WayHomeDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(Long lineId) {
+        this.lineId = lineId;
+    }
+
+    public Long getSchedId() {
+        return schedId;
+    }
+
+    public void setSchedId(Long schedId) {
+        this.schedId = schedId;
     }
 }

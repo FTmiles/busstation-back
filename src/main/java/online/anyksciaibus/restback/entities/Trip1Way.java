@@ -1,5 +1,6 @@
 package online.anyksciaibus.restback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -24,6 +25,9 @@ public class Trip1Way {
     @JoinColumn(name = "route_id")
     Route route;
 
+    @JsonIgnore
+    @ManyToOne
+    Schedule schedule;
     //===================
 
     public Trip1Way() {
@@ -74,5 +78,13 @@ public class Trip1Way {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

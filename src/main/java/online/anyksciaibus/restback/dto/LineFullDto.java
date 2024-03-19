@@ -27,6 +27,7 @@ public class LineFullDto {
         info.setRouteStart(line.getRouteStart());
         info.setRouteEnd(line.getRouteEnd());
         info.setVia(line.getVia());
+        info.setEnabledSeasonalYearlyRuleFilter(line.isEnabledSeasonalYearlyRuleFilter());
 
         List<Route> routes = line.getRoutes() != null ? line.getRoutes() : Collections.emptyList();
 

@@ -22,6 +22,11 @@ public class Line {
     String anykStationPlatform;
     String price;
 
+
+
+    //when enabled, browse line page will show schedules filtered yearlyRule only - e.g. winter / summer
+    boolean enabledSeasonalYearlyRuleFilter;
+
     @Enumerated(EnumType.ORDINAL)
     RouteType routeType;
 
@@ -135,5 +140,13 @@ public class Line {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public boolean isEnabledSeasonalYearlyRuleFilter() {
+        return enabledSeasonalYearlyRuleFilter;
+    }
+
+    public void setEnableSeasonalYearlyRuleFilter(boolean enabledSeasonalYearlyRuleFilter) {
+        this.enabledSeasonalYearlyRuleFilter = enabledSeasonalYearlyRuleFilter;
     }
 }

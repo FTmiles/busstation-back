@@ -157,11 +157,19 @@ public class ScheduleController {
 //        return service.getDatePropertiesCache();
 //    }
 
-    @GetMapping("schedule-by-tripid")
+    @GetMapping("/schedule-by-tripid")
     public Map<String, ?> getScheduleByTripId(@RequestParam Long tripID){
         return service.getSCheduleByTripInfo(tripID);
     }
 
+    @GetMapping("/schedule-by-lineid-browse")
+    public Map<String, ?> getScheduleByLineIdBrowse(@RequestParam Long lineId){
+        List<Schedule> allSchedules = service.getScheduleByLine(lineId);
+
+        return Map.of("line", LineInfo.LineToDto(allSchedules.getFirst().getLine()),
+        "schedules", allSchedules.stream().map(ScheduleBrowseDto::scheduleToDto).collect(Collectors.toList()),
+        "yearlyRules", allSchedules.stream().map(Schedule::getRunsOnYearly).distinct().toList()       );
+    }
 
 }
 

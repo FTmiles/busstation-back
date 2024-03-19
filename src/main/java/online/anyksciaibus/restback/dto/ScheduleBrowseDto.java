@@ -1,5 +1,74 @@
 package online.anyksciaibus.restback.dto;
 
-public class ScheduleBrowseDto {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import online.anyksciaibus.restback.entities.Line;
+import online.anyksciaibus.restback.entities.Schedule;
+import online.anyksciaibus.restback.entities.Trip1Way;
+import online.anyksciaibus.restback.entities.timeconstraints.RunsOnYearly;
 
+import java.time.DayOfWeek;
+import java.util.List;
+
+//differences from entity - runsOnYearly not object but just a name String, no Line
+public class ScheduleBrowseDto {
+    Long id;
+    List<DayOfWeek> runsOnWeekly;
+    String runsOnYearlyStr;
+    boolean runsOnPublicHolidays;
+    List<Trip1Way> trips;
+
+//--------------------------------------------------
+    public static ScheduleBrowseDto scheduleToDto(Schedule schedule){
+        ScheduleBrowseDto dto = new ScheduleBrowseDto();
+        dto.setId(schedule.getId());
+        dto.setTrips(schedule.getTrips());
+        dto.setRunsOnYearlyStr(schedule.getRunsOnYearly().getPeriodName());
+        dto.setRunsOnWeekly(schedule.getRunsOnWeekly());
+        dto.setRunsOnPublicHolidays(schedule.isRunsOnPublicHolidays());
+
+        return dto;
+    }
+
+//==================================================
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<DayOfWeek> getRunsOnWeekly() {
+        return runsOnWeekly;
+    }
+
+    public void setRunsOnWeekly(List<DayOfWeek> runsOnWeekly) {
+        this.runsOnWeekly = runsOnWeekly;
+    }
+
+    public String getRunsOnYearlyStr() {
+        return runsOnYearlyStr;
+    }
+
+    public void setRunsOnYearlyStr(String runsOnYearlyStr) {
+        this.runsOnYearlyStr = runsOnYearlyStr;
+    }
+
+    public boolean isRunsOnPublicHolidays() {
+        return runsOnPublicHolidays;
+    }
+
+    public void setRunsOnPublicHolidays(boolean runsOnPublicHolidays) {
+        this.runsOnPublicHolidays = runsOnPublicHolidays;
+    }
+
+    public List<Trip1Way> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip1Way> trips) {
+        this.trips = trips;
+    }
 }
