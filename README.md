@@ -16,3 +16,7 @@ Features
 
 The front-end can be found at
 https://github.com/FTmiles/busstation-front
+
+
+The main town bus station must be bus stop id 1L.
+With the 1L bus stop input, you get access to "City buses" radio button. Which is 
