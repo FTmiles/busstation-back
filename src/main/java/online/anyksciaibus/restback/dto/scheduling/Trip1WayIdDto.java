@@ -2,10 +2,7 @@ package online.anyksciaibus.restback.dto.scheduling;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import online.anyksciaibus.restback.entities.BoundFor;
-import online.anyksciaibus.restback.entities.Line;
-import online.anyksciaibus.restback.entities.Route;
-import online.anyksciaibus.restback.entities.Trip1Way;
+import online.anyksciaibus.restback.entities.*;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -40,13 +37,13 @@ public class Trip1WayIdDto {
         return dto;
     }
 
-    public static Trip1Way dtoToTrip1Way(Trip1WayIdDto dto) {
+    public static Trip1Way dtoToTrip1Way(Trip1WayIdDto dto, Schedule schedule) {
         Trip1Way trip = new Trip1Way();
         trip.setId(dto.getId());
         trip.setRouteDirReversed(dto.getRouteDirReversed());
         trip.setBoundFor(dto.getBoundFor());
         trip.setTimeList(dto.getTimeList());
-
+        trip.setSchedule(schedule);
         trip.setRoute(dto.getRoute());
         return trip;
     }

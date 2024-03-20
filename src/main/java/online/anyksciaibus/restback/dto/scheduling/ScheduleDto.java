@@ -79,7 +79,7 @@ public class ScheduleDto {
     public static Schedule dtoToSchedule(ScheduleDto dto){
         Schedule schedule = new Schedule();
         schedule.setId(dto.getId());
-        schedule.setTrips(dto.getTrips().stream().map(Trip1WayIdDto::dtoToTrip1Way).toList());
+        schedule.setTrips(dto.getTrips().stream().map(trip -> Trip1WayIdDto.dtoToTrip1Way(trip, schedule)).toList());
         schedule.setLine(dto.getLine());
         schedule.setRunsOnYearly(dto.getRunsOnYearly());
         schedule.setRunsOnWeekly(dto.getRunsOnWeekly());
