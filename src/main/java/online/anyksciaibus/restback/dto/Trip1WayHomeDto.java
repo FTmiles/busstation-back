@@ -28,8 +28,10 @@ public class Trip1WayHomeDto {
         List<LocalTime> times = trip1Way.getTimeList();
         if (trip1Way.getRouteDirReversed()){
             stops = stops.reversed();
-            times = times.reversed();
+//            times = times.reversed();
         }
+
+
 
         //because some weird routes visit the same stop twice on the same route, very few though
         List<Trip1WayHomeDto> dtoList = new ArrayList<>();

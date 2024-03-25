@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/holidays")
+@RequestMapping("/api/holidays")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class PublicHolidayController {
 

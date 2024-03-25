@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.Array;
 
 @RestController
 @CrossOrigin
-@RequestMapping("yearly-rules")
+@RequestMapping("/api/yearly-rules")
 public class RunsOnYearlyController {
     RunsOnYearlyService service;
 

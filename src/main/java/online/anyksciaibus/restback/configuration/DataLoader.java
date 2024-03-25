@@ -313,7 +313,7 @@ public class DataLoader implements CommandLineRunner {
         timeArr.add(LocalTime.of(9,25));
 //(Boolean isRouteDirReversed, BoundFor boundFor, List<LocalTime> timeList, Route route) {
 
-Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
+Trip1Way trip1 = new Trip1Way(false, BoundFor.TWO_WAYS_OUT_BOUND, timeArr, route1);
 
         List<LocalTime> timeArr2 = new ArrayList<>();
 
@@ -331,7 +331,7 @@ Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
         timeArr2.add(LocalTime.of(9,50));
 
 
-Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
+Trip1Way trip2 = new Trip1Way(true, BoundFor.TWO_WAYS_CITY_BOUND, timeArr2, route1);
         Schedule schedule = new Schedule("važiuoja moksleivių atostogų metu", List.of(trip1,trip2));
         Line line = new Line();
         line.setId(1L);
@@ -359,7 +359,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr1.add(LocalTime.of(13,49));
         timeArr1.add(LocalTime.of(13,54));
 
-   Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr1, route1);
+   Trip1Way trip1 = new Trip1Way(false, BoundFor.TWO_WAYS_OUT_BOUND, timeArr1, route1);
 
 
         List<LocalTime> timeArr2 = new ArrayList<>();
@@ -377,7 +377,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr2.add(LocalTime.of(14,19));
         timeArr2.add(LocalTime.of(14,20));
 
-        Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
+        Trip1Way trip2 = new Trip1Way(true, BoundFor.TWO_WAYS_CITY_BOUND, timeArr2, route1);
 
         Schedule schedule = new Schedule("važiuoja moksleivių atostogų metu", List.of(trip1,trip2));
         Line line = new Line();
@@ -585,7 +585,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr.add(LocalTime.of(9,13));
         timeArr.add(LocalTime.of(9,20));
 
-        Trip1Way trip1 = new Trip1Way(false, BoundFor.CIRCLE, timeArr, route1);
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.ONE_WAY, timeArr, route1);
 
         Schedule schedule = new Schedule("Autobusas važiuoja trečiadieniais", List.of(trip1));
         Line line = new Line();
@@ -644,7 +644,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr2.add(LocalTime.of(15,32));
         timeArr2.add(LocalTime.of(15,35));
 
-        Trip1Way trip2 = new Trip1Way(false, BoundFor.CIRCLE, timeArr2, route2);
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.ONE_WAY, timeArr2, route2);
 
         Schedule schedule2 = new Schedule("Autobusas važiuoja trečiadieniais", List.of(trip2));
 
@@ -886,7 +886,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr.add(LocalTime.of(6,53));
         timeArr.add(LocalTime.of(6,55));
 
-        Trip1Way trip1 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.TWO_WAYS_OUT_BOUND, timeArr, route1);
 
 
         List<LocalTime> timeArr2 = new ArrayList<>();
@@ -912,7 +912,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr2.add(LocalTime.of(7,48));
         timeArr2.add(LocalTime.of(7,50));
 
-        Trip1Way trip2 = new Trip1Way(false, BoundFor.CITY_BOUND, timeArr2, route1);
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.TWO_WAYS_CITY_BOUND, timeArr2, route1);
 
 
         Schedule schedule = new Schedule("važiuoja darbo dienomis", List.of(trip1, trip2));
@@ -944,7 +944,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr.add(LocalTime.of(14,26));
         timeArr.add(LocalTime.of(14,28));
 
-        Trip1Way trip2 = new Trip1Way(false, BoundFor.OUT_BOUND, timeArr, route1);
+        Trip1Way trip2 = new Trip1Way(false, BoundFor.TWO_WAYS_OUT_BOUND, timeArr, route1);
         Schedule schedule = new Schedule("važiuoja mokslo metu", List.of(trip2));
         Line line = new Line();
         line.setId(3L);
@@ -978,7 +978,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr.add(LocalTime.of(15,6));
         timeArr.add(LocalTime.of(15,8));
 
-        Trip1Way trip1 = new Trip1Way(false, BoundFor.CITY_BOUND, timeArr, route1);
+        Trip1Way trip1 = new Trip1Way(false, BoundFor.TWO_WAYS_CITY_BOUND, timeArr, route1);
 
 
 //==============
@@ -1005,7 +1005,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr2.add(LocalTime.of(16,33));
         timeArr2.add(LocalTime.of(16,35));
 
-        Trip1Way trip2 = new Trip1Way(true, BoundFor.OUT_BOUND, timeArr, route1);
+        Trip1Way trip2 = new Trip1Way(true, BoundFor.TWO_WAYS_OUT_BOUND, timeArr, route1);
         Schedule schedule = new Schedule("važiuoja mokslo metu", List.of(trip1, trip2));
         Line line = new Line();
         line.setId(3L);
@@ -1036,7 +1036,7 @@ Trip1Way trip2 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr2, route1);
         timeArr.add(LocalTime.of(17,10));
 
 
-        Trip1Way trip1 = new Trip1Way(true, BoundFor.CITY_BOUND, timeArr, route1);
+        Trip1Way trip1 = new Trip1Way(true, BoundFor.TWO_WAYS_CITY_BOUND, timeArr, route1);
         Schedule schedule = new Schedule("važiuoja darbo dienomis", List.of(trip1));
         Line line = new Line();
         line.setId(3L);

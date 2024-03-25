@@ -74,7 +74,9 @@ public class BusStop {
 
     public BusStopsDto mapToDto(){
         BusStopsDto dto = new BusStopsDto();
-        dto.setLabel(this.name);
+        String coordNote = this.getCoords();
+
+        dto.setLabel(this.name + (coordNote != null && !coordNote.isEmpty() ? " (" + coordNote + ")" : "")     );
         dto.setValue(this.id);
         return dto;
     }

@@ -4,9 +4,9 @@ package online.anyksciaibus.restback.entities;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum BoundFor {
-    CITY_BOUND("City bound"),
-    OUT_BOUND("Out bound"),
-    CIRCLE("Cirlce");
+    TWO_WAYS_CITY_BOUND("City bound"),
+    TWO_WAYS_OUT_BOUND("Out bound"),
+    ONE_WAY("One way");
 
 
     private final String description;

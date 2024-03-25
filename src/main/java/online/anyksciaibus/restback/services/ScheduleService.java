@@ -130,12 +130,12 @@ public class ScheduleService {
 
         List<Trip1Way> foundTrips;
         //qbstopfrom = 1L is the main station of the city.  main station + CITY_BOUND makes no sense, so it is used for inner city buses
-        if (qbstopfrom.equals(1L) && qbstopto != null && boundFor == BoundFor.OUT_BOUND) {
+        if (qbstopfrom.equals(1L) && qbstopto != null && boundFor == BoundFor.TWO_WAYS_OUT_BOUND) {
             foundTrips = scheduleRepo.findTripsByConditionsToAndFrom(runsOnYearlyList, dayOfWeek, boundFor, qbstopfrom, isPublicHoliday ? true : null, qbstopto);
         }
-        else if (qbstopfrom.equals(1L)  && boundFor == BoundFor.CITY_BOUND)
+        else if (qbstopfrom.equals(1L)  && boundFor == BoundFor.TWO_WAYS_CITY_BOUND)
             foundTrips = scheduleRepo.findTripsCityBus(runsOnYearlyList, dayOfWeek, qbstopfrom, isPublicHoliday ? true : null);
-        else if (qbstopfrom.equals(1L) && boundFor == BoundFor.OUT_BOUND)
+        else if (qbstopfrom.equals(1L) && boundFor == BoundFor.TWO_WAYS_OUT_BOUND)
             foundTrips = scheduleRepo.findTripsByConditionsNotCityBus(runsOnYearlyList, dayOfWeek, boundFor ,qbstopfrom, isPublicHoliday ? true : null);
         else
             foundTrips = scheduleRepo.findTripsByConditions(runsOnYearlyList, dayOfWeek, boundFor ,qbstopfrom, isPublicHoliday ? true : null);

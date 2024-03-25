@@ -12,17 +12,12 @@ import java.util.Optional;
 
 @Service
 public class PublicHolidayService {
-    private List<PublicHoliday> publicHolidays;
-    private Map<Integer, LocalDate> easterDateMap;
+
 
     PublicHolidayRepo repo;
 
     public PublicHolidayService(PublicHolidayRepo repo){
         this.repo = repo;
-        this.publicHolidays = getAll();
-
-        this.easterDateMap = new HashMap<>();
-        populateEasterMap();
     }
 
 
@@ -88,13 +83,6 @@ public class PublicHolidayService {
         return LocalDate.of(year, month, day);
     }
 
-    public void populateEasterMap(){
-        int thisYear = LocalDate.now().getYear();
-        System.out.println("hello there");
-        for (int i = thisYear-5; i < thisYear+30; i++) {
-            easterDateMap.put(i, calculateEasterDate(i));
-        }
 
-    }
 
 }

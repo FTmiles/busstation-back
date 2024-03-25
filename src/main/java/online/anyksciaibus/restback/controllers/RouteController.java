@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/route")
+@RequestMapping("/api/route")
 @CrossOrigin
 public class RouteController {
 

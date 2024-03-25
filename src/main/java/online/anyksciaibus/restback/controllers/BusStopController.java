@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/busstop")
+@RequestMapping("/api/busstop")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST}) // Allow CORS for all origins and both GET and POST methods
 public class BusStopController {
     BusStopService service;
