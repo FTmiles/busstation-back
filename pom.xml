@@ -13,18 +13,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>restback</name>
 	<description>backend for anyksciaibus.online</description>
-	<packaging>war</packaging> <!--Added when exporting-->
 	<properties>
 		<java.version>21</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
 	<dependencies>
-		<!-- Instruct Spring Boot not to use the embedded Tomcat container  -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- ___- -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
