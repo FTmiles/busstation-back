@@ -6,8 +6,23 @@
 3. Navigate to the dir (busstation-back)
 4. Run from IDE
 
+## Environment
+- Java 21
+- MySQL
 
-Features
+## Run MySQL
+My way to set it up is with WSL
+- Install docker
+- docker pull mysql:latest
+- docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=XXXXXXX -d -p 3306:3306 mysql:latest
+
+## Config
+`resources/application.properties` file 
+
+## Build artifact
+needs some changes in code, ATM check commit from 2023 March. But it was on Maven, figure it out bud!
+
+## Features
 * Fully secured with Spring Security
 * Supports CRUD and more
 * DTO classes for file transfer
