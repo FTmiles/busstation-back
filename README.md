@@ -40,7 +40,7 @@ needs some changes in code, ATM check commit from 2023 March. But it was on Mave
 What is gradlew?
 gradle wrapper. gradlew vs gradle. Gradlew is a similar concept to the newer Yarn Plug'n'Play (PnP) 
 - Gradlew forces a specific version.
-- Don't need globally installed gradle bin. The wrapper downloads it and stores at ~/.gradle/wrapper/dists/, while yarn keeps the bin locally in the project.
+- Yarn keeps the bin locally in the project. Gradlew keeps it in `~/.gradle/wrapper/dists/`. 
 
 ---
 The front-end can be found at
