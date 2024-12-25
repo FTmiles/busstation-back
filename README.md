@@ -28,6 +28,14 @@ needs some changes in code, ATM check commit from 2023 March. But it was on Mave
 * DTO classes for file transfer
 * High test coverage
 
+## Build JAR not WAR
+`./gradlew bootJar` - or via Gradle UI > Tasks > Build > bootJar
+- Builds a .jar at `dist/libs/` (Direct Spring Boot JAR build)
+    
+`./gradlew build` - or via Gradle UI > Tasks > Build > build
+- Runs tests, compiles code, and then runs `./gradlew bootJar`
+
+---
 
 The front-end can be found at
 https://github.com/FTmiles/busstation-front
