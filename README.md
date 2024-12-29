@@ -13,9 +13,9 @@
 ## Run MySQL
 My way to set it up is with WSL
 - Install docker
-- docker pull mysql:latest
-- docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=XXXXXXX -d -p 3306:3306 mysql:latest
-
+- `cd "MySQL docker"`
+- edit passwords and volume mount dir
+- `docker compose up -d`
 ## Config
 `resources/application.properties` file 
 
