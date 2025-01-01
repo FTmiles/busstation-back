@@ -18,6 +18,12 @@ My way to set it up is with WSL
 ## Config
 `resources/application.properties` file 
 
+## Production
+- upload docker compose files
+```declarative
+scp "docker-compose.app.yml" ubuntu@88.88.88.88:/path/to/dir
+```
+
 ## Build artifact
 needs some changes in code, ATM check commit from 2023 March. But it was on Maven, figure it out bud!
 
