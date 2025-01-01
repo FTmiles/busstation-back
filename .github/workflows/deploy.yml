@@ -34,7 +34,7 @@ jobs:
         with:
           host: ${{ vars.VPS_IP }}
           username: ${{ vars.VPS_USERNAME }}
-          key: ${{ vars.VPS_SSH_KEY }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           source: "./build/libs/busstation-backend.jar"
           target: ${{ vars.DEPLOY_PATH }}
 
