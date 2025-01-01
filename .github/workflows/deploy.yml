@@ -24,7 +24,9 @@ jobs:
 
       # Step 3: Build the project with Gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
 
       # Step 4: Transfer the jar to VPS
       - name: Upload jar artifact to VPS
