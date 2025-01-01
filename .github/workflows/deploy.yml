@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '21'
-          distribution: 'openjdk'
+          distribution: 'temurin'
 
       # Step 3: Build the project with Gradle
       - name: Build with Gradle
