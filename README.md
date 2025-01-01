@@ -7,6 +7,7 @@
 # Run locally
 - ./gradlew bootRun
 or use Gradle UI > bootRun
+or use IntelliJ IDEA green ▶️ button
 
 ## Run MySQL
 My way to set it up is with WSL
