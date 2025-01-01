@@ -1,14 +1,12 @@
 # Bus Station manager - Back-end Java Spring Boot
 
-## Instructions
-1. Needs JRE to run 
-2. Clone the repo
-3. Navigate to the dir (busstation-back)
-4. Run from IDE
-
 ## Environment
 - Java 21
 - MySQL
+
+# Run locally
+- ./gradlew bootRun
+or use Gradle UI > bootRun
 
 ## Run MySQL
 My way to set it up is with WSL
