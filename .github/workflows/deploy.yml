@@ -2,8 +2,9 @@ name: Deploy to VPS with Docker
 
 on:
   push:
-    branches:
-      - main  # Trigger deployment on push to the main branch
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
 jobs:
   build-and-deploy:
