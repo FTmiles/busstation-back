@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    # temurin is smaller than other img, and optimized for runtime only, not building
+    image: eclipse-temurin:21-jre-focal  # Use Eclipse Temurin Java 21 JRE base image
+    container_name: busstation-backend-SB
+    volumes:
+      - ./running-jar:/app  # Mount local directory to the container
+    working_dir: /app
+    command: java -jar busstation-backend.jar  # Run the jar file
+    ports:
+      - "8080:8080"  # Expose port if needed for your app
+    restart: always  # Always restart the app if it crashes or when the VPS reboots

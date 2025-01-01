@@ -1,0 +1,50 @@
+name: Deploy to VPS with Docker
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'openjdk'
+
+      # Step 3: Build the project with Gradle
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # Step 4: Transfer the jar to VPS
+      - name: Upload jar artifact to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.VPS_IP }}
+          username: ${{ vars.VPS_USERNAME }}
+          key: ${{ vars.VPS_SSH_KEY }}
+          source: "./build/libs/busstation-backend.jar"
+          target: ${{ vars.DEPLOY_PATH }}
+
+      # Step 7: SSH into VPS and deploy
+      - name: SSH into VPS and deploy
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ vars.VPS_IP }}
+          username: ${{ vars.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd ${{ vars.DEPLOY_PATH }}
+            docker compose down
+            rm -f running-jar/busstation-backend.jar # remove old jar
+            mv busstation-backend.jar running-jar/busstation-backend.jar
+            docker compose up -d
