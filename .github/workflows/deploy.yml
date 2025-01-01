@@ -36,7 +36,8 @@ jobs:
           username: ${{ vars.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "./build/libs/busstation-backend.jar"
-          target: /home/ubuntu/web/bus-back
+          target: "/home/ubuntu/web/bus-back/busstation-backend.jar"
+
 
       # Step 7: SSH into VPS and deploy
       - name: SSH into VPS and deploy
