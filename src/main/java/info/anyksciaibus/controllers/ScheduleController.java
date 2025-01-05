@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/scheduleItem")
-@CrossOrigin
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST}) // Allow CORS for all origins and both GET and POST methods
 public class ScheduleController {
 
 
