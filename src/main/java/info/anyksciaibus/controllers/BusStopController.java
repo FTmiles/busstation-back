@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/busstop")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST}) // Allow CORS for all origins and both GET and POST methods
+//@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST}) // Allow CORS for all origins and both GET and POST methods
+@CrossOrigin(origins = "http://localhost:3000") // Replace with your frontend's origin
 public class BusStopController {
     BusStopService service;
 

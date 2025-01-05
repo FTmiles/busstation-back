@@ -67,6 +67,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/holidays/al?").permitAll()
                                 .requestMatchers("/scheduleItem/singleTrip/*").permitAll()
                                 .requestMatchers("/scheduleItem/home/*").permitAll()
+                                .requestMatchers("/api/busstop/search").permitAll()
 
                                 .requestMatchers("/line/test/**").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
