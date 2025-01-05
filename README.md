@@ -73,6 +73,11 @@ JSON Body:
 "role": ["user", "mod", "admin"]
 }
 
+Bash terminal, or Linux terminal
+```shell
+curl -X POST http://localhost:8080/api/auth/signup -H "Content-Type: application/json" -d '{"username":"boss","email":"bossy@xxx.com","password":"2025","role":["user","mod","admin"]}'
+```
+
 ###
 # Postman sign in to get JWT token
 POST request to http://localhost:8080/api/auth/signin
