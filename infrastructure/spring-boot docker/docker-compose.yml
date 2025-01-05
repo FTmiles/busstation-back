@@ -3,6 +3,9 @@ services:
     # temurin is smaller than other img, and optimized for runtime only, not building
     # from https://hub.docker.com/_/eclipse-temurin/tags
     image: eclipse-temurin:21-jre-ubi9-minimal  # Use Eclipse Temurin Java 21 JRE base image
+    # image: eclipse-temurin:21-jre # if the above is not supported by VPS CPU
+    environment:
+      - ACTIVE_PROFILE=production
     container_name: SB
     volumes:
       - ./running-jar:/app  # Mount local directory to the container
