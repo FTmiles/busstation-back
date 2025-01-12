@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"   # don't need it anymore, unless on some outdated version of Docker
 
 services:
   mysql:
